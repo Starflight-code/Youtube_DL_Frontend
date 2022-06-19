@@ -1,0 +1,1 @@
+Powershell.exe -ExecutionPolicy Bypass .\Youtube-DL_Automation.ps1
