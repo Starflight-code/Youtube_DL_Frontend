@@ -1,12 +1,10 @@
-using System;
-
 namespace Youtube_DL_UI
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            Console.WriteLine("Hello World");
+            Console.Write("Hello World");
 
         }
     }
