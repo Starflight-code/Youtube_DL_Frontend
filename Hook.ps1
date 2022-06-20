@@ -14,6 +14,5 @@ $dir = $locstart + $dir + $name + '.' + $auf
 $args = "-f $af --audio-format $auf -x --ffmpeg-location '$locstart" + "' --audio-quality $aq -o '$dir" + "' $link"
 $cdloc = "$dir"
 cd 'C:\Users\benko\Music\Acquisition and Staging\'
-$dirlink = "'$dir" + "' $link"
 $ff = "`"C:\Users\benko\Music\Acquisition and Staging`""
 ./youtube-dl.exe -f $af --audio-format $auf -x --ffmpeg-location $ff $link --audio-quality $aq -o $dir
