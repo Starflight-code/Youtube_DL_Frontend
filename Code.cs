@@ -8,22 +8,12 @@ Console.Write("Input a link to the file you wish to fetch: ");
 string? link = Console.ReadLine();
 Console.Write("\nInput a name for the file output without the entension: ");
 string? filename = Console.ReadLine();
-string? dir = $"FULL OUTPUT PATH HERE";
+string userprofile = "%userprofile"; //Input your own starting directory here, youtube-dl doesn't like placeholders.
+string? dir = $"{userprofile}Music\\Acquisition and Staging\\Youtube-DL Output\\";
 string output = $"{dir}{filename}.%(ext)s";
-string? ff = "FFMPEG PATH HERE";
+string? ff = $"{userprofile}Music\\Acquisition and Staging";
 bool st = false;
 string? bs;
-/*
- * powershell.exe -executionpolicy bypass -file "%userprofile%\Music\Acquisition and Staging\hook.ps1" -Link https://www.youtube.com/watch?v=5tCDLBnDi0s -name 'SAO'
- 
-Process? p = Process.Start(new ProcessStartInfo(@"C:\Users\benko\Music\Acquisition and Staging\youtube-dl.exe")
-{
-    Arguments = $"-f {af} --audio-format {auf} -x --ffmpeg-location {ff} {link} --audio-quality {aq} -o {dir}",
-    WindowStyle = ProcessWindowStyle.Normal,
-    CreateNoWindow = false,
-    UseShellExecute = false,
-    RedirectStandardError = true
-});*/
 while (true)
 {
     string? inp = "0";
