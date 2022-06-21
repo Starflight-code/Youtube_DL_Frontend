@@ -28,3 +28,5 @@ C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL Frontend.pdb
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL Frontend.genruntimeconfig.cache
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\ref\Youtube_DL Frontend.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Debug\net6.0\YamlDotNet.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL Frontend.csproj.CopyComplete

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "a3FbIXJH/g9rl8VjUXb2CNp5WMELS+Cw0Mw7i9nHbqPinx43b/NYyryN/OPyAdcbuN1xNjGPgKg8kpSqFEP8hw==",
+  "dgSpecHash": "DqageAyCwAtBUvY4GHBtn3lK3fURK3kbKCudgpNqBfDmKlDixpMdDFyuyePTDYZOWtzpVbdi4jmt2rHR1HV2uw==",
   "success": true,
   "projectFilePath": "C:\\Users\\benko\\source\\repos\\StarflightGaming\\Youtube_DL Frontend\\Youtube_DL Frontend.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\benko\\.nuget\\packages\\yamldotnet\\11.2.1\\yamldotnet.11.2.1.nupkg.sha512"
+  ],
   "logs": []
 }
