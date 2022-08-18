@@ -1,0 +1,17 @@
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\Youtube_DL Frontend.exe
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\Youtube_DL Frontend.deps.json
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\Youtube_DL Frontend.runtimeconfig.json
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\Youtube_DL Frontend.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\Youtube_DL Frontend.pdb
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\YamlDotNet.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.csproj.AssemblyReference.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.AssemblyInfoInputs.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.AssemblyInfo.cs
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.csproj.CoreCompileInputs.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.csproj.CopyComplete
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\refint\Youtube_DL Frontend.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.pdb
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\Youtube_DL Frontend.genruntimeconfig.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\ref\Youtube_DL Frontend.dll

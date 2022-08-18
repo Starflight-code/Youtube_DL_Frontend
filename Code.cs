@@ -1,17 +1,113 @@
 using System.Diagnostics;
 
-string? af = "251";
-string? aq = "0";
-string? auf = "mp3";
+static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia)
+{
+    //Ascii Text, "Configuration"
+    writeAscii(1);
+    //Console.Write(" ___            ___  _                       _    _\n|  _> ___ ._ _ | | '<_> ___  _ _  _ _  ___ _| |_ <_> ___ ._ _ \n| <__/ . \\| ' || |- | |/ . || | || '_><_> | | |  | |/ . \\| ' |\n`___/\\___/|_|_||_|  |_|\\_. |`___||_|  <___| |_|  |_|\\___/|_|_|\n                       <___'\n\n");
+    Console.Write($"1: Audio Format: {af}\n2: Audio Quality: {aq}\n3: Audio Conversion Format: {auf}\n4: Directory: {dir}\n5: FF-Mpeg Dir: {ff}\n6: Link: {link}\n7: File Name: {filename}\n8: Continue\n9: Exit\n");
+    if (ia == true)
+    {
+        Console.Write("\n#\\> ");
+    }
+    string[] lines =
+{
+            af, aq, auf, dir, ff
+        };
 
+    File.WriteAllLinesAsync(".\\data.txt", lines);
+}
+static void writeAscii(int input)
+{
+    switch (input)
+    {
+        //Ascii Text is below, this is called for GUI related reasons within the program.
+        case 1:
+            //Configuration
+            Console.Write(" ___            ___  _                       _    _\n|  _> ___ ._ _ | | '<_> ___  _ _  _ _  ___ _| |_ <_> ___ ._ _ \n| <__/ . \\| ' || |- | |/ . || | || '_><_> | | |  | |/ . \\| ' |\n`___/\\___/|_|_||_|  |_|\\_. |`___||_|  <___| |_|  |_|\\___/|_|_|\n                       <___'\n\n");
+            break;
+        case 2:
+            //Executing...
+            Console.WriteLine(" _____                           _    _\n|  ___|                         | |  (_)\n| |__  __  __  ___   ___  _   _ | |_  _  _ __    __ _\n|  __| \\ \\/ / / _ \\ / __|| | | || __|| || '_ \\  / _` |\n| |___  >  < |  __/| (__ | |_| || |_ | || | | || (_| | _  _  _\n\\____/ /_/\\_\\ \\___| \\___| \\__,_| \\__||_||_| |_| \\__, |(_)(_)(_)\n                                                 __/ |\n                                                |___/\n\n");
+            break;
+        case 3:
+            //Thank You
+            Console.WriteLine(" ___  _              _      _ _\n|_ _|| |_  ___ ._ _ | |__  | | | ___  _ _\n | | | . |<_> || ' || / /  \\   // . \\| | |\n |_| |_|_|<___||_|_||_\\_\\   |_| \\___/`___|\n\n");
+            break;
+        case 4:
+            //Welcome
+            Console.Write(" _ _ _       _\n| | | | ___ | | ___  ___ ._ _ _  ___\n| | | |/ ._>| |/ | '/ . \\| ' ' |/ ._>\n|__/_/ \\___.|_|\\_|_.\\___/|_|_|_|\\___.\n\n");
+            break;
+        default:
+            //Error! If this is executed, something is wrong with the way this function was called.
+            Console.Write("\n\nError detected by WriteAscii, this function has been declared without or with an invalid 'sel' variable value.\n");
+            break;
+
+    }
+}
+string? dir = null;
+string? output = null;
+string? ff = null;
+string? af = null;
+string? aq = null;
+string? auf = null;
+int counter = 0;
+
+if (File.Exists(".\\data.txt") == false) {
+    Thread.Sleep(500);
+    File.Create(".\\data.txt");
+    /*af = "251";
+    aq = "0";
+    auf = "mp3";
+    string[] lines =
+{
+            af, aq, auf, "dir", "ff"
+        };
+    File.WriteAllLinesAsync(".\\data.txt", lines);*/
+    Console.Write("Database Created, Please restart...");
+    Thread.Sleep(500);
+    System.Environment.Exit(1);
+}
+foreach (string line in System.IO.File.ReadLines(@".\\data.txt"))
+{
+    System.Console.WriteLine(line);
+    counter++;
+    switch (counter)
+    {
+        case 1:
+            af = line;
+            break;
+        case 2:
+            aq = line;
+            break;
+        case 3:
+            auf = line;
+            break;
+        case 4:
+            dir = line;
+            break;
+        case 5:
+            ff = line;
+            break;
+    }
+}
+Console.Clear();
+//Ascii Text, "Welcome"
+writeAscii(4);
+//Console.Write(" _ _ _       _\n| | | | ___ | | ___  ___ ._ _ _  ___\n| | | |/ ._>| |/ | '/ . \\| ' ' |/ ._>\n|__/_/ \\___.|_|\\_|_.\\___/|_|_|_|\\___.\n\n");
+Console.Write("We have a few initialization questions before you can begin.\n\n");
 Console.Write("Input a link to the file you wish to fetch: ");
 string? link = Console.ReadLine();
-Console.Write("\nInput a name for the file output without the entension: ");
+Console.Write("Input \"" + link + "\" Accepted!");
+Thread.Sleep(400);
+Console.Clear();
+//Ascii Text, "Welcome"
+writeAscii(4);
+Console.Write("We have a few initialization questions before you can begin.\n\n"); Console.Write("Input a name for the file output without the entension: ");
 string? filename = Console.ReadLine();
-string userprofile = "%userprofile"; //Input your own starting directory here, youtube-dl doesn't like placeholders.
-string? dir = $"{userprofile}Music\\Acquisition and Staging\\Youtube-DL Output\\";
-string output = $"{dir}{filename}.%(ext)s";
-string? ff = $"{userprofile}Music\\Acquisition and Staging";
+Console.Write("Input \"" + filename + "\" Accepted!");
+Thread.Sleep(400); //Gives visual feedback to user
+output = $"{dir}{filename}.%(ext)s"; //Includes youtube-dl placeholders
 bool st = false;
 string? bs;
 while (true)
@@ -22,12 +118,23 @@ while (true)
     while (continuevar == false)
     {
         Console.Clear();
-        Console.Write($"----------Configuration----------\n1: Audio Format: {af}\n2: Audio Quality: {aq}\n3: Audio Conversion Format: {auf}\n4: Directory: {dir}\n5: FF-Mpeg Dir: {ff}\n6: Link: {link}\n7: File Name: {filename}\n8: Continue\n9: Exit\n---------------------------------\n#\\> ");
+        //Ascii Text "Configuration"
+        bool ia = true;
+#pragma warning disable CS8604 // Possible null reference argument. Will not be null, so this warning can safely be supressed.
+        writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+#pragma warning restore CS8604 // Possible null reference argument.
+        /* Updated to use writeGUI function, for expanded flexability and code efficiency. 
+         Console.Write(" ___            ___  _                       _    _\n|  _> ___ ._ _ | | '<_> ___  _ _  _ _  ___ _| |_ <_> ___ ._ _ \n| <__/ . \\| ' || |- | |/ . || | || '_><_> | | |  | |/ . \\| ' |\n`___/\\___/|_|_||_|  |_|\\_. |`___||_|  <___| |_|  |_|\\___/|_|_|\n                       <___'\n\n");
+        Console.Write($"1: Audio Format: {af}\n2: Audio Quality: {aq}\n3: Audio Conversion Format: {auf}\n4: Directory: {dir}\n5: FF-Mpeg Dir: {ff}\n6: Link: {link}\n7: File Name: {filename}\n8: Continue\n9: Exit\n\n#\\> ");*/
         if (st == true)
         {
             Console.Clear();
-            Console.Write($"\nCommand parsed successfully, passing youtube-dl output...\nPress ENTER once exection is complete to view the menu.\n");
-            Process.Start("C:\\Users\\benko\\Music\\Acquisition and Staging\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}");
+            //Ascii Text, "Executing..."
+            writeAscii(2);
+            //Console.WriteLine(" _____                           _    _\n|  ___|                         | |  (_)\n| |__  __  __  ___   ___  _   _ | |_  _  _ __    __ _\n|  __| \\ \\/ / / _ \\ / __|| | | || __|| || '_ \\  / _` |\n| |___  >  < |  __/| (__ | |_| || |_ | || | | || (_| | _  _  _\n\\____/ /_/\\_\\ \\___| \\___| \\__,_| \\__||_||_| |_| \\__, |(_)(_)(_)\n                                                 __/ |\n                                                |___/\n\n");
+            output = $"{dir}{filename}.%(ext)s";
+            Console.Write($"Command parsed and sent, passing youtube-dl output...\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n");
+            Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
             //Console.Write("\nST is " + st + "continuevar is " + continuevar);
             Thread.Sleep(1000); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
             bs = Console.ReadLine();
@@ -41,32 +148,52 @@ while (true)
         switch (inp)
         {
             case "1":
-                Console.Write("\nInput a new audio format:");
+                Console.Clear();
+                ia = false;
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                Console.Write("\nInput a new audio format: ");
                 af = Console.ReadLine();
                 break;
             case "2":
-                Console.Write("\nInput a new audio quality:");
+                Console.Clear();
+                ia = false;
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                Console.Write("\nInput a new audio quality: ");
                 aq = Console.ReadLine();
                 break;
             case "3":
-                Console.Write("\nInput a new audio conversion format:");
+                Console.Clear();
+                ia = false;
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                Console.Write("\nInput a new audio conversion format: ");
                 auf = Console.ReadLine();
                 break;
             case "4":
-                Console.Write("\nInput a new directory path:");
+                Console.Clear();
+                ia = false;
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                Console.Write("\nInput a new directory path: ");
                 dir = Console.ReadLine();
                 output = $"{dir}{filename}.%(ext)s";
                 break;
             case "5":
-                Console.Write("\nInput a new FF-Mpeg Path:");
+                Console.Clear();
+                ia = false;
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                Console.Write("\nInput a new FF-Mpeg Path: ");
                 ff = Console.ReadLine();
                 break;
             case "6":
+                Console.Clear();
+                ia = false;
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
                 Console.Write("Input a link to the file you wish to fetch: ");
                 link = Console.ReadLine();
-                continuevar = true;
                 break;
             case "7":
+                Console.Clear();
+                ia = false;
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
                 Console.Write("\nInput a name for the file output without the entension: ");
                 filename = Console.ReadLine();
                 output = $"{dir}{filename}.%(ext)s";
@@ -75,6 +202,10 @@ while (true)
                 continuevar = true;
                 break;
             case "9":
+                Console.Clear();
+                //Ascii Text, "Thank You"
+                writeAscii(3);
+                //Console.WriteLine(" ___  _              _      _ _\n|_ _|| |_  ___ ._ _ | |__  | | | ___  _ _\n | | | . |<_> || ' || / /  \\   // . \\| | |\n |_| |_|_|<___||_|_||_\\_\\   |_| \\___/`___|\n\n");
                 Console.WriteLine("Exiting... Thank you for using Youtube-DL Frontend!");
                 Thread.Sleep(1000);
                 System.Environment.Exit(1);

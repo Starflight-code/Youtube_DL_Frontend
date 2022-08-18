@@ -47,6 +47,10 @@
             "YamlDotNet": {
               "target": "Package",
               "version": "[11.2.1, )"
+            },
+            "ilmerge": {
+              "target": "Package",
+              "version": "[3.0.29, )"
             }
           },
           "imports": [

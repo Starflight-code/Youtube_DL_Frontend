@@ -1,0 +1,14 @@
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Debug\net6.0\Youtube_DL_Frontend.exe
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Debug\net6.0\Youtube_DL_Frontend.deps.json
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Debug\net6.0\Youtube_DL_Frontend.runtimeconfig.json
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Debug\net6.0\Youtube_DL_Frontend.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL_Frontend.csproj.AssemblyReference.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL_Frontend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL_Frontend.AssemblyInfoInputs.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL_Frontend.AssemblyInfo.cs
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL_Frontend.csproj.CoreCompileInputs.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL_Frontend.csproj.Fody.CopyLocal.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL_Frontend.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\refint\Youtube_DL_Frontend.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\Youtube_DL_Frontend.genruntimeconfig.cache
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Debug\net6.0\ref\Youtube_DL_Frontend.dll
