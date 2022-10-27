@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia)
+static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia, string DATABASE_FILE)
 {
     //Ascii Text, "Configuration"
     writeAscii(1);
@@ -12,10 +12,10 @@ static void writeGUI(string af, string aq, string auf, string dir, string ff, st
     }
     string[] lines =
 {
-            af, aq, auf, dir, ff
+            "Do not modify data within this file!", af, aq, auf, dir, ff
         };
 
-    File.WriteAllLinesAsync(".\\data.txt", lines);
+    File.WriteAllLinesAsync(DATABASE_FILE, lines);
 }
 static void writeAscii(int input)
 {
@@ -52,41 +52,50 @@ string? af = null;
 string? aq = null;
 string? auf = null;
 int counter = 0;
+const string DATABASE_FILE = ".\\data.db";
 
-if (File.Exists(".\\data.txt") == false) {
+if (File.Exists(DATABASE_FILE) == false) {
+    Console.WriteLine("Database not detected, Creating...");
     Thread.Sleep(500);
-    File.Create(".\\data.txt");
-    /*af = "251";
+    var db = File.Create(DATABASE_FILE);
+    af = "251";
     aq = "0";
     auf = "mp3";
+    string directory = Directory.GetCurrentDirectory();
+    dir = directory;
+    ff = directory;
     string[] lines =
 {
-            af, aq, auf, "dir", "ff"
+            "Do not modify data within this file!" ,af, aq, auf, dir, ff
         };
-    File.WriteAllLinesAsync(".\\data.txt", lines);*/
-    Console.Write("Database Created, Please restart...");
-    Thread.Sleep(500);
-    System.Environment.Exit(1);
+    db.Dispose();
+    Console.WriteLine("Starting file write operating...");
+    var dbtemp = File.WriteAllLinesAsync(DATABASE_FILE, lines);
+    dbtemp.Wait(500);
+    dbtemp.Dispose();
+    Console.WriteLine("Completed! Starting program.");
 }
-foreach (string line in System.IO.File.ReadLines(@".\\data.txt"))
+foreach (string line in System.IO.File.ReadLines(@DATABASE_FILE))
 {
     System.Console.WriteLine(line);
     counter++;
     switch (counter)
     {
         case 1:
-            af = line;
             break;
         case 2:
-            aq = line;
+            af = line;
             break;
         case 3:
-            auf = line;
+            aq = line;
             break;
         case 4:
-            dir = line;
+            auf = line;
             break;
         case 5:
+            dir = line;
+            break;
+        case 6:
             ff = line;
             break;
     }
@@ -121,7 +130,7 @@ while (true)
         //Ascii Text "Configuration"
         bool ia = true;
 #pragma warning disable CS8604 // Possible null reference argument. Will not be null, so this warning can safely be supressed.
-        writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+        writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
 #pragma warning restore CS8604 // Possible null reference argument.
         /* Updated to use writeGUI function, for expanded flexability and code efficiency. 
          Console.Write(" ___            ___  _                       _    _\n|  _> ___ ._ _ | | '<_> ___  _ _  _ _  ___ _| |_ <_> ___ ._ _ \n| <__/ . \\| ' || |- | |/ . || | || '_><_> | | |  | |/ . \\| ' |\n`___/\\___/|_|_||_|  |_|\\_. |`___||_|  <___| |_|  |_|\\___/|_|_|\n                       <___'\n\n");
@@ -150,50 +159,52 @@ while (true)
             case "1":
                 Console.Clear();
                 ia = false;
-                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
                 Console.Write("\nInput a new audio format: ");
                 af = Console.ReadLine();
                 break;
             case "2":
                 Console.Clear();
                 ia = false;
-                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
                 Console.Write("\nInput a new audio quality: ");
                 aq = Console.ReadLine();
                 break;
             case "3":
                 Console.Clear();
                 ia = false;
-                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
                 Console.Write("\nInput a new audio conversion format: ");
                 auf = Console.ReadLine();
                 break;
             case "4":
                 Console.Clear();
                 ia = false;
-                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
-                Console.Write("\nInput a new directory path: ");
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
+                Console.Write("\nInput a new directory path (A to autofill current path): ");
                 dir = Console.ReadLine();
+                if (dir == "A" || dir == "a") { dir = Directory.GetCurrentDirectory(); }
                 output = $"{dir}{filename}.%(ext)s";
                 break;
             case "5":
                 Console.Clear();
                 ia = false;
-                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
-                Console.Write("\nInput a new FF-Mpeg Path: ");
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
+                Console.Write("\nInput a new FF-Mpeg Path (A to autofill current path): ");
                 ff = Console.ReadLine();
+                if (ff == "A" || ff == "a") { ff = Directory.GetCurrentDirectory(); }
                 break;
             case "6":
                 Console.Clear();
                 ia = false;
-                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
                 Console.Write("Input a link to the file you wish to fetch: ");
                 link = Console.ReadLine();
                 break;
             case "7":
                 Console.Clear();
                 ia = false;
-                writeGUI(af, aq, auf, dir, ff, link, filename, ia);
+                writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
                 Console.Write("\nInput a name for the file output without the entension: ");
                 filename = Console.ReadLine();
                 output = $"{dir}{filename}.%(ext)s";
