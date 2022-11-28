@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hPYN1hjLr6YDsfrbifj+P++9ZWCKxeKEr6ibuiNVjK5/nCehOMKMZIVCbk/q7WjSfITb+wBb4P1cWAAgTqUyAw==",
+  "dgSpecHash": "S7Ccx5rnmltl+kzZn2tg8qMThDGCrpeSCCDr+VeRotqjaz6hfB6goz0IoS6N0sqpqeh/eg2gjyfQhFetSSTHBw==",
   "success": true,
   "projectFilePath": "C:\\Users\\benko\\source\\repos\\StarflightGaming\\Youtube_DL Frontend\\Youtube_DL_Frontend.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\benko\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\6.0.10\\microsoft.netcore.app.runtime.win-x64.6.0.10.nupkg.sha512",
-    "C:\\Users\\benko\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\6.0.10\\microsoft.windowsdesktop.app.runtime.win-x64.6.0.10.nupkg.sha512",
-    "C:\\Users\\benko\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\6.0.10\\microsoft.aspnetcore.app.runtime.win-x64.6.0.10.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

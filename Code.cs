@@ -40,7 +40,7 @@ static void writeAscii(int input)
             break;
         default:
             //Error! If this is executed, something is wrong with the way this function was called.
-            Console.Write("\n\nError detected by WriteAscii, this function has been declared without or with an invalid 'sel' variable value.\n");
+            Console.Write("\n\nError detected by WriteAscii(), this function has been declared with an invalid 'sel' variable value.\n");
             break;
 
     }
