@@ -1,11 +1,13 @@
 using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 
 static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia, string DATABASE_FILE)
 {
     //Ascii Text, "Configuration"
     writeAscii(1);
     //Console.Write(" ___            ___  _                       _    _\n|  _> ___ ._ _ | | '<_> ___  _ _  _ _  ___ _| |_ <_> ___ ._ _ \n| <__/ . \\| ' || |- | |/ . || | || '_><_> | | |  | |/ . \\| ' |\n`___/\\___/|_|_||_|  |_|\\_. |`___||_|  <___| |_|  |_|\\___/|_|_|\n                       <___'\n\n");
-    Console.Write($"1: Audio Format: {af}\n2: Audio Quality: {aq}\n3: Audio Conversion Format: {auf}\n4: Directory: {dir}\n5: FF-Mpeg Dir: {ff}\n6: Link: {link}\n7: File Name: {filename}\n8: Continue\n9: Exit\n");
+    Console.Write($"1: Audio Format: {af}\n2: Audio Quality: {aq}\n3: Audio Conversion Format: {auf}\n4: Directory: {dir}\n5: FF-Mpeg Dir: {ff}\n6: Link: {link}\n7: File Name: {filename}\n8: Batch Processing\n9: Continue\n0: Exit\n");
     if (ia == true)
     {
         Console.Write("\n#\\> ");
@@ -45,6 +47,46 @@ static void writeAscii(int input)
 
     }
 }
+
+static void batchProcess(string af, string aq, string auf, string dir, string ff)
+{
+    Console.Write($"You have accessed the batch processing system, this allows asyncronous processing of" +
+                "\nmultiple files. Please specify your pre formatted file, which should be placed inside" +
+                $"\nthe youtube-dl-frontend directory.\n\n");
+    Console.Write("Enter File Path: ");
+    string? batchfile = Console.ReadLine();
+    if (batchfile == null) { return; }
+    string[] file = File.ReadAllLines(batchfile);
+    int i = 0;
+    List<string> URLs = new List<string>();
+    List<string> fileNames = new List<string>();
+    foreach (string x in file)
+    {
+        switch (i % 2)
+        {
+            case 0:
+                URLs.Add(x);
+                break;
+            case 1:
+                fileNames.Add(x);
+                break;
+            default:
+                throw (new Exception("Logic error detected in batch processing, file parsing section."));
+        }
+        i++;
+    }
+    i = 0;
+    string name;
+    foreach (string URL in URLs)
+    {
+        name = $"{dir}\\{fileNames[i]}.%(ext)s";
+        Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {URL} --audio-quality {aq} -o \"{name}\"");
+        i++;
+    }
+    Console.Write("Execution Started on File, please wait... \n--Press ENTER when execution is completed--\n\n");
+    Thread.Sleep(1000);
+    Console.ReadLine();
+}
 string? dir = null;
 string? output = null;
 string? ff = null;
@@ -54,7 +96,8 @@ string? auf = null;
 int counter = 0;
 const string DATABASE_FILE = ".\\data.db";
 
-if (File.Exists(DATABASE_FILE) == false) {
+if (File.Exists(DATABASE_FILE) == false)
+{
     Console.WriteLine("Database not detected, Creating...");
     Thread.Sleep(500);
     var db = File.Create(DATABASE_FILE);
@@ -118,7 +161,7 @@ Console.Write("Input \"" + filename + "\" Accepted!");
 Thread.Sleep(400); //Gives visual feedback to user
 output = $"{dir}{filename}.%(ext)s"; //Includes youtube-dl placeholders
 bool st = false;
-string? bs;
+//string? bs; Not used in current implimentation
 while (true)
 {
     string? inp = "0";
@@ -142,11 +185,12 @@ while (true)
             writeAscii(2);
             //Console.WriteLine(" _____                           _    _\n|  ___|                         | |  (_)\n| |__  __  __  ___   ___  _   _ | |_  _  _ __    __ _\n|  __| \\ \\/ / / _ \\ / __|| | | || __|| || '_ \\  / _` |\n| |___  >  < |  __/| (__ | |_| || |_ | || | | || (_| | _  _  _\n\\____/ /_/\\_\\ \\___| \\___| \\__,_| \\__||_||_| |_| \\__, |(_)(_)(_)\n                                                 __/ |\n                                                |___/\n\n");
             output = $"{dir}{filename}.%(ext)s";
-            Console.Write($"Command parsed and sent, passing youtube-dl output...\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n");
-            Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
+            Console.Write($"Command parsed and sent, passing youtube-dl output..."/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
+            var process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
             //Console.Write("\nST is " + st + "continuevar is " + continuevar);
             Thread.Sleep(1000); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
-            bs = Console.ReadLine();
+            process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
+            Thread.Sleep(500);
             inp = "SKIP";
         }
         else
@@ -210,9 +254,14 @@ while (true)
                 output = $"{dir}{filename}.%(ext)s";
                 break;
             case "8":
-                continuevar = true;
+                Console.Clear();
+                ia = false;
+                batchProcess(af, aq, auf, dir, ff);
                 break;
             case "9":
+                continuevar = true;
+                break;
+            case "0":
                 Console.Clear();
                 //Ascii Text, "Thank You"
                 writeAscii(3);
@@ -235,5 +284,5 @@ while (true)
         };
         if (continuevar == true) { st = true; };
     };
-    
+
 }
