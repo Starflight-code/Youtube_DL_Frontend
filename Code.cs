@@ -2,6 +2,24 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
+static bool fileExists(string? path) {
+    if (path != null) {
+    return File.Exists(path);
+    }
+    else { return false; }
+}
+static string? pathInput(string message, string fileToCheckFor)
+{
+    bool fileValidation = false;
+    string? output = "None";
+    while (fileValidation == false)
+    {
+        Console.Write($"\nInput a new {message}: ");
+        output = Console.ReadLine();
+        fileValidation = fileExists($"{output}\\{fileToCheckFor}");
+    }
+    return output;
+}
 static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia, string DATABASE_FILE)
 {
     //Ascii Text, "Configuration"
@@ -206,6 +224,13 @@ while (true)
                 writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
                 Console.Write("\nInput a new audio format: ");
                 af = Console.ReadLine();
+                //af = pathInput("audio format");
+                /*bool fileValidation = false;
+                while (fileValidation == false) {
+                Console.Write("\nInput a new audio format: ");
+                af = Console.ReadLine();
+                fileValidation = fileExists(af);
+                }*/
                 break;
             case "2":
                 Console.Clear();
