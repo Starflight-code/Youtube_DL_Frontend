@@ -8,7 +8,7 @@ static bool fileExists(string? path) {
     }
     else { return false; }
 }
-static string? pathInput(string message, string fileToCheckFor)
+/*static string? pathInput(string message, string fileToCheckFor) // Impliment in a future update
 {
     bool fileValidation = false;
     string? output = "None";
@@ -19,7 +19,7 @@ static string? pathInput(string message, string fileToCheckFor)
         fileValidation = fileExists($"{output}\\{fileToCheckFor}");
     }
     return output;
-}
+}*/
 static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia, string DATABASE_FILE)
 {
     //Ascii Text, "Configuration"
@@ -203,7 +203,7 @@ while (true)
             writeAscii(2);
             //Console.WriteLine(" _____                           _    _\n|  ___|                         | |  (_)\n| |__  __  __  ___   ___  _   _ | |_  _  _ __    __ _\n|  __| \\ \\/ / / _ \\ / __|| | | || __|| || '_ \\  / _` |\n| |___  >  < |  __/| (__ | |_| || |_ | || | | || (_| | _  _  _\n\\____/ /_/\\_\\ \\___| \\___| \\__,_| \\__||_||_| |_| \\__, |(_)(_)(_)\n                                                 __/ |\n                                                |___/\n\n");
             output = $"{dir}{filename}.%(ext)s";
-            Console.Write($"Command parsed and sent, passing youtube-dl output..."/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
+            Console.Write($"Command parsed and sent, passing youtube-dl output...\n"/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
             var process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
             //Console.Write("\nST is " + st + "continuevar is " + continuevar);
             Thread.Sleep(1000); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
