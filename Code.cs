@@ -1,13 +1,15 @@
 using System.Diagnostics;
-using System.Numerics;
-using System.Runtime.CompilerServices;
+using System.Xml.Serialization;
+//using System.Numerics;
+//using System.Runtime.CompilerServices;
 
+/* Impliment in a later update, should improve user experience and onloading for beginners
 static bool fileExists(string? path) {
     if (path != null) {
     return File.Exists(path);
     }
     else { return false; }
-}
+}*/
 /*static string? pathInput(string message, string fileToCheckFor) // Impliment in a future update
 {
     bool fileValidation = false;
@@ -112,6 +114,7 @@ string? af = null;
 string? aq = null;
 string? auf = null;
 int counter = 0;
+const int waitTime = 3000; // Time to wait after youtube-dl execution is complete before entering menu
 const string DATABASE_FILE = ".\\data.db";
 
 if (File.Exists(DATABASE_FILE) == false)
@@ -164,7 +167,6 @@ foreach (string line in System.IO.File.ReadLines(@DATABASE_FILE))
 Console.Clear();
 //Ascii Text, "Welcome"
 writeAscii(4);
-//Console.Write(" _ _ _       _\n| | | | ___ | | ___  ___ ._ _ _  ___\n| | | |/ ._>| |/ | '/ . \\| ' ' |/ ._>\n|__/_/ \\___.|_|\\_|_.\\___/|_|_|_|\\___.\n\n");
 Console.Write("We have a few initialization questions before you can begin.\n\n");
 Console.Write("Input a link to the file you wish to fetch: ");
 string? link = Console.ReadLine();
@@ -203,12 +205,11 @@ while (true)
             writeAscii(2);
             //Console.WriteLine(" _____                           _    _\n|  ___|                         | |  (_)\n| |__  __  __  ___   ___  _   _ | |_  _  _ __    __ _\n|  __| \\ \\/ / / _ \\ / __|| | | || __|| || '_ \\  / _` |\n| |___  >  < |  __/| (__ | |_| || |_ | || | | || (_| | _  _  _\n\\____/ /_/\\_\\ \\___| \\___| \\__,_| \\__||_||_| |_| \\__, |(_)(_)(_)\n                                                 __/ |\n                                                |___/\n\n");
             output = $"{dir}{filename}.%(ext)s";
-            Console.Write($"Command parsed and sent, passing youtube-dl output...\n"/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
+            Console.Write($"Command parsed and sent, passing youtube-dl output...\n\n"/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
             var process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
-            //Console.Write("\nST is " + st + "continuevar is " + continuevar);
             Thread.Sleep(1000); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
             process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
-            Thread.Sleep(500);
+            Thread.Sleep(waitTime);
             inp = "SKIP";
         }
         else
@@ -267,7 +268,7 @@ while (true)
                 Console.Clear();
                 ia = false;
                 writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                Console.Write("Input a link to the file you wish to fetch: ");
+                Console.Write("\nInput a link to the file you wish to fetch: ");
                 link = Console.ReadLine();
                 break;
             case "7":

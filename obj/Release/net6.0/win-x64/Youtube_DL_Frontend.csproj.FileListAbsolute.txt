@@ -219,7 +219,6 @@ C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\win-x64\hostfxr.dll
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\win-x64\hostpolicy.dll
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\win-x64\mscordaccore.dll
-C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\win-x64\mscordaccore_amd64_amd64_6.0.1022.47605.dll
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\win-x64\mscordbi.dll
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\win-x64\mscorrc.dll
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\win-x64\msquic.dll
@@ -234,3 +233,4 @@ C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\win-x64\refint\Youtube_DL_Frontend.dll
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\win-x64\Youtube_DL_Frontend.genruntimeconfig.cache
 C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\obj\Release\net6.0\win-x64\ref\Youtube_DL_Frontend.dll
+C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\win-x64\mscordaccore_amd64_amd64_6.0.1122.52304.dll
