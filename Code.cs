@@ -59,13 +59,20 @@ static void batchProcess(string af, string aq, string auf, string dir, string ff
     Console.Write($"You have accessed the batch processing system, this allows asyncronous processing of" +
                    "\nmultiple files. Please specify your pre formatted file, which should be placed inside" +
                   $"\nthe youtube-dl-frontend directory.\n\n");
-    Console.Write("Enter File Path: ");
-    string? batchfile = Console.ReadLine();
-    if (batchfile == null) { return; }
+    //Console.Write("Enter File Path: ");
+    string batchfile = inputValidate("Enter File Path");
+    //string? batchfile = Console.ReadLine();
+    //if (batchfile == null) { return; }
+    while (!File.Exists(batchfile)) {
+        batchfile = inputValidate("File Not Found, Enter File Path");
+    }
+    //batchfile = Path.GetFullPath(batchfile);
     string[] file = File.ReadAllLines(batchfile);
     int i = 0;
     List<string> URLs = new List<string>();
     List<string> fileNames = new List<string>();
+    List<Process> processes = new List<Process>();
+    List<int> processFailCount = new List<int>();
     foreach (string x in file)
     {
         switch (i % 2)
@@ -81,16 +88,59 @@ static void batchProcess(string af, string aq, string auf, string dir, string ff
         }
         i++;
     }
+    Console.WriteLine("\nExecution Started on File, please wait... \n");
     i = 0;
     string name;
     foreach (string URL in URLs)
     {
         name = $"{dir}\\{fileNames[i]}.%(ext)s";
-        Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {URL} --audio-quality {aq} -o \"{name}\"");
+        processes.Add(new Process {
+            StartInfo = new ProcessStartInfo {
+                FileName = ".\\youtube-dl.exe",
+                Arguments = $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {URL} --audio-quality {aq} -o \"{name}\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = false,
+                CreateNoWindow = true
+            }
+        });
+        processFailCount.Add(0);
+        
+        processes[i].Start();
+        //Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {URL} --audio-quality {aq} -o \"{name}\"");
         i++;
     }
-    Console.Write("Execution Started on File, please wait... \n--Press ENTER when execution is completed--\n\n");
-    Thread.Sleep(1000);
+    int processesWaiting = processes.Count();
+    int failed = 0;
+    int succeeded = 0;
+    i = 0;
+    while (processesWaiting > 0) {
+        if(processes[i].HasExited) {
+            processesWaiting--;
+
+            if (processes[i].ExitCode == 0) {
+                succeeded++;
+                processes[i].Dispose();
+                processes.RemoveAt(i);
+            } else {
+                
+                if(processFailCount[i] > 3) { 
+                failed++;
+                processes[i].Dispose();
+                processes.RemoveAt(i);
+                } else {
+                processes[i].Start();
+                }
+            }
+            }
+            
+        
+        i = i < (processesWaiting - 1) ? i + 1 : 0;
+        Thread.Sleep(100);
+    }
+    for (i = 0; i < processFailCount.Count(); i++) {
+        Console.WriteLine($"Task {(i + 1)}: {(processFailCount[i] > 0 ? processFailCount[i] == 3 ? "Failed" : "Retried and Succeeded" : "Succeeded")}");
+    }
+    Console.WriteLine($"\nSuccessful Tasks: {succeeded}\nFailed Tasks: {failed}\n\nPRESS ENTER TO CONTINUE");
     Console.ReadLine();
 }
 static bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true) {
@@ -298,22 +348,22 @@ while (true)
             output = $"{dir}{filename}.%(ext)s";
             Console.Write($"Command parsed and sent, passing youtube-dl output...\n\n"/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
             var process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
-            Thread.Sleep(1000); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
+            Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
             process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
             string result = process.ExitCode != 0 ? "Failed" : "Succeeded";
-            int i = 0;
+            int i = 1;
             while (i < 3 && process.ExitCode != 0) {
                 process.Dispose();
                 Console.WriteLine("\nError: failure detected, retrying " + (i + 1) + "/3");
                 //Console.Write($"\nCommand parsed and sent, passing youtube-dl output...\n\n"/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
                 process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
-                Thread.Sleep(1000); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
+                Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
                 process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
                 result = process.ExitCode != 0 ? "Failed" : "Succeeded";
                 i++;
             }
             process.Dispose();
-            Console.Write($"\n\nExecution completed with result: {result}\nPRESS ENTER TO CONTINUE");
+            Console.Write($"\nExecution completed with result: {result}\nPRESS ENTER TO CONTINUE");
             Console.ReadLine();
             //Thread.Sleep(waitTime);
             inp = "SKIP";
