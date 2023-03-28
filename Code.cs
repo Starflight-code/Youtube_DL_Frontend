@@ -59,14 +59,10 @@ static void batchProcess(string af, string aq, string auf, string dir, string ff
     Console.Write($"You have accessed the batch processing system, this allows asyncronous processing of" +
                    "\nmultiple files. Please specify your pre formatted file, which should be placed inside" +
                   $"\nthe youtube-dl-frontend directory.\n\n");
-    //Console.Write("Enter File Path: ");
     string batchfile = inputValidate("Enter File Path");
-    //string? batchfile = Console.ReadLine();
-    //if (batchfile == null) { return; }
     while (!File.Exists(batchfile)) {
         batchfile = inputValidate("File Not Found, Enter File Path");
     }
-    //batchfile = Path.GetFullPath(batchfile);
     string[] file = File.ReadAllLines(batchfile);
     int i = 0;
     List<string> URLs = new List<string>();
@@ -106,7 +102,6 @@ static void batchProcess(string af, string aq, string auf, string dir, string ff
         processFailCount.Add(0);
         
         processes[i].Start();
-        //Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {URL} --audio-quality {aq} -o \"{name}\"");
         i++;
     }
     int processesWaiting = processes.Count();
@@ -252,7 +247,6 @@ string af = "";
 string aq = "";
 string auf = "";
 int counter = 0;
-//const int waitTime = 3000; // Time to wait after youtube-dl execution is complete before entering menu
 const string DATABASE_FILE = ".\\data.db";
 List<int> Errors = new List<int>();
 
@@ -322,7 +316,6 @@ Console.Clear();
 //Ascii Text, "Welcome"
 writeAscii(4);
 Console.Write("We have a few initialization questions before you can begin.\n\n");
-//Console.Write("Input a name for the file output without the entension: ");
 string filename = inputValidate("Input a name for the file output without the entension");
 Console.Write("Input \"" + filename + "\" Accepted!");
 Thread.Sleep(400); //Gives visual feedback to user
@@ -355,7 +348,6 @@ while (true)
             while (i < 3 && process.ExitCode != 0) {
                 process.Dispose();
                 Console.WriteLine("\nError: failure detected, retrying " + (i + 1) + "/3");
-                //Console.Write($"\nCommand parsed and sent, passing youtube-dl output...\n\n"/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
                 process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
                 Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
                 process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
@@ -365,7 +357,6 @@ while (true)
             process.Dispose();
             Console.Write($"\nExecution completed with result: {result}\nPRESS ENTER TO CONTINUE");
             Console.ReadLine();
-            //Thread.Sleep(waitTime);
             inp = "SKIP";
         }
         else
@@ -389,7 +380,6 @@ while (true)
                 Console.Clear();
                 ia = false;
                 writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                //Console.Write("\nInput a new audio quality: ");
                 aq = inputValidate("Input a new audio quality");
                 while (!Int32.TryParse(aq.Trim().ToString(), out int result)) {
                     aq = inputValidate("Your input is not a number, input a new audio quality");
@@ -399,14 +389,12 @@ while (true)
                 Console.Clear();
                 ia = false;
                 writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                //Console.Write("\nInput a new audio conversion format: ");
                 auf = inputValidate("Input a new conversion format");
                 break;
             case "4":
                 Console.Clear();
                 ia = false;
                 writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                //Console.Write("\nInput a new directory path (A to autofill current path): ");
                 dir = inputValidate("Input a new directory path (A to autofill current path)");
                 if (dir == "A" || dir == "a") { dir = Directory.GetCurrentDirectory(); }
                 if (!Directory.Exists(dir))
@@ -420,7 +408,6 @@ while (true)
                 Console.Clear();
                 ia = false;
                 writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                //Console.Write("\nInput a new FF-Mpeg Path (A to autofill current path): ");
                 ff = inputValidate("Input a new FF-Mpeg Path (A to autofill current path)");
                 if (ff == "A" || ff == "a") { ff = Directory.GetCurrentDirectory(); }
                 if (!File.Exists(ff + "\\ffmpeg.exe")) {
@@ -432,14 +419,12 @@ while (true)
                 Console.Clear();
                 ia = false;
                 writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                //Console.Write("\nInput a link to the file you wish to fetch: "); 
                 link = inputValidate("Input a link to the file you wish to fetch");
                 break;
             case "7":
                 Console.Clear();
                 ia = false;
                 writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                //Console.Write("\nInput a name for the file output without the entension: ");
                 filename = inputValidate("Input a name for the output file (without the entension)");
                 output = $"{dir}{filename}.%(ext)s";
                 break;
