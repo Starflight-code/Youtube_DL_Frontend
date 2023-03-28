@@ -9,59 +9,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release</Configurations>
-    <SignAssembly>False</SignAssembly>
-    <DebugType>embedded</DebugType>
-    <Version>1.0</Version>
     <PublishTrimmed>true</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishSingleFile>true</PublishSingleFile>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>preview</LangVersion>
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <LangVersion>preview</LangVersion>
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <ItemGroup>
-   <!-- <None Remove="Hook.ps1" />-->
-    <None Remove="Youtube_DL_Frontend.deps.json" />
-    <None Remove="Youtube_DL_Frontend.dll" />
-    <None Remove="Youtube_DL_Frontend.runtimeconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Youtube_DL_Frontend.deps.json" />
-    <EmbeddedResource Include="Youtube_DL_Frontend.dll" />
-    <EmbeddedResource Include="Youtube_DL_Frontend.runtimeconfig.json" />
-  </ItemGroup>
-
-  <!--<ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>-->
-<!--
-  <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="fody" Version="6.6.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ilmerge" Version="3.0.29" />
-    <PackageReference Include="YamlDotNet" Version="11.2.1" />
-  </ItemGroup> -->
-  <!--<Exec Command="'$(ILMergeConsolePath) bin\Release\net6.0\Youtube_DL_Frontend.exe' ^&#xD;&#xA;    /out:Youtube_DL_Frontend.exe ^&#xD;&#xA;    C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\YamlDotNet.dll ^&#xD;&#xA;    C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\Youtube_DL_Frontend.dll" />-->
-  <!-- <Target Name="ILMerge"> -->
-    <!-- the ILMergePath property points to the location of ILMerge.exe console application -->
-    <!-- Exec Command="'$(ILMergeConsolePath) bin\Release\net6.0\Youtube_DL_Frontend.exe' ^&#xD;&#xA;    /out:Youtube_DL_Frontend.exe ^&#xD;&#xA;    'C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\YamlDotNet.dll' ^&#xD;&#xA;    'C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\Youtube_DL_Frontend.dll'" / -->
-    <!--<Exec Command="'$(ILMergeConsolePath) bin\Release\net6.0\Youtube_DL_Frontend.exe' ^
-    /out:Youtube_DL_Frontend.exe ^
-    C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\YamlDotNet.dll ^
-    C:\Users\benko\source\repos\StarflightGaming\Youtube_DL Frontend\bin\Release\net6.0\Youtube_DL_Frontend.dll" />-->
-  <!-- </Target> -->
-  
 </Project>
