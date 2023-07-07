@@ -14,11 +14,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj",
+      "projectUniqueName": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj",
       "projectName": "Youtube_DL_Frontnend",
-      "projectPath": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj",
+      "projectPath": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj",
       "packagesPath": "C:\\Users\\benko\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend\\obj\\",
+      "outputPath": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

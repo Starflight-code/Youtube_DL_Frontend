@@ -2,6 +2,19 @@
 
 namespace Youtube_DL_Frontnend {
     internal class Program {
+        ValidationLambdas lambdas = new ValidationLambdas();
+        public enum commandToExecute {
+            audioFormat,
+            audioQuality,
+            audioOutputFormat,
+            directory,
+            ffDirectory,
+            link,
+            filename,
+            batch,
+            goOn,
+            exit
+        };
         static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia, string DATABASE_FILE) {
             //Ascii Text, "Configuration"
             writeAscii(1);
@@ -23,7 +36,7 @@ namespace Youtube_DL_Frontnend {
             return result;
         }
 
-        static void writeAscii(int input) {
+        static void writeAscii(int input /*, prependNewLine=false, appendNewLine=true*/) {
             switch (input) {
                 //Ascii Text is below, this is called for GUI related reasons within the program.
                 case 1:
@@ -49,22 +62,11 @@ namespace Youtube_DL_Frontnend {
 
             }
         }
-        static string inputValidate(string Prompt) {
-            Console.Write("\n" + Prompt + ": ");
-            string? input = Console.ReadLine();
-            while (input == null || input == "") {
-                Console.Write("\nYour input appears to be invalid. Try again: ");
-                input = Console.ReadLine();
-            }
-            return input.Trim();
-        }
         static void batchProcess(string af, string aq, string auf, string dir, string ff) {
-            Console.Write($"You have accessed the batch processing system, this allows asyncronous processing of" +
-                           "\nmultiple files. Please specify your pre formatted file, which should be placed inside" +
-                          $"\nthe youtube-dl-frontend directory.\n\n");
-            string batchfile = inputValidate("Enter File Path");
+            Console.Write(Constants._BATCH_WELCOME);
+            string batchfile = InputHandler.inputValidate("Enter File Path");
             while (!File.Exists(batchfile)) {
-                batchfile = inputValidate("File Not Found, Enter File Path");
+                batchfile = InputHandler.inputValidate("File Not Found, Enter File Path");
             }
             string[] file = File.ReadAllLines(batchfile);
             int i = 0;
@@ -89,11 +91,11 @@ namespace Youtube_DL_Frontnend {
             i = 0;
             string name;
             foreach (string URL in URLs) {
-                name = $"{dir}\\{fileNames[i]}.%(ext)s";
+                name = ConstantBuilder.buildFileName(dir, fileNames[i]);
                 processes.Add(new Process {
                     StartInfo = new ProcessStartInfo {
                         FileName = ".\\youtube-dl.exe",
-                        Arguments = $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {URL} --audio-quality {aq} -o \"{name}\"",
+                        Arguments = ConstantBuilder.buildArguments(af, auf, ff, URL, aq, dir, fileNames[i]),
                         UseShellExecute = false,
                         RedirectStandardOutput = false,
                         CreateNoWindow = true
@@ -236,7 +238,7 @@ namespace Youtube_DL_Frontnend {
             return data.ToArray();
         }
 
-        static void main(string[] args) {
+        static void Main(string[] args) {
             string dir = "";
             string? output = null;
             string ff = "";
@@ -304,7 +306,7 @@ namespace Youtube_DL_Frontnend {
             if (Errors.Count() > 0) { logErrors(Errors); }
             Console.Write("We have a few initialization questions before you can begin.\n");
             //Console.Write("Input a link to the file you wish to fetch: ");
-            link = inputValidate("Input a link to the file you wish to fetch");
+            link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
             if (link.ToLower() is not ("s" or "skip")) { // for quick bypass in the case of batch processing
                 Console.Write("Input \"" + link + "\" Accepted!");
                 Thread.Sleep(400);
@@ -312,7 +314,7 @@ namespace Youtube_DL_Frontnend {
                 //Ascii Text, "Welcome"
                 writeAscii(4);
                 Console.Write("We have a few initialization questions before you can begin.\n");
-                filename = inputValidate("Input a name for the file output without the entension");
+                filename = InputHandler.inputValidate("Input a name for the file output without the entension");
                 Console.Write("Input \"" + filename + "\" Accepted!");
                 Thread.Sleep(400); //Gives visual feedback to user
             } else {
@@ -365,31 +367,31 @@ namespace Youtube_DL_Frontnend {
                             ia = false;
                             writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
                             //Console.Write("\nInput a new audio format: ");
-                            af = inputValidate("Input a new audio format");
+                            af = InputHandler.inputValidate("Input a new audio format");
                             while (!Int32.TryParse(af.Trim().ToString(), out int result)) {
-                                af = inputValidate("Your input is not a number, input a new audio format");
+                                af = InputHandler.inputValidate("Your input is not a number, input a new audio format");
                             }
                             break;
                         case "2":
                             Console.Clear();
                             ia = false;
                             writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            aq = inputValidate("Input a new audio quality");
+                            aq = InputHandler.inputValidate("Input a new audio quality");
                             while (!Int32.TryParse(aq.Trim().ToString(), out int result)) {
-                                aq = inputValidate("Your input is not a number, input a new audio quality");
+                                aq = InputHandler.inputValidate("Your input is not a number, input a new audio quality");
                             }
                             break;
                         case "3":
                             Console.Clear();
                             ia = false;
                             writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            auf = inputValidate("Input a new conversion format");
+                            auf = InputHandler.inputValidate("Input a new conversion format");
                             break;
                         case "4":
                             Console.Clear();
                             ia = false;
                             writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            dir = inputValidate("Input a new directory path (A to autofill current path)");
+                            dir = InputHandler.inputValidate("Input a new directory path (A to autofill current path)");
                             if (dir == "A" || dir == "a") { dir = Directory.GetCurrentDirectory(); }
                             if (!Directory.Exists(dir)) {
                                 Console.WriteLine("Warning: The directory you entered does not currently exist. This script may not function properly.\nPRESS ENTER TO CONTINUE");
@@ -401,7 +403,7 @@ namespace Youtube_DL_Frontnend {
                             Console.Clear();
                             ia = false;
                             writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            ff = inputValidate("Input a new FF-Mpeg Path (A to autofill current path)");
+                            ff = InputHandler.inputValidate("Input a new FF-Mpeg Path (A to autofill current path)");
                             if (ff == "A" || ff == "a") { ff = Directory.GetCurrentDirectory(); }
                             if (!File.Exists(ff + "\\ffmpeg.exe")) {
                                 Console.WriteLine("Warning: FFMPEG could not be located at this path. This script may not function properly.\nPRESS ENTER TO CONTINUE");
@@ -412,13 +414,13 @@ namespace Youtube_DL_Frontnend {
                             Console.Clear();
                             ia = false;
                             writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            link = inputValidate("Input a link to the file you wish to fetch");
+                            link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
                             break;
                         case "7":
                             Console.Clear();
                             ia = false;
                             writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            filename = inputValidate("Input a name for the output file (without the entension)");
+                            filename = InputHandler.inputValidate("Input a name for the output file (without the entension)");
                             output = $"{dir}{filename}.%(ext)s";
                             break;
                         case "8":
