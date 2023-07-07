@@ -303,36 +303,9 @@ namespace Youtube_DL_Frontnend {
 
                 while (true) {
                     Console.Clear();
-                    //Ascii Text "Configuration"
-                    //bool ia = true;
                     writeGUI(paramData, link, filename, true);
-                    /*if (st == true) {
-                        Console.Clear();
-                        //Ascii Text, "Executing..."
-                        writeAscii(2);
-                        Console.Write($"Command parsed and sent, passing youtube-dl output...\n\n");
-                        var process = Process.Start(Constants._YOUTUBE_DL_EXECUTABLE, ConstantBuilder.buildArguments(paramData, link, filename));
-                        Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
-                        process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
-                        string result = process.ExitCode != 0 ? "Failed" : "Succeeded";
-                        int i = 1;
-                        while (i < 3 && process.ExitCode != 0) {
-                            process.Dispose();
-                            Console.WriteLine("\nError: failure detected, retrying " + (i + 1) + "/3");
-                            process = Process.Start(Constants._YOUTUBE_DL_EXECUTABLE, ConstantBuilder.buildArguments(paramData, link, filename));
-                            Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
-                            process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
-                            result = process.ExitCode != 0 ? "Failed" : "Succeeded";
-                            i++;
-                        }
-                        process.Dispose();
-                        Console.Write($"\nExecution completed with result: {result}\nPRESS ENTER TO CONTINUE");
-                        Console.ReadLine();
-                    } else {*/
                     Thread.Sleep(500);
                     input = inputhandle.handleCommand(Console.ReadLine());
-                    //inp = Console.ReadLine();
-                    //}
                     switch (input) {
 
                         case DataStructures.commandToExecute.audioFormat:
@@ -362,7 +335,6 @@ namespace Youtube_DL_Frontnend {
                                 Console.WriteLine("Warning: The directory you entered does not currently exist. This script may not function properly.\nPRESS ENTER TO CONTINUE");
                                 Console.ReadLine();
                             }
-                            //output = $"{paramData.workingDirectory}{filename}.%(ext)s";
                             break;
 
                         case DataStructures.commandToExecute.ffDirectory:

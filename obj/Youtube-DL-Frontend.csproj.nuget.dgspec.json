@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj": {}
+    "C:\\Users\\benko\\source\\repos\\Youtube-DL-Frontend\\Youtube-DL-Frontend\\Youtube-DL-Frontend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj": {
+    "C:\\Users\\benko\\source\\repos\\Youtube-DL-Frontend\\Youtube-DL-Frontend\\Youtube-DL-Frontend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj",
-        "projectName": "Youtube_DL_Frontnend",
-        "projectPath": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj",
+        "projectUniqueName": "C:\\Users\\benko\\source\\repos\\Youtube-DL-Frontend\\Youtube-DL-Frontend\\Youtube-DL-Frontend.csproj",
+        "projectName": "Youtube-DL-Frontend",
+        "projectPath": "C:\\Users\\benko\\source\\repos\\Youtube-DL-Frontend\\Youtube-DL-Frontend\\Youtube-DL-Frontend.csproj",
         "packagesPath": "C:\\Users\\benko\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\obj\\",
+        "outputPath": "C:\\Users\\benko\\source\\repos\\Youtube-DL-Frontend\\Youtube-DL-Frontend\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
