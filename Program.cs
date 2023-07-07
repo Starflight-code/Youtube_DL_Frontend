@@ -3,20 +3,6 @@
 namespace Youtube_DL_Frontnend {
     internal class Program {
         ValidationLambdas lambdas = new ValidationLambdas();
-        static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia, string DATABASE_FILE) {
-            //Ascii Text, "Configuration"
-            writeAscii(1);
-            Console.Write($"1: Audio Format: {af}\n2: Audio Quality: {aq}\n3: Audio Conversion Format: {auf}\n4: Directory: {dir}\n5: FF-Mpeg Dir: {ff}\n6: Link: {link}\n7: File Name: {filename}\n8: Batch Processing\n9: Continue\n0: Exit\n");
-            if (ia == true) {
-                Console.Write("\n#\\> ");
-            }
-            string[] lines =
-        {
-            "Do not modify data within this file!", af, aq, auf, dir, ff
-        };
-
-            File.WriteAllLinesAsync(Constants._DATABASE_FILE, lines);
-        }
         static void writeGUI(DataStructures.YoutubeDLParamInfo parameters, string link, string filename, bool appendWritingIndicator = true) {
             //Ascii Text, "Configuration"
             writeAscii(1);
@@ -24,12 +10,7 @@ namespace Youtube_DL_Frontnend {
             if (appendWritingIndicator) {
                 Console.Write("\n#\\> ");
             }
-            string[] lines =
-        {
-            "Do not modify data within this file!", parameters.audioFormat, parameters.audioQuality, parameters.audioOutputFormat, parameters.workingDirectory, parameters.ffMpegDirectory
-        };
-
-            File.WriteAllLinesAsync(Constants._DATABASE_FILE, lines);
+            writeDB(parameters);
         }
         static bool checkURL(string url) { // Checks for whether or not the url is formatted properly 
             Uri? uriResult;
@@ -85,7 +66,7 @@ namespace Youtube_DL_Frontnend {
                         fileNames.Add(x);
                         break;
                     default:
-                        throw (new Exception("Logic error detected in batch processing, file parsing section."));
+                        throw (new Exception("Logic error detected in batch processing. This should not be possible. Your machine may be failing, C# is malfunctioning, or something else is seriously wrong."));
                 }
                 i++;
             }
@@ -185,14 +166,9 @@ namespace Youtube_DL_Frontnend {
             Console.WriteLine("Database not detected, Creating...");
             Thread.Sleep(500);
             var db = File.Create(DATABASE_FILE);
-            string directory = Directory.GetCurrentDirectory();
-            string[] lines =
-        {
-            Constants._DATABASE_PREPEND, Constants.defaultFile.audioFormat, Constants.defaultFile.audioQuality, Constants.defaultFile.audioOutputFormat, Constants.defaultFile.workingDirectory, Constants.defaultFile.ffMpegDirectory
-        };
             db.Dispose();
             Console.WriteLine("Starting file write operating...");
-            var dbtemp = File.WriteAllLinesAsync(DATABASE_FILE, lines);
+            var dbtemp = File.WriteAllLinesAsync(DATABASE_FILE, Constants.defaultDatabaseLines);
             dbtemp.Wait(500);
             dbtemp.Dispose();
             Console.Clear();
@@ -232,62 +208,44 @@ namespace Youtube_DL_Frontnend {
             return data.ToArray();
         }
 
+        static void writeDB(DataStructures.YoutubeDLParamInfo parameters) {
+            File.WriteAllLines(Constants._DATABASE_FILE, ConstantBuilder.buildDatabaseFile(parameters));
+        }
+
         static void Main(string[] args) {
             DataStructures.YoutubeDLParamInfo paramData = new DataStructures.YoutubeDLParamInfo();
-            //string dir = "";
-            //string? output = null;
-            //string ff = "";
-            //string af = "";
-            //string aq = "";
-            //string auf = "";
-            int counter = 0;
             List<int> Errors = new List<int>();
             if (File.Exists(Constants._DATABASE_FILE) == false) {
                 createDB(Constants._DATABASE_FILE);
             }
-            string[] database_lines = System.IO.File.ReadLines(Constants._DATABASE_FILE).ToArray();
-            if (database_lines.Length != 6) {
+            string[] db = System.IO.File.ReadLines(Constants._DATABASE_FILE).ToArray();
+            if (db.Length != 6) {
                 File.Delete(Constants._DATABASE_FILE);
                 createDB(Constants._DATABASE_FILE);
                 Errors.Add(1); // Logs a database reset error
-                database_lines = System.IO.File.ReadLines(Constants._DATABASE_FILE).ToArray();
+                db = System.IO.File.ReadLines(Constants._DATABASE_FILE).ToArray();
             }
-            foreach (string line in database_lines) { // Check to make sure there are 6 values in the array, if not reset the database and log an error
+            foreach (string line in db) { // Check to make sure there are 6 values in the array, if not reset the database and log an error
                 System.Console.WriteLine(line);
                 if (line == null || line == "") {
                     Console.WriteLine("Database Corrupt: Regenerating...");
                     File.Delete(Constants._DATABASE_FILE);
                     createDB(Constants._DATABASE_FILE);
                     Errors.Add(1); // Logs a database reset error
-                    string[] db = readDB(Constants._DATABASE_FILE);
-                    paramData.audioFormat = db[0];
-                    paramData.audioQuality = db[1];
-                    paramData.audioOutputFormat = db[2];
-                    paramData.workingDirectory = db[3];
-                    paramData.ffMpegDirectory = db[4];
+                    db = readDB(Constants._DATABASE_FILE);
+                    paramData.audioFormat = db[1];
+                    paramData.audioQuality = db[2];
+                    paramData.audioOutputFormat = db[3];
+                    paramData.workingDirectory = db[4];
+                    paramData.ffMpegDirectory = db[5];
                     break;
                 }
-                counter++;
-                switch (counter) {
-                    case 1:
-                        break;
-                    case 2:
-                        paramData.audioFormat = line;
-                        break;
-                    case 3:
-                        paramData.audioQuality = line;
-                        break;
-                    case 4:
-                        paramData.audioOutputFormat = line;
-                        break;
-                    case 5:
-                        paramData.workingDirectory = line;
-                        break;
-                    case 6:
-                        paramData.ffMpegDirectory = line;
-                        break;
-                }
             }
+            paramData.audioFormat = db[1];
+            paramData.audioQuality = db[2];
+            paramData.audioOutputFormat = db[3];
+            paramData.workingDirectory = db[4];
+            paramData.ffMpegDirectory = db[5];
             Console.Clear();
             //Ascii Text, "Welcome"
             writeAscii(4);

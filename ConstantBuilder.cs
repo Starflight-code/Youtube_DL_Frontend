@@ -11,5 +11,8 @@
             string fileName = buildFileName(parameters.workingDirectory, name);
             return $"-f {parameters.audioFormat} --audio-format {parameters.audioOutputFormat} -x --ffmpeg-location \"{parameters.ffMpegDirectory}\" {URL} --audio-quality {parameters.audioQuality} -o \"{fileName}\"";
         }
+        public static string[] buildDatabaseFile(DataStructures.YoutubeDLParamInfo parameters) {
+            return new string[] { Constants._DATABASE_PREPEND, parameters.audioFormat, parameters.audioQuality, parameters.audioOutputFormat, parameters.workingDirectory, parameters.ffMpegDirectory };
+        }
     }
 }
