@@ -3,18 +3,6 @@
 namespace Youtube_DL_Frontnend {
     internal class Program {
         ValidationLambdas lambdas = new ValidationLambdas();
-        public enum commandToExecute {
-            audioFormat,
-            audioQuality,
-            audioOutputFormat,
-            directory,
-            ffDirectory,
-            link,
-            filename,
-            batch,
-            goOn,
-            exit
-        };
         static void writeGUI(string af, string aq, string auf, string dir, string ff, string link, string filename, bool ia, string DATABASE_FILE) {
             //Ascii Text, "Configuration"
             writeAscii(1);
@@ -27,7 +15,21 @@ namespace Youtube_DL_Frontnend {
             "Do not modify data within this file!", af, aq, auf, dir, ff
         };
 
-            File.WriteAllLinesAsync(DATABASE_FILE, lines);
+            File.WriteAllLinesAsync(Constants._DATABASE_FILE, lines);
+        }
+        static void writeGUI(DataStructures.YoutubeDLParamInfo parameters, string link, string filename, bool appendWritingIndicator = true) {
+            //Ascii Text, "Configuration"
+            writeAscii(1);
+            Console.Write($"1: Audio Format: {parameters.audioFormat}\n2: Audio Quality: {parameters.audioQuality}\n3: Audio Conversion Format: {parameters.audioOutputFormat}\n4: Directory: {parameters.workingDirectory}\n5: FF-Mpeg Dir: {parameters.ffMpegDirectory}\n6: Link: {link}\n7: File Name: {filename}\n8: Batch Processing\n9: Continue\n0: Exit\n");
+            if (appendWritingIndicator) {
+                Console.Write("\n#\\> ");
+            }
+            string[] lines =
+        {
+            "Do not modify data within this file!", parameters.audioFormat, parameters.audioQuality, parameters.audioOutputFormat, parameters.workingDirectory, parameters.ffMpegDirectory
+        };
+
+            File.WriteAllLinesAsync(Constants._DATABASE_FILE, lines);
         }
         static bool checkURL(string url) { // Checks for whether or not the url is formatted properly 
             Uri? uriResult;
@@ -36,33 +38,33 @@ namespace Youtube_DL_Frontnend {
             return result;
         }
 
-        static void writeAscii(int input /*, prependNewLine=false, appendNewLine=true*/) {
+        static void writeAscii(int input, bool prependNewLine = false, bool appendNewLine = true) {
+            string prepend = prependNewLine ? "\n" : "";
+            string append = appendNewLine ? "\n" : "";
             switch (input) {
                 //Ascii Text is below, this is called for GUI related reasons within the program.
                 case 1:
                     //Configuration
-                    Console.Write(" ___            ___  _                       _    _\n|  _> ___ ._ _ | | '<_> ___  _ _  _ _  ___ _| |_ <_> ___ ._ _ \n| <__/ . \\| ' || |- | |/ . || | || '_><_> | | |  | |/ . \\| ' |\n`___/\\___/|_|_||_|  |_|\\_. |`___||_|  <___| |_|  |_|\\___/|_|_|\n                       <___'\n\n");
+                    Console.Write(prepend + Constants._CONFIGURATION_ASCII + append);
                     break;
                 case 2:
                     //Executing...
-                    Console.WriteLine(" _____                           _    _\n|  ___|                         | |  (_)\n| |__  __  __  ___   ___  _   _ | |_  _  _ __    __ _\n|  __| \\ \\/ / / _ \\ / __|| | | || __|| || '_ \\  / _` |\n| |___  >  < |  __/| (__ | |_| || |_ | || | | || (_| | _  _  _\n\\____/ /_/\\_\\ \\___| \\___| \\__,_| \\__||_||_| |_| \\__, |(_)(_)(_)\n                                                 __/ |\n                                                |___/\n\n");
+                    Console.WriteLine(prepend + Constants._EXECUTING_ASCII + append);
                     break;
                 case 3:
                     //Thank You
-                    Console.WriteLine(" ___  _              _      _ _\n|_ _|| |_  ___ ._ _ | |__  | | | ___  _ _\n | | | . |<_> || ' || / /  \\   // . \\| | |\n |_| |_|_|<___||_|_||_\\_\\   |_| \\___/`___|\n\n");
+                    Console.WriteLine(prepend + Constants._THANK_YOU_ASCII + append);
                     break;
                 case 4:
                     //Welcome
-                    Console.Write(" _ _ _       _\n| | | | ___ | | ___  ___ ._ _ _  ___\n| | | |/ ._>| |/ | '/ . \\| ' ' |/ ._>\n|__/_/ \\___.|_|\\_|_.\\___/|_|_|_|\\___.\n\n");
+                    Console.Write(prepend + Constants._WELCOME_ASCII + append);
                     break;
                 default:
                     //Error! If this is executed, something is wrong with the way this function was called.
-                    Console.Write("\n\nError detected by WriteAscii(), this function has been declared with an invalid 'input' variable value.\n");
-                    break;
-
+                    throw (new Exception("nError detected by WriteAscii(), this function has been declared with an invalid 'input' variable value."));
             }
         }
-        static void batchProcess(string af, string aq, string auf, string dir, string ff) {
+        static void batchProcess(DataStructures.YoutubeDLParamInfo parameters) {
             Console.Write(Constants._BATCH_WELCOME);
             string batchfile = InputHandler.inputValidate("Enter File Path");
             while (!File.Exists(batchfile)) {
@@ -91,11 +93,11 @@ namespace Youtube_DL_Frontnend {
             i = 0;
             string name;
             foreach (string URL in URLs) {
-                name = ConstantBuilder.buildFileName(dir, fileNames[i]);
+                name = ConstantBuilder.buildFileName(parameters.workingDirectory, fileNames[i]);
                 processes.Add(new Process {
                     StartInfo = new ProcessStartInfo {
                         FileName = ".\\youtube-dl.exe",
-                        Arguments = ConstantBuilder.buildArguments(af, auf, ff, URL, aq, dir, fileNames[i]),
+                        Arguments = ConstantBuilder.buildArguments(parameters, URL, fileNames[i]),
                         UseShellExecute = false,
                         RedirectStandardOutput = false,
                         CreateNoWindow = true
@@ -143,7 +145,7 @@ namespace Youtube_DL_Frontnend {
         static bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true) {
             List<bool> exists = new List<bool>
             {
-        File.Exists(".\\youtube-dl.exe"),
+        File.Exists(Constants._YOUTUBE_DL_EXECUTABLE),
         File.Exists($"{ff}\\ffmpeg.exe"),
         File.Exists(DATABASE_FILE)
     };
@@ -183,15 +185,10 @@ namespace Youtube_DL_Frontnend {
             Console.WriteLine("Database not detected, Creating...");
             Thread.Sleep(500);
             var db = File.Create(DATABASE_FILE);
-            string af = "251";
-            string aq = "0";
-            string auf = "mp3";
             string directory = Directory.GetCurrentDirectory();
-            string dir = directory;
-            string ff = directory;
             string[] lines =
         {
-            "Do not modify data within this file!" ,af, aq, auf, dir, ff
+            Constants._DATABASE_PREPEND, Constants.defaultFile.audioFormat, Constants.defaultFile.audioQuality, Constants.defaultFile.audioOutputFormat, Constants.defaultFile.workingDirectory, Constants.defaultFile.ffMpegDirectory
         };
             db.Dispose();
             Console.WriteLine("Starting file write operating...");
@@ -199,11 +196,8 @@ namespace Youtube_DL_Frontnend {
             dbtemp.Wait(500);
             dbtemp.Dispose();
             Console.Clear();
-            if (!checkFiles(ff, DATABASE_FILE)) {
-                Console.WriteLine(
-                    "An error was detected when attempting to locate at least one of the core files. " +
-                    "\nResolve this before executing ANY automation commands. " +
-                    "\nThis script will not function properly until these issues are resolved.");
+            if (!checkFiles(Constants.defaultFile.ffMpegDirectory, DATABASE_FILE)) {
+                Console.WriteLine(Constants._FILES_NOT_FOUND);
             }
             Console.WriteLine("\n\nCompleted! Starting program.");
         }
@@ -228,7 +222,7 @@ namespace Youtube_DL_Frontnend {
                 System.Console.WriteLine(line);
                 if (line == null) {
                     File.Delete(DATABASE_FILE);
-                    createDB(DATABASE_FILE);
+                    createDB(Constants._DATABASE_FILE);
                     return new string[] { };
                 }
                 counter++;
@@ -239,38 +233,38 @@ namespace Youtube_DL_Frontnend {
         }
 
         static void Main(string[] args) {
-            string dir = "";
-            string? output = null;
-            string ff = "";
-            string af = "";
-            string aq = "";
-            string auf = "";
+            DataStructures.YoutubeDLParamInfo paramData = new DataStructures.YoutubeDLParamInfo();
+            //string dir = "";
+            //string? output = null;
+            //string ff = "";
+            //string af = "";
+            //string aq = "";
+            //string auf = "";
             int counter = 0;
-            const string DATABASE_FILE = ".\\data.db";
             List<int> Errors = new List<int>();
-            if (File.Exists(DATABASE_FILE) == false) {
-                createDB(DATABASE_FILE);
+            if (File.Exists(Constants._DATABASE_FILE) == false) {
+                createDB(Constants._DATABASE_FILE);
             }
-            string[] database_lines = System.IO.File.ReadLines(@DATABASE_FILE).ToArray();
+            string[] database_lines = System.IO.File.ReadLines(Constants._DATABASE_FILE).ToArray();
             if (database_lines.Length != 6) {
-                File.Delete(@DATABASE_FILE);
-                createDB(DATABASE_FILE);
+                File.Delete(Constants._DATABASE_FILE);
+                createDB(Constants._DATABASE_FILE);
                 Errors.Add(1); // Logs a database reset error
-                database_lines = System.IO.File.ReadLines(@DATABASE_FILE).ToArray();
+                database_lines = System.IO.File.ReadLines(Constants._DATABASE_FILE).ToArray();
             }
             foreach (string line in database_lines) { // Check to make sure there are 6 values in the array, if not reset the database and log an error
                 System.Console.WriteLine(line);
                 if (line == null || line == "") {
                     Console.WriteLine("Database Corrupt: Regenerating...");
-                    File.Delete(@DATABASE_FILE);
-                    createDB(DATABASE_FILE);
+                    File.Delete(Constants._DATABASE_FILE);
+                    createDB(Constants._DATABASE_FILE);
                     Errors.Add(1); // Logs a database reset error
-                    string[] db = readDB(DATABASE_FILE);
-                    af = db[0];
-                    aq = db[1];
-                    auf = db[2];
-                    dir = db[3];
-                    ff = db[4];
+                    string[] db = readDB(Constants._DATABASE_FILE);
+                    paramData.audioFormat = db[0];
+                    paramData.audioQuality = db[1];
+                    paramData.audioOutputFormat = db[2];
+                    paramData.workingDirectory = db[3];
+                    paramData.ffMpegDirectory = db[4];
                     break;
                 }
                 counter++;
@@ -278,28 +272,28 @@ namespace Youtube_DL_Frontnend {
                     case 1:
                         break;
                     case 2:
-                        af = line;
+                        paramData.audioFormat = line;
                         break;
                     case 3:
-                        aq = line;
+                        paramData.audioQuality = line;
                         break;
                     case 4:
-                        auf = line;
+                        paramData.audioOutputFormat = line;
                         break;
                     case 5:
-                        dir = line;
+                        paramData.workingDirectory = line;
                         break;
                     case 6:
-                        ff = line;
+                        paramData.ffMpegDirectory = line;
                         break;
                 }
             }
             Console.Clear();
             //Ascii Text, "Welcome"
             writeAscii(4);
-            if (!checkFiles(ff, DATABASE_FILE, showGUI: false)) {
+            if (!checkFiles(paramData.ffMpegDirectory, Constants._DATABASE_FILE, showGUI: false)) {
                 Errors.Add(2);
-                checkFiles(ff, DATABASE_FILE, hold_up_execution: false);
+                checkFiles(paramData.ffMpegDirectory, Constants._DATABASE_FILE, hold_up_execution: false);
             }
             string filename = "NULL";
             string link = "NULL";
@@ -321,7 +315,7 @@ namespace Youtube_DL_Frontnend {
                 link = "NULL (Skipped)";
                 filename = "NULL (Skipped)";
             }
-            output = $"{dir}{filename}.%(ext)s"; //Includes youtube-dl placeholders
+            //output = $"{paramData.workingDirectory}{filename}.%(ext)s"; //Includes youtube-dl placeholders
             bool st = false;
             while (true) {
                 string? inp = "0";
@@ -331,15 +325,16 @@ namespace Youtube_DL_Frontnend {
                     Console.Clear();
                     //Ascii Text "Configuration"
                     bool ia = true;
-                    writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
+                    writeGUI(paramData, link, filename, ia);
                     //Console.Write($"1: Audio Format: {af}\n2: Audio Quality: {aq}\n3: Audio Conversion Format: {auf}\n4: Directory: {dir}\n5: FF-Mpeg Dir: {ff}\n6: Link: {link}\n7: File Name: {filename}\n8: Continue\n9: Exit\n\n#\\> ");
                     if (st == true) {
                         Console.Clear();
                         //Ascii Text, "Executing..."
                         writeAscii(2);
-                        output = $"{dir}{filename}.%(ext)s";
+                        //output = $"{dir}{filename}.%(ext)s";
                         Console.Write($"Command parsed and sent, passing youtube-dl output...\n\n"/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
-                        var process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
+                        //var process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
+                        var process = Process.Start(Constants._YOUTUBE_DL_EXECUTABLE, ConstantBuilder.buildArguments(paramData, link, filename));
                         Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
                         process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
                         string result = process.ExitCode != 0 ? "Failed" : "Succeeded";
@@ -347,7 +342,7 @@ namespace Youtube_DL_Frontnend {
                         while (i < 3 && process.ExitCode != 0) {
                             process.Dispose();
                             Console.WriteLine("\nError: failure detected, retrying " + (i + 1) + "/3");
-                            process = Process.Start(".\\youtube-dl.exe", $"-f {af} --audio-format {auf} -x --ffmpeg-location \"{ff}\" {link} --audio-quality {aq} -o \"{output}\"");
+                            process = Process.Start(Constants._YOUTUBE_DL_EXECUTABLE, ConstantBuilder.buildArguments(paramData, link, filename));
                             Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
                             process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
                             result = process.ExitCode != 0 ? "Failed" : "Succeeded";
@@ -365,47 +360,47 @@ namespace Youtube_DL_Frontnend {
                         case "1":
                             Console.Clear();
                             ia = false;
-                            writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
+                            writeGUI(paramData, link, filename, ia);
                             //Console.Write("\nInput a new audio format: ");
-                            af = InputHandler.inputValidate("Input a new audio format");
-                            while (!Int32.TryParse(af.Trim().ToString(), out int result)) {
-                                af = InputHandler.inputValidate("Your input is not a number, input a new audio format");
+                            paramData.audioFormat = InputHandler.inputValidate("Input a new audio format");
+                            while (!Int32.TryParse(paramData.audioFormat.Trim().ToString(), out int result)) {
+                                paramData.audioFormat = InputHandler.inputValidate("Your input is not a number, input a new audio format");
                             }
                             break;
                         case "2":
                             Console.Clear();
                             ia = false;
-                            writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            aq = InputHandler.inputValidate("Input a new audio quality");
-                            while (!Int32.TryParse(aq.Trim().ToString(), out int result)) {
-                                aq = InputHandler.inputValidate("Your input is not a number, input a new audio quality");
+                            writeGUI(paramData, link, filename, ia);
+                            paramData.audioQuality = InputHandler.inputValidate("Input a new audio quality");
+                            while (!Int32.TryParse(paramData.audioQuality.Trim().ToString(), out int result)) {
+                                paramData.audioQuality = InputHandler.inputValidate("Your input is not a number, input a new audio quality");
                             }
                             break;
                         case "3":
                             Console.Clear();
                             ia = false;
-                            writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            auf = InputHandler.inputValidate("Input a new conversion format");
+                            writeGUI(paramData, link, filename, ia);
+                            paramData.audioOutputFormat = InputHandler.inputValidate("Input a new conversion format");
                             break;
                         case "4":
                             Console.Clear();
                             ia = false;
-                            writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            dir = InputHandler.inputValidate("Input a new directory path (A to autofill current path)");
-                            if (dir == "A" || dir == "a") { dir = Directory.GetCurrentDirectory(); }
-                            if (!Directory.Exists(dir)) {
+                            writeGUI(paramData, link, filename, ia);
+                            paramData.workingDirectory = InputHandler.inputValidate("Input a new directory path (A to autofill current path)");
+                            if (paramData.workingDirectory == "A" || paramData.workingDirectory == "a") { paramData.workingDirectory = Directory.GetCurrentDirectory(); }
+                            if (!Directory.Exists(paramData.workingDirectory)) {
                                 Console.WriteLine("Warning: The directory you entered does not currently exist. This script may not function properly.\nPRESS ENTER TO CONTINUE");
                                 Console.ReadLine();
                             }
-                            output = $"{dir}{filename}.%(ext)s";
+                            //output = $"{paramData.workingDirectory}{filename}.%(ext)s";
                             break;
                         case "5":
                             Console.Clear();
                             ia = false;
-                            writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
-                            ff = InputHandler.inputValidate("Input a new FF-Mpeg Path (A to autofill current path)");
-                            if (ff == "A" || ff == "a") { ff = Directory.GetCurrentDirectory(); }
-                            if (!File.Exists(ff + "\\ffmpeg.exe")) {
+                            writeGUI(paramData, link, filename, ia);
+                            paramData.ffMpegDirectory = InputHandler.inputValidate("Input a new FF-Mpeg Path (A to autofill current path)");
+                            if (paramData.ffMpegDirectory == "A" || paramData.ffMpegDirectory == "a") { paramData.ffMpegDirectory = Directory.GetCurrentDirectory(); }
+                            if (!File.Exists(paramData.ffMpegDirectory + "\\ffmpeg.exe")) {
                                 Console.WriteLine("Warning: FFMPEG could not be located at this path. This script may not function properly.\nPRESS ENTER TO CONTINUE");
                                 Console.ReadLine();
                             }
@@ -413,20 +408,20 @@ namespace Youtube_DL_Frontnend {
                         case "6":
                             Console.Clear();
                             ia = false;
-                            writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
+                            writeGUI(paramData, link, filename, ia);
                             link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
                             break;
                         case "7":
                             Console.Clear();
                             ia = false;
-                            writeGUI(af, aq, auf, dir, ff, link, filename, ia, DATABASE_FILE);
+                            writeGUI(paramData, link, filename, ia);
                             filename = InputHandler.inputValidate("Input a name for the output file (without the entension)");
-                            output = $"{dir}{filename}.%(ext)s";
+                            //output = $"{dir}{filename}.%(ext)s";
                             break;
                         case "8":
                             Console.Clear();
                             ia = false;
-                            batchProcess(af, aq, auf, dir, ff);
+                            batchProcess(paramData);
                             break;
                         case "9":
                             if (filename != "NULL (Skipped)" && link != "NULL (Skipped)") {

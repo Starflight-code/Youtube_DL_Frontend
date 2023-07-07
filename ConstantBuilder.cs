@@ -7,5 +7,9 @@
             string fileName = buildFileName(directory, name);
             return $"-f {format} --audio-format {audioFormat} -x --ffmpeg-location \"{ffMpegLocation}\" {URL} --audio-quality {audioQuality} -o \"{fileName}\"";
         }
+        public static string buildArguments(DataStructures.YoutubeDLParamInfo parameters, string URL, string name) {
+            string fileName = buildFileName(parameters.workingDirectory, name);
+            return $"-f {parameters.audioFormat} --audio-format {parameters.audioOutputFormat} -x --ffmpeg-location \"{parameters.ffMpegDirectory}\" {URL} --audio-quality {parameters.audioQuality} -o \"{fileName}\"";
+        }
     }
 }
