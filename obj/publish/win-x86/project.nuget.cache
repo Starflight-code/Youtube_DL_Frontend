@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "BK3Kn68PywgMOyzxBTwlooN108+EgXdR3Noq5+0fQGvuUjxiHFShJw6UXmC8MkTJg0XAqSp0AdMZk0/8G7Hk6A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\benko\\source\\repos\\Youtube_DL_Frontend\\Youtube_DL_Frontnend\\Youtube_DL_Frontnend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\benko\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\6.0.18\\microsoft.netcore.app.runtime.win-x86.6.0.18.nupkg.sha512",
+    "C:\\Users\\benko\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\6.0.18\\microsoft.windowsdesktop.app.runtime.win-x86.6.0.18.nupkg.sha512",
+    "C:\\Users\\benko\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\6.0.18\\microsoft.aspnetcore.app.runtime.win-x86.6.0.18.nupkg.sha512"
+  ],
+  "logs": []
+}

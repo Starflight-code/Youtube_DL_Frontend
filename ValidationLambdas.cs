@@ -7,5 +7,9 @@
                 return true;
             }
         };
+
+        public static Func<string, bool> isNumber = (x) => {
+            return Int32.TryParse(x, out _);
+        };
     }
 }
