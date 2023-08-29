@@ -20,8 +20,8 @@
         };
 
         // File Names
-        public static string _YOUTUBE_DL_EXECUTABLE = ".\\youtube-dl.exe";
-        public static string _DATABASE_FILE = ".\\data.db";
+        public static string _YOUTUBE_DL_EXECUTABLE = Statics.buildPath(Directory.GetCurrentDirectory() + "\\youtube-dl.exe");
+        public static string _DATABASE_FILE = Statics.buildPath(Directory.GetCurrentDirectory() + "\\data.db");
 
         // ASCII Art
         public static string _CONFIGURATION_ASCII = " ___            ___  _                       _    _\n|  _> ___ ._ _ | | '<_> ___  _ _  _ _  ___ _| |_ <_> ___ ._ _ \n| <__/ . \\| ' || |- | |/ . || | || '_><_> | | |  | |/ . \\| ' |\n`___/\\___/|_|_||_|  |_|\\_. |`___||_|  <___| |_|  |_|\\___/|_|_|\n                       <___'\n";

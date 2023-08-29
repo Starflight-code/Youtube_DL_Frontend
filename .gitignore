@@ -1,3 +1,4 @@
 ﻿bin/Release/*
 obj/Release/*
 bin/Debug/*
+.\data.db
