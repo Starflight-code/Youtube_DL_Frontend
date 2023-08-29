@@ -22,12 +22,22 @@ namespace Youtube_DL_Frontnend {
             this.audioQuality = audioQuality;
             this.audioOutputFormat = audioOutputFormat;
         }
-        public void updateSelf() {
-           JsonConvert.SerializeObject(this);
-            // TODO: Dump into a file
+        public async Task updateSelf() {
+           string databaseSerialized = JsonConvert.SerializeObject(this);
+           await File.WriteAllTextAsync(Constants._DATABASE_FILE, databaseSerialized);
         }
 
-        public void populateSelf() {
+        public async Task populateSelf() {
+            DatabaseObject? database = JsonConvert.DeserializeObject<DatabaseObject>(File.ReadAllText(Constants._DATABASE_FILE));
+            if (database == null) {await updateSelf(); return;}
+            
+            // setting values
+            this.workingDirectory = database.workingDirectory;
+            this.ffMpegDirectory = database.ffMpegDirectory;
+            this.audioFormat = database.audioFormat;
+            this.audioQuality = database.audioQuality;
+            this.audioOutputFormat = database.audioOutputFormat;
+
             // TODO: pull from database file, populate fields with values from sanitized object 
             // only if an error doesn't happen upon deserialization
 

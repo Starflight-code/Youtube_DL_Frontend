@@ -1,6 +1,6 @@
 ﻿namespace Youtube_DL_Frontnend {
     internal class DataStructures {
-        public struct YoutubeDLParamInfo {
+        /*public struct YoutubeDLParamInfo {
             public string workingDirectory; // dir in code
             public string ffMpegDirectory; // ff in code
             public string audioFormat; // af in code
@@ -13,7 +13,7 @@
                 this.audioQuality = audioQuality;
                 this.audioOutputFormat = audioOutputFormat;
             }
-        }
+        }*/
         public enum commandToExecute {
             audioFormat,
             audioQuality,
