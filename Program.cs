@@ -169,23 +169,6 @@ namespace Youtube_DL_Frontnend {
             }
             return exists[3];
         }
-
-        async void createDB(string DATABASE_FILE) {
-            Console.WriteLine("Database not detected, Creating...");
-            Thread.Sleep(500);
-            /*var db = File.Create(DATABASE_FILE);
-            db.Dispose();
-            Console.WriteLine("Starting file write operating...");
-            var dbtemp = File.WriteAllLinesAsync(DATABASE_FILE, Constants.defaultDatabaseLines);
-            dbtemp.Wait(500);
-            dbtemp.Dispose();
-            Console.Clear();*/
-            await data.updateSelf();
-            if (!checkFiles(data.ffMpegDirectory, DATABASE_FILE)) {
-                Console.WriteLine(Constants._FILES_NOT_FOUND);
-            }
-            Console.WriteLine("\n\nCompleted! Starting program.");
-        }
         static void logErrors(List<int> Errors) {
             Console.WriteLine();
             for (int i = 0; i < Errors.Count(); i++) {
@@ -200,26 +183,6 @@ namespace Youtube_DL_Frontnend {
             }
             Console.WriteLine();
         }
-        /*static string[] readDB(string DATABASE_FILE) {
-            int counter = 0;
-            List<string> data = new List<string>();
-            foreach (string line in System.IO.File.ReadLines(@DATABASE_FILE)) {
-                System.Console.WriteLine(line);
-                if (line == null) {
-                    File.Delete(DATABASE_FILE);
-                    createDB(Constants._DATABASE_FILE);
-                    return new string[] { };
-                }
-                counter++;
-                data.Add(line);
-
-            }
-            return data.ToArray();
-        }*/
-
-        /*static void writeDB(DataStructures.YoutubeDLParamInfo parameters) {
-            //File.WriteAllLines(Constants._DATABASE_FILE, ConstantBuilder.buildDatabaseFile(parameters));
-        }*/
 
         static void runYoutubeDL(DatabaseObject data, string link, string filename) {
             Console.Clear();
@@ -257,34 +220,6 @@ namespace Youtube_DL_Frontnend {
             } else {
                 await data.populateSelf();
             }
-            /*string[] db = System.IO.File.ReadLines(Constants._DATABASE_FILE).ToArray();
-            if (db.Length != 6) {
-                File.Delete(Constants._DATABASE_FILE);
-                createDB(Constants._DATABASE_FILE);
-                Errors.Add(1); // Logs a database reset error
-                db = System.IO.File.ReadLines(Constants._DATABASE_FILE).ToArray();
-            }
-            foreach (string line in db) { // Check to make sure there are 6 values in the array, if not reset the database and log an error
-                System.Console.WriteLine(line);
-                if (line == null || line == "") {
-                    Console.WriteLine("Database Corrupt: Regenerating...");
-                    File.Delete(Constants._DATABASE_FILE);
-                    createDB(Constants._DATABASE_FILE);
-                    Errors.Add(1); // Logs a database reset error
-                    db = readDB(Constants._DATABASE_FILE);
-                    paramData.audioFormat = db[1];
-                    paramData.audioQuality = db[2];
-                    paramData.audioOutputFormat = db[3];
-                    paramData.workingDirectory = db[4];
-                    paramData.ffMpegDirectory = db[5];
-                    break;
-                }
-            }
-            paramData.audioFormat = db[1];
-            paramData.audioQuality = db[2];
-            paramData.audioOutputFormat = db[3];
-            paramData.workingDirectory = db[4];
-            paramData.ffMpegDirectory = db[5];*/
 
             Console.Clear();
             //Ascii Text, "Welcome"

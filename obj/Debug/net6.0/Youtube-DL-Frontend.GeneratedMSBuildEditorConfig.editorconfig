@@ -10,4 +10,4 @@ build_property.EnableSingleFileAnalyzer =
 build_property.EnableTrimAnalyzer = true
 build_property.IncludeAllContentForSelfExtract = 
 build_property.RootNamespace = Youtube_DL_Frontend
-build_property.ProjectDir = /home/kobiskeb/VsCode/Youtube_DL_Frontend/
+build_property.ProjectDir = /home/kobiskeb/vscode/Youtube-DL-Frontend/

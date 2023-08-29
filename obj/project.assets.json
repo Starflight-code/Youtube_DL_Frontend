@@ -56,11 +56,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/kobiskeb/VsCode/Youtube_DL_Frontend/Youtube-DL-Frontend.csproj",
+      "projectUniqueName": "/home/kobiskeb/vscode/Youtube-DL-Frontend/Youtube-DL-Frontend.csproj",
       "projectName": "Youtube-DL-Frontend",
-      "projectPath": "/home/kobiskeb/VsCode/Youtube_DL_Frontend/Youtube-DL-Frontend.csproj",
+      "projectPath": "/home/kobiskeb/vscode/Youtube-DL-Frontend/Youtube-DL-Frontend.csproj",
       "packagesPath": "/home/kobiskeb/.nuget/packages/",
-      "outputPath": "/home/kobiskeb/VsCode/Youtube_DL_Frontend/obj/",
+      "outputPath": "/home/kobiskeb/vscode/Youtube-DL-Frontend/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/kobiskeb/.nuget/NuGet/NuGet.Config"

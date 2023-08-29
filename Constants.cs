@@ -10,15 +10,6 @@
                     "\nResolve this before executing ANY automation commands. " +
                     "\nThis script will not function properly until these issues are resolved.";
 
-        // Data Structures
-        //public static DataStructures.YoutubeDLParamInfo defaultFile = new DataStructures.YoutubeDLParamInfo(Directory.GetCurrentDirectory(), Directory.GetCurrentDirectory(), "251", "0", "mp3");
-
-        // Internal Data
-        /*public static string[] defaultDatabaseLines =
-        {
-            Constants._DATABASE_PREPEND, Constants.defaultFile.audioFormat, Constants.defaultFile.audioQuality, Constants.defaultFile.audioOutputFormat, Constants.defaultFile.workingDirectory, Constants.defaultFile.ffMpegDirectory
-        };*/
-
         // File Names
         public static string _YOUTUBE_DL_EXECUTABLE = Statics.buildPath(Directory.GetCurrentDirectory() + "\\youtube-dl.exe");
         public static string _DATABASE_FILE = Statics.buildPath(Directory.GetCurrentDirectory() + "\\data.db");

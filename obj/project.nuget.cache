@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "A2KJI8UZJIqSr6/mW/WXEM93WtHcKxN0B7wtIBhAm7ALNyj9HHN310Hz9SdmSoBAHKY05wY55ELLrlq6dfRowg==",
+  "dgSpecHash": "2gLuUOiXJUmAPjahicRvgR0Jv+8UawGwD1ToRl1RmoyCgqnblv4/VM/JFzjgMaxJFHY7/3D8SAwbSQtnWkvp6w==",
   "success": true,
-  "projectFilePath": "/home/kobiskeb/VsCode/Youtube_DL_Frontend/Youtube-DL-Frontend.csproj",
+  "projectFilePath": "/home/kobiskeb/vscode/Youtube-DL-Frontend/Youtube-DL-Frontend.csproj",
   "expectedPackageFiles": [
     "/home/kobiskeb/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/home/kobiskeb/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.21/microsoft.aspnetcore.app.ref.6.0.21.nupkg.sha512"
