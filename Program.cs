@@ -248,7 +248,7 @@ namespace Youtube_DL_Frontnend {
                 filename = "NULL (Skipped)";
             }
             while (true) {
-                DataStructures.commandToExecute? input;
+                Enums.commandToExecute? input;
 
                 while (true) {
                     Console.Clear();
@@ -257,28 +257,28 @@ namespace Youtube_DL_Frontnend {
                     input = inputhandle.handleCommand(Console.ReadLine());
                     switch (input) {
 
-                        case DataStructures.commandToExecute.audioFormat:
+                        case Enums.commandToExecute.audioFormat:
                             Console.Clear();
                             writeGUI(data, link, filename, false);
                             data.audioFormat = InputHandler.askQuestion("Input a new audio format", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio format: ");
                             await data.updateSelf();
                             break;
 
-                        case DataStructures.commandToExecute.audioQuality:
+                        case Enums.commandToExecute.audioQuality:
                             Console.Clear();
                             writeGUI(data, link, filename, false);
                             data.audioQuality = InputHandler.askQuestion("Input a new audio quality", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio quality: ");
                             await data.updateSelf();
                             break;
 
-                        case DataStructures.commandToExecute.audioOutputFormat:
+                        case Enums.commandToExecute.audioOutputFormat:
                             Console.Clear();
                             writeGUI(data, link, filename, false);
                             data.audioOutputFormat = InputHandler.inputValidate("Input a new conversion format");
                             await data.updateSelf();
                             break;
 
-                        case DataStructures.commandToExecute.directory:
+                        case Enums.commandToExecute.directory:
                             Console.Clear();
                             writeGUI(data, link, filename, false);
                             data.workingDirectory = InputHandler.inputValidate("Input a new directory path (A to autofill current path)");
@@ -290,7 +290,7 @@ namespace Youtube_DL_Frontnend {
                             await data.updateSelf();
                             break;
 
-                        case DataStructures.commandToExecute.ffDirectory:
+                        case Enums.commandToExecute.ffDirectory:
                             Console.Clear();
                             writeGUI(data, link, filename, false);
                             data.ffMpegDirectory = InputHandler.inputValidate("Input a new FF-Mpeg Path (A to autofill current path)");
@@ -302,24 +302,24 @@ namespace Youtube_DL_Frontnend {
                             await data.updateSelf();
                             break;
 
-                        case DataStructures.commandToExecute.link:
+                        case Enums.commandToExecute.link:
                             Console.Clear();
                             writeGUI(data, link, filename, false);
                             link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
                             break;
 
-                        case DataStructures.commandToExecute.filename:
+                        case Enums.commandToExecute.filename:
                             Console.Clear();
                             writeGUI(data, link, filename, false);
                             filename = InputHandler.inputValidate("Input a name for the output file (without the entension)");
                             break;
 
-                        case DataStructures.commandToExecute.batch:
+                        case Enums.commandToExecute.batch:
                             Console.Clear();
                             batchProcess(data);
                             break;
 
-                        case DataStructures.commandToExecute.goOn:
+                        case Enums.commandToExecute.goOn:
                             if (filename != "NULL (Skipped)" && link != "NULL (Skipped)") {
                                 runYoutubeDL(data, link, filename);
                             } else {
@@ -328,7 +328,7 @@ namespace Youtube_DL_Frontnend {
                             }
                             break;
 
-                        case DataStructures.commandToExecute.exit:
+                        case Enums.commandToExecute.exit:
                             Console.Clear();
                             //Ascii Text, "Thank You"
                             writeAscii(3);

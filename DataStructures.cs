@@ -1,5 +1,5 @@
 ﻿namespace Youtube_DL_Frontnend {
-    internal class DataStructures {
+    internal class Enums {
         public enum commandToExecute {
             audioFormat,
             audioQuality,
