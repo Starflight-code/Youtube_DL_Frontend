@@ -45,7 +45,8 @@
             return input.Trim();
         }
 
-        public DataStructures.commandToExecute handleCommand(string input) {
+        public DataStructures.commandToExecute handleCommand(string? input) {
+            if (input == null) {input = "";}
             input = input.Trim();
             DataStructures.commandToExecute output;
             while (input.Length == 0 || !commandParser.TryGetValue(input, out output)) {
