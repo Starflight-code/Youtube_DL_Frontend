@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "euNXcDTnq7/TlutnNefa1NYgWB3eM/WQPuVDww7IXkIDxvEE9NQG+6br95ep/uB6o8GzpR8UqD0tkUGZ6PHHKA==",
+  "dgSpecHash": "FCZeQrwuUJIeJg4/n01pdwv0ZBqyRcqSNI0LigEe6KCqNWAQAIoWKegcMVK+/h/mmIrkHN+Z64gAS7v4mPcQdQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\benko\\source\\repos\\Youtube-DL-Frontend\\Youtube-DL-Frontend\\Youtube-DL-Frontend.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/kobiskeb/VsCode/Youtube_DL_Frontend/Youtube_DL_Frontend.csproj",
+  "expectedPackageFiles": [
+    "/home/kobiskeb/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.21/microsoft.aspnetcore.app.ref.6.0.21.nupkg.sha512"
+  ],
   "logs": []
 }
