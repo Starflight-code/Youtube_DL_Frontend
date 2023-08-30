@@ -1,0 +1,10 @@
+Include platform specific data in JSON, such as detected OS.
+This will alter behavior, since youtube-dl would be installed 
+in a directory pointed to by the path env variable. This option
+should not be available in windows, as it is not the norm for users.
+
+Disable youtube-dl and ffmpeg file detection on Linux, due to global
+youtube-dl and ffmpeg command usage not tied to in-directory files.
+
+Add support for yt-dlp, which is now my go-to. It recieves (some)
+patches faster than youtube-dl.
