@@ -7,16 +7,13 @@
             string fileName = buildFileName(directory, name);
             return $"-f {format} --audio-format {audioFormat} -x --ffmpeg-location \"{ffMpegLocation}\" {URL} --audio-quality {audioQuality} -o \"{fileName}\"";
         }
-        /*public static string buildArguments(DataStructures.YoutubeDLParamInfo parameters, string URL, string name) {
-            string fileName = buildFileName(parameters.workingDirectory, name);
-            return $"-f {parameters.audioFormat} --audio-format {parameters.audioOutputFormat} -x --ffmpeg-location \"{parameters.ffMpegDirectory}\" {URL} --audio-quality {parameters.audioQuality} -o \"{fileName}\"";
-        }*/
         public static string buildArguments(DatabaseObject data, string URL, string name) {
             string fileName = buildFileName(data.workingDirectory, name);
-            return $"-f {data.audioFormat} --audio-format {data.audioOutputFormat} -x --ffmpeg-location \"{data.ffMpegDirectory}\" {URL} --audio-quality {data.audioQuality} -o \"{fileName}\"";
+            return Statics.buildPath($"-f {data.audioFormat} --audio-format {data.audioOutputFormat} -x --ffmpeg-location \"{data.ffMpegDirectory}\" {URL} --audio-quality {data.audioQuality} -o \"{fileName}\"");
         }
-        /*public static string[] buildDatabaseFile(DataStructures.YoutubeDLParamInfo parameters) {
-            return new string[] { Constants._DATABASE_PREPEND, parameters.audioFormat, parameters.audioQuality, parameters.audioOutputFormat, parameters.workingDirectory, parameters.ffMpegDirectory };
-        }*/
+        public static string buildArgumentsLinux(DatabaseObject data, string URL, string name) {
+            string fileName = buildFileName(data.workingDirectory, name);
+            return Statics.buildPath($"-f {data.audioFormat} --audio-format {data.audioOutputFormat} -x {URL} --ffmpeg-location /usr/bin/ffmpeg --audio-quality {data.audioQuality} -o \"{fileName}\"");
+        }
     }
 }

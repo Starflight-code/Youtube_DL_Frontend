@@ -1,10 +1,18 @@
 Include platform specific data in JSON, such as detected OS.
 This will alter behavior, since youtube-dl would be installed 
 in a directory pointed to by the path env variable. This option
-should not be available in windows, as it is not the norm for users.
+should not be available in windows, as it is not the norm for users. - PATCHED, see RuntimeData.cs
 
 Disable youtube-dl and ffmpeg file detection on Linux, due to global
-youtube-dl and ffmpeg command usage not tied to in-directory files.
+youtube-dl and ffmpeg command usage not tied to in-directory files. - PATCHED
 
 Add support for yt-dlp, which is now my go-to. It recieves (some)
-patches faster than youtube-dl.
+patches faster than youtube-dl. - PATCHED
+
+Run tests on linux to ensure compatiblity with batch processing system.
+
+Add user option to toggle between yt-dlb and youtube-dl executable.
+
+Windows will not be tested (I will no longer be using the operating system),
+issues can be opened if errors pop up on windows. If I get a VM, Windows may
+be official supported and tested again.

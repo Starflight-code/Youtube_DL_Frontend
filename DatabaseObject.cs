@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Runtime.InteropServices;
 
 namespace Youtube_DL_Frontnend {
     internal class DatabaseObject {
@@ -13,6 +14,9 @@ namespace Youtube_DL_Frontnend {
             audioFormat = "251"; // TODO: Store in int for memory savings, lower processing overhead and more flexability
             audioQuality = "0"; // TODO: Store in int
             audioOutputFormat = "mp3";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+                ffMpegDirectory = "/usr/bin/ffmpeg";
+            }
         }
 
         public DatabaseObject(string workingDirectory, string ffMpegDirectory, string audioFormat, string audioQuality, string audioOutputFormat) {

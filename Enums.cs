@@ -18,5 +18,10 @@
             filesNotFound
 
         }
+
+        public enum platform {
+            windows,
+            linux
+        }
     }
 }

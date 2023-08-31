@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Youtube_DL_Frontnend {
     internal class Program {
         ValidationLambdas lambdas = new ValidationLambdas();
         DatabaseObject data;
+        RuntimeData runtimeData = new RuntimeData();
         public Program() {
             data = new DatabaseObject();
         }
@@ -53,7 +55,7 @@ namespace Youtube_DL_Frontnend {
                     throw (new Exception("nError detected by WriteAscii(), this function has been declared with an invalid 'input' variable value."));
             }
         }
-        static void batchProcess(DatabaseObject data) {
+        void batchProcess(DatabaseObject data) {
             Console.Write(Constants._BATCH_WELCOME);
             string batchfile = InputHandler.inputValidate("Enter File Path");
             while (!File.Exists(batchfile)) {
@@ -81,11 +83,11 @@ namespace Youtube_DL_Frontnend {
             Console.WriteLine("\nExecution Started on File, please wait... \n");
             i = 0;
             string name;
-            foreach (string URL in URLs) {
+                foreach (string URL in URLs) {
                 name = ConstantBuilder.buildFileName(data.workingDirectory, fileNames[i]);
                 processes.Add(new Process {
                     StartInfo = new ProcessStartInfo {
-                        FileName = ".\\youtube-dl.exe",
+                        FileName = runtimeData.yotutube_dl_executable,
                         Arguments = ConstantBuilder.buildArguments(data, URL, fileNames[i]),
                         UseShellExecute = false,
                         RedirectStandardOutput = false,
@@ -96,7 +98,7 @@ namespace Youtube_DL_Frontnend {
 
                 processes[i].Start();
                 i++;
-            }
+                }
             int processesWaiting = processes.Count();
             int failed = 0;
             int succeeded = 0;
@@ -131,7 +133,10 @@ namespace Youtube_DL_Frontnend {
             Console.WriteLine($"\nSuccessful Tasks: {succeeded}\nFailed Tasks: {failed}\n\nPRESS ENTER TO CONTINUE");
             Console.ReadLine();
         }
-        static bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true) {
+        bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true) {
+            if (runtimeData.platform == OSPlatform.Linux) {
+                return true;
+            }
             List<bool> exists = new List<bool>
             {
         File.Exists(Constants._YOUTUBE_DL_EXECUTABLE),
@@ -184,12 +189,12 @@ namespace Youtube_DL_Frontnend {
             Console.WriteLine();
         }
 
-        static void runYoutubeDL(DatabaseObject data, string link, string filename) {
+        void runYoutubeDL(DatabaseObject data, string link, string filename) {
             Console.Clear();
             //Ascii Text, "Executing..."
             writeAscii(2);
             Console.Write($"Command parsed and sent, passing youtube-dl output...\n\n"/*\n--------------------------------------------------------\nPress ENTER once execution is complete to view the menu.\n--------------------------------------------------------\n\n"*/);
-            var process = Process.Start(Constants._YOUTUBE_DL_EXECUTABLE, ConstantBuilder.buildArguments(data, link, filename));
+            var process = Process.Start(runtimeData.yotutube_dl_executable, ConstantBuilder.buildArguments(data, link, filename));
             Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
             process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
             string result = process.ExitCode != 0 ? "Failed" : "Succeeded";
@@ -197,7 +202,7 @@ namespace Youtube_DL_Frontnend {
             while (i < 3 && process.ExitCode != 0) {
                 process.Dispose();
                 Console.WriteLine("\nError: failure detected, retrying " + (i + 1) + "/3");
-                process = Process.Start(Constants._YOUTUBE_DL_EXECUTABLE, ConstantBuilder.buildArguments(data, link, filename));
+                process = Process.Start(runtimeData.yotutube_dl_executable, ConstantBuilder.buildArguments(data, link, filename));
                 Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
                 process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
                 result = process.ExitCode != 0 ? "Failed" : "Succeeded";
@@ -322,6 +327,7 @@ namespace Youtube_DL_Frontnend {
                         case Enums.commandToExecute.goOn:
                             if (filename != "NULL (Skipped)" && link != "NULL (Skipped)") {
                                 runYoutubeDL(data, link, filename);
+                                
                             } else {
                                 Console.Write("\nOops, you need to specify the link and filename first.\nPRESS ENTER TO CONTINUE");
                                 Console.ReadLine();
