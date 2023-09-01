@@ -1,9 +1,11 @@
 using System.Runtime.InteropServices;
 
-namespace Youtube_DL_Frontnend {
+namespace Youtube_DL_Frontend {
     internal class RuntimeData {
         public OSPlatform platform;
         public string yotutube_dl_executable;
+        public string link;
+        public string filename;
         public RuntimeData() {
             bool usingYTDLP = true;
             string youtubeDL;
@@ -22,6 +24,8 @@ namespace Youtube_DL_Frontnend {
                 yotutube_dl_executable = "";
                 platform = OSPlatform.Create("Invalid");
             }
+            link = "";
+            filename = "";
         }
     }
 }

@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using System.Runtime.InteropServices;
 
-namespace Youtube_DL_Frontnend {
+namespace Youtube_DL_Frontend {
     internal class DatabaseObject {
         public string workingDirectory; // dir in code
         public string ffMpegDirectory; // ff in code
@@ -11,8 +11,8 @@ namespace Youtube_DL_Frontnend {
         public DatabaseObject() {
             workingDirectory = Directory.GetCurrentDirectory();
             ffMpegDirectory = Directory.GetCurrentDirectory();
-            audioFormat = "251"; // TODO: Store in int for memory savings, lower processing overhead and more flexability
-            audioQuality = "0"; // TODO: Store in int
+            audioFormat = "251";
+            audioQuality = "0";
             audioOutputFormat = "mp3";
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
                 ffMpegDirectory = "/usr/bin/ffmpeg";
@@ -27,15 +27,15 @@ namespace Youtube_DL_Frontnend {
             this.audioOutputFormat = audioOutputFormat;
         }
         public async Task updateSelf() {
-           string databaseSerialized = JsonConvert.SerializeObject(this);
-           await File.WriteAllTextAsync(Constants._DATABASE_FILE, databaseSerialized);
+           string databaseSerialized = JsonConvert.SerializeObject(this); // serializes itself into JSON
+           await File.WriteAllTextAsync(Constants._DATABASE_FILE, databaseSerialized); // writes JSON into file
         }
 
         public async Task populateSelf() {
-            DatabaseObject? database = JsonConvert.DeserializeObject<DatabaseObject>(File.ReadAllText(Constants._DATABASE_FILE));
-            if (database == null) {await updateSelf(); return;}
+            DatabaseObject? database = JsonConvert.DeserializeObject<DatabaseObject>(File.ReadAllText(Constants._DATABASE_FILE)); // deserializes file to a DatabaseObject
+            if (database == null) {await updateSelf(); return;} 
             
-            // setting values
+            // setting values - sets the values to the DatabaseObject's values
             this.workingDirectory = database.workingDirectory;
             this.ffMpegDirectory = database.ffMpegDirectory;
             this.audioFormat = database.audioFormat;

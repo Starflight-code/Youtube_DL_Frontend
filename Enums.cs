@@ -1,4 +1,4 @@
-﻿namespace Youtube_DL_Frontnend {
+﻿namespace Youtube_DL_Frontend {
     internal class Enums {
         public enum commandToExecute {
             audioFormat,

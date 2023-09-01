@@ -1,18 +1,18 @@
-﻿namespace Youtube_DL_Frontnend {
+﻿namespace Youtube_DL_Frontend {
     internal class Constants {
 
         // Messages
         public static string _BATCH_WELCOME = $"You have accessed the batch processing system, this allows asyncronous processing of" +
                            "\nmultiple files. Please specify your pre formatted file, which should be placed inside" +
                           $"\nthe youtube-dl-frontend directory.\n\n";
-        public static string _DATABASE_PREPEND = "Do not modify data within this file!";
-        public static string _FILES_NOT_FOUND = "An error was detected when attempting to locate at least one of the core files. " +
-                    "\nResolve this before executing ANY automation commands. " +
-                    "\nThis script will not function properly until these issues are resolved.";
+        //public static string _DATABASE_PREPEND = "Do not modify data within this file!";
+        //public static string _FILES_NOT_FOUND = "An error was detected when attempting to locate at least one of the core files. " +
+        //            "\nResolve this before executing ANY automation commands. " +
+        //            "\nThis script will not function properly until these issues are resolved.";
 
         // File Names
-        public static string _YOUTUBE_DL_EXECUTABLE = Statics.buildPath(Directory.GetCurrentDirectory() + "\\youtube-dl.exe");
-        public static string _DATABASE_FILE = Statics.buildPath(Directory.GetCurrentDirectory() + "\\data.db");
+        public static string _YOUTUBE_DL_EXECUTABLE = Statics.buildPath(Directory.GetCurrentDirectory() + "\\youtube-dl.exe"); // used for file checking
+        public static string _DATABASE_FILE = Statics.buildPath(Directory.GetCurrentDirectory() + "\\data.db"); // used for file checking, and database access
 
         // ASCII Art
         public static string _CONFIGURATION_ASCII = " ___            ___  _                       _    _\n|  _> ___ ._ _ | | '<_> ___  _ _  _ _  ___ _| |_ <_> ___ ._ _ \n| <__/ . \\| ' || |- | |/ . || | || '_><_> | | |  | |/ . \\| ' |\n`___/\\___/|_|_||_|  |_|\\_. |`___||_|  <___| |_|  |_|\\___/|_|_|\n                       <___'\n";

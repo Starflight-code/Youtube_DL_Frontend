@@ -1,4 +1,4 @@
-﻿namespace Youtube_DL_Frontnend {
+﻿namespace Youtube_DL_Frontend {
     internal class InputHandler {
         public static Dictionary<string, Enums.commandToExecute> commandParser = new Dictionary<string, Enums.commandToExecute>();
 
