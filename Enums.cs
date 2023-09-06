@@ -1,6 +1,9 @@
-﻿namespace Youtube_DL_Frontend {
-    internal class Enums {
-        public enum commandToExecute {
+﻿namespace Youtube_DL_Frontend
+{
+    internal class Enums
+    {
+        public enum commandToExecute
+        {
             audioFormat,
             audioQuality,
             audioOutputFormat,
@@ -13,13 +16,15 @@
             exit
         };
 
-        public enum errorMessages {
+        public enum errorMessages
+        {
             databaseReset,
             filesNotFound
 
         }
 
-        public enum platform {
+        public enum platform
+        {
             windows,
             linux
         }

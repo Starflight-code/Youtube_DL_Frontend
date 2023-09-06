@@ -1,5 +1,7 @@
-﻿namespace Youtube_DL_Frontend {
-    internal class Constants {
+﻿namespace Youtube_DL_Frontend
+{
+    internal class Constants
+    {
 
         // Messages
         public static string _BATCH_WELCOME = $"You have accessed the batch processing system, this allows asyncronous processing of" +

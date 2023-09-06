@@ -1,26 +1,37 @@
 using System.Runtime.InteropServices;
 
-namespace Youtube_DL_Frontend {
-    internal class RuntimeData {
+namespace Youtube_DL_Frontend
+{
+    internal class RuntimeData
+    {
         public OSPlatform platform;
         public string yotutube_dl_executable;
         public string link;
         public string filename;
-        public RuntimeData() {
+        public RuntimeData()
+        {
             bool usingYTDLP = true;
             string youtubeDL;
-            if (usingYTDLP) {
+            if (usingYTDLP)
+            {
                 youtubeDL = "yt-dlp";
-            } else {
+            }
+            else
+            {
                 youtubeDL = "youtube-dl";
             }
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
                 platform = OSPlatform.Windows;
                 yotutube_dl_executable = Statics.buildPath(Directory.GetCurrentDirectory() + "\\" + youtubeDL + ".exe");
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
                 platform = OSPlatform.Linux;
                 yotutube_dl_executable = youtubeDL;
-            } else {
+            }
+            else
+            {
                 yotutube_dl_executable = "";
                 platform = OSPlatform.Create("Invalid");
             }

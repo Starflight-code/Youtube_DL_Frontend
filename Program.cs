@@ -1,20 +1,25 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Youtube_DL_Frontend {
-    internal class Program {
+namespace Youtube_DL_Frontend
+{
+    internal class Program
+    {
         //ValidationLambdas lambdas = new ValidationLambdas();
         DatabaseObject data;
         RuntimeData runtimeData = new RuntimeData();
         InputHandler inputhandle = new InputHandler();
-        public Program() {
+        public Program()
+        {
             data = new DatabaseObject();
         }
 
-        void generateDatabase() {
+        void generateDatabase()
+        {
             data = new DatabaseObject();
         }
-        bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true) {
+        bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true)
+        {
             //if (runtimeData.platform == OSPlatform.Linux) {
             //    return true;
             //}
@@ -26,19 +31,27 @@ namespace Youtube_DL_Frontend {
     };
 
             exists.Add(!exists.Contains(false));
-            if (showGUI) {
+            if (showGUI)
+            {
                 List<string> exists_UI = new List<string>();
 
-                for (int i = 0; i < (exists.Count - 1); i++) {
-                    if (!exists[i]) { // If false 
+                for (int i = 0; i < (exists.Count - 1); i++)
+                {
+                    if (!exists[i])
+                    { // If false 
                         exists_UI.Add("Error!");
-                    } else { // If true
+                    }
+                    else
+                    { // If true
                         exists_UI.Add("Located");
                     }
                 }
-                if (!exists[3]) { // If false 
+                if (!exists[3])
+                { // If false 
                     exists_UI.Add("Error!");
-                } else { // If true
+                }
+                else
+                { // If true
                     exists_UI.Add("Good to go!");
                 }
                 string[][] list = {
@@ -48,7 +61,7 @@ namespace Youtube_DL_Frontend {
                     new string[]{"Result:", exists_UI[3]}
                 };
                 string printOut = Statics.generateList("Checking core files: ", list);
-                
+
 
                 /*Console.WriteLine(
                     $"Checking core files: " +
@@ -57,17 +70,21 @@ namespace Youtube_DL_Frontend {
                     $"\nDatabase:   " + exists_UI[2] +
                     $"\nResult:     " + exists_UI[3]);*/
                 Console.WriteLine(printOut);
-                if (hold_up_execution) {
+                if (hold_up_execution)
+                {
                     Console.WriteLine($"\n-----ENTER TO CONTINUE-----");
                     Console.ReadLine();
                 }
             }
             return exists[3];
         }
-        static void logErrors(List<int> Errors) {
+        static void logErrors(List<int> Errors)
+        {
             Console.WriteLine();
-            for (int i = 0; i < Errors.Count(); i++) {
-                switch (Errors[i]) {
+            for (int i = 0; i < Errors.Count(); i++)
+            {
+                switch (Errors[i])
+                {
                     case 1:
                         Console.WriteLine("Database was reset due to corruption. You may need to re-insert the correct values.");
                         break;
@@ -81,7 +98,8 @@ namespace Youtube_DL_Frontend {
 
         static void Main(string[] args) => new Program().MainAsync(args);
 
-        public async void MainAsync(string[] args) {
+        public async void MainAsync(string[] args)
+        {
             CommandParser parser = new CommandParser();
             parser.registerMenuCommand("Audio Format", Lambdas.audioFormat);
             parser.registerMenuCommand("Audio Quality", Lambdas.audioQuality);
@@ -105,17 +123,21 @@ namespace Youtube_DL_Frontend {
             parser.registerAlias("Exit", "0", CommandParser.commandScope.menu);
             //DataStructures.YoutubeDLParamInfo paramData = new DataStructures.YoutubeDLParamInfo();
             List<int> Errors = new List<int>();
-            if (File.Exists(Constants._DATABASE_FILE) == false) {
+            if (File.Exists(Constants._DATABASE_FILE) == false)
+            {
                 //createDB(Constants._DATABASE_FILE);
                 await data.updateSelf();
-            } else {
+            }
+            else
+            {
                 await data.populateSelf();
             }
 
             Console.Clear();
             //Ascii Text, "Welcome"
             Interface.writeAscii(4);
-            if (!checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, showGUI: false)) {
+            if (!checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, showGUI: false))
+            {
                 Errors.Add(2);
                 checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, hold_up_execution: false);
             }
@@ -124,7 +146,8 @@ namespace Youtube_DL_Frontend {
             if (Errors.Count() > 0) { logErrors(Errors); }
             Console.Write("We have a few initialization questions before you can begin.\n");
             runtimeData.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
-            if (runtimeData.link.ToLower() is not ("s" or "skip")) { // for quick bypass in the case of batch processing
+            if (runtimeData.link.ToLower() is not ("s" or "skip"))
+            { // for quick bypass in the case of batch processing
                 Console.Write("Input \"" + runtimeData.link + "\" Accepted!");
                 Thread.Sleep(400);
                 Console.Clear();
@@ -134,14 +157,18 @@ namespace Youtube_DL_Frontend {
                 runtimeData.filename = InputHandler.inputValidate("Input a name for the file output without the entension");
                 Console.Write("Input \"" + runtimeData.filename + "\" Accepted!");
                 Thread.Sleep(400); //Gives visual feedback to user
-            } else {
+            }
+            else
+            {
                 runtimeData.link = "NULL (Skipped)";
                 runtimeData.filename = "NULL (Skipped)";
             }
-            while (true) {
+            while (true)
+            {
                 //Enums.commandToExecute? input;
 
-                while (true) {
+                while (true)
+                {
                     Console.Clear();
                     Interface.writeGUI(data, runtimeData.link, runtimeData.filename, true);
                     Thread.Sleep(500);
