@@ -20,9 +20,6 @@ namespace Youtube_DL_Frontend
         }
         bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true)
         {
-            //if (runtimeData.platform == OSPlatform.Linux) {
-            //    return true;
-            //}
             List<bool> exists;
             if (runtimeData.platform == OSPlatform.Linux)
             {
@@ -143,7 +140,6 @@ namespace Youtube_DL_Frontend
             List<int> Errors = new List<int>();
             if (File.Exists(Constants._DATABASE_FILE) == false)
             {
-                //createDB(Constants._DATABASE_FILE);
                 await data.updateSelf();
             }
             else
@@ -159,8 +155,6 @@ namespace Youtube_DL_Frontend
                 Errors.Add(2);
                 checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, hold_up_execution: false);
             }
-            //string filename = "NULL";
-            //string link = "NULL";
             if (Errors.Count() > 0) { logErrors(Errors); }
             Console.Write("We have a few initialization questions before you can begin.\n");
             runtimeData.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
