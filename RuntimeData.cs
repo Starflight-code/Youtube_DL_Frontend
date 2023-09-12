@@ -8,6 +8,7 @@ namespace Youtube_DL_Frontend
         public string yotutube_dl_executable;
         public string link;
         public string filename;
+        public string currentMenu;
         public RuntimeData()
         {
             bool usingYTDLP = true;
@@ -37,6 +38,7 @@ namespace Youtube_DL_Frontend
             }
             link = "";
             filename = "";
+            currentMenu = "";
         }
     }
 }

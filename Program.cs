@@ -101,17 +101,17 @@ namespace Youtube_DL_Frontend
         public async void MainAsync(string[] args)
         {
             CommandParser parser = new CommandParser();
-            parser.registerMenuCommand("Audio Format", Lambdas.audioFormat);
-            parser.registerMenuCommand("Audio Quality", Lambdas.audioQuality);
-            parser.registerMenuCommand("Audio Output Format", Lambdas.audioOutputFormat);
-            parser.registerMenuCommand("Directory", Lambdas.directory);
-            parser.registerMenuCommand("FFMPEG Directory", Lambdas.ffDirectory);
-            parser.registerMenuCommand("Link", Lambdas.link);
-            parser.registerMenuCommand("Filename", Lambdas.filename);
+            parser.registerMenuCommand("Audio Format", Lambdas.audioFormat, Lambdas.audioFormatDynamic);
+            parser.registerMenuCommand("Audio Quality", Lambdas.audioQuality, Lambdas.audioQualityDynamic);
+            parser.registerMenuCommand("Audio Output Format", Lambdas.audioOutputFormat, Lambdas.audioOutputFormatDynamic);
+            parser.registerMenuCommand("Directory", Lambdas.directory, Lambdas.directoryDynamic);
+            parser.registerMenuCommand("FFMPEG Directory", Lambdas.ffDirectory, Lambdas.ffDirectoryDynamic);
+            parser.registerMenuCommand("Link", Lambdas.link, Lambdas.linkDynamic);
+            parser.registerMenuCommand("Filename", Lambdas.filename, Lambdas.filenameDynamic);
             parser.registerMenuCommand("Batch", Lambdas.batch);
             parser.registerMenuCommand("Continue", Lambdas.goOn);
             parser.registerMenuCommand("Exit", Lambdas.exit);
-            parser.registerAlias("Audio Format", "1", CommandParser.commandScope.menu);
+            /*parser.registerAlias("Audio Format", "1", CommandParser.commandScope.menu);
             parser.registerAlias("Audio Quality", "2", CommandParser.commandScope.menu);
             parser.registerAlias("Audio Output Format", "3", CommandParser.commandScope.menu);
             parser.registerAlias("Directory", "4", CommandParser.commandScope.menu);
@@ -120,7 +120,7 @@ namespace Youtube_DL_Frontend
             parser.registerAlias("Filename", "7", CommandParser.commandScope.menu);
             parser.registerAlias("Batch", "8", CommandParser.commandScope.menu);
             parser.registerAlias("Continue", "9", CommandParser.commandScope.menu);
-            parser.registerAlias("Exit", "0", CommandParser.commandScope.menu);
+            parser.registerAlias("Exit", "10", CommandParser.commandScope.menu);*/
             //DataStructures.YoutubeDLParamInfo paramData = new DataStructures.YoutubeDLParamInfo();
             List<int> Errors = new List<int>();
             if (File.Exists(Constants._DATABASE_FILE) == false)
@@ -163,6 +163,7 @@ namespace Youtube_DL_Frontend
                 runtimeData.link = "NULL (Skipped)";
                 runtimeData.filename = "NULL (Skipped)";
             }
+            parser.generateMenu(data, runtimeData);
             while (true)
             {
                 //Enums.commandToExecute? input;
@@ -170,7 +171,10 @@ namespace Youtube_DL_Frontend
                 while (true)
                 {
                     Console.Clear();
-                    Interface.writeGUI(data, runtimeData.link, runtimeData.filename, true);
+                    //Interface.writeAscii(1);
+                    //Interface.writeGUI(data, runtimeData.link, runtimeData.filename, true);
+                    Console.Write(runtimeData.currentMenu + "\n\n#\\> ");
+                    //Console.Write("\n#\\> ");
                     Thread.Sleep(500);
                     parser.processMenuInput(Console.ReadLine(), data, runtimeData);
                     /*input = inputhandle.handleCommand(Console.ReadLine());
