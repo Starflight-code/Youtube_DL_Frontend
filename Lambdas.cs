@@ -54,6 +54,24 @@ namespace Youtube_DL_Frontend
             }
             await data.updateSelf();
         };
+        public static Action<DatabaseObject, RuntimeData> youtubeDLP = async (data, runtime) =>
+        {
+            Console.Clear();
+            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
+            Console.Write(runtime.currentMenu);
+            switch (InputHandler.askQuestion("Input if you're using YT-DLP (y/n)", ValidationLambdas.yesOrNo))
+            {
+                case "y":
+                    data.youtubeDLP = true;
+                    break;
+                case "n":
+                    data.youtubeDLP = false;
+                    break;
+                default:
+                    throw new Exception("Validation for YT-DLP failed. ValidationLambda \"yesOrNo\" has failed!");
+            }
+            await data.updateSelf();
+        };
         public static Action<DatabaseObject, RuntimeData> link = async (data, runtime) =>
         {
             Console.Clear();
@@ -133,6 +151,18 @@ namespace Youtube_DL_Frontend
         public static Func<DatabaseObject, RuntimeData, string> filenameDynamic = (data, runtime) =>
         {
             return runtime.filename;
+        };
+
+        public static Func<DatabaseObject, RuntimeData, string> youtubeDLPDynamic = (data, runtime) =>
+        {
+            if (!data.youtubeDLP)
+            {
+                return "using Youtube-DL";
+            }
+            else
+            {
+                return "using YT-DLP";
+            }
         };
 
     }

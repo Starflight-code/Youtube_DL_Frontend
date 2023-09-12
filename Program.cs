@@ -7,7 +7,7 @@ namespace Youtube_DL_Frontend
     {
         //ValidationLambdas lambdas = new ValidationLambdas();
         DatabaseObject data;
-        RuntimeData runtimeData = new RuntimeData();
+        RuntimeData runtimeData = new RuntimeData(false);
         InputHandler inputhandle = new InputHandler();
         public Program()
         {
@@ -121,6 +121,7 @@ namespace Youtube_DL_Frontend
             parser.registerMenuCommand("Audio Output Format", Lambdas.audioOutputFormat, Lambdas.audioOutputFormatDynamic);
             parser.registerMenuCommand("Directory", Lambdas.directory, Lambdas.directoryDynamic);
             parser.registerMenuCommand("FFMPEG Directory", Lambdas.ffDirectory, Lambdas.ffDirectoryDynamic);
+            parser.registerMenuCommand("Using", Lambdas.youtubeDLP, Lambdas.youtubeDLPDynamic);
             parser.registerMenuCommand("Link", Lambdas.link, Lambdas.linkDynamic);
             parser.registerMenuCommand("Filename", Lambdas.filename, Lambdas.filenameDynamic);
             parser.registerMenuCommand("Batch", Lambdas.batch);
@@ -175,6 +176,7 @@ namespace Youtube_DL_Frontend
                 runtimeData.link = "NULL (Skipped)";
                 runtimeData.filename = "NULL (Skipped)";
             }
+            runtimeData.changeYTDLP(data.youtubeDLP);
             parser.generateMenu(data, runtimeData);
             while (true)
             {

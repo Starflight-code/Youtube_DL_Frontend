@@ -10,6 +10,8 @@ namespace Youtube_DL_Frontend
         public string audioFormat; // af in code
         public string audioQuality; // aq in code
         public string audioOutputFormat; // auf in code
+
+        public bool youtubeDLP;
         public DatabaseObject()
         {
             workingDirectory = Directory.GetCurrentDirectory();
@@ -17,19 +19,21 @@ namespace Youtube_DL_Frontend
             audioFormat = "251";
             audioQuality = "0";
             audioOutputFormat = "mp3";
+            youtubeDLP = false;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 ffMpegDirectory = "/usr/bin/ffmpeg";
             }
         }
 
-        public DatabaseObject(string workingDirectory, string ffMpegDirectory, string audioFormat, string audioQuality, string audioOutputFormat)
+        public DatabaseObject(string workingDirectory, string ffMpegDirectory, string audioFormat, string audioQuality, string audioOutputFormat, bool youtubeDLP)
         {
             this.workingDirectory = workingDirectory;
             this.ffMpegDirectory = ffMpegDirectory;
             this.audioFormat = audioFormat;
             this.audioQuality = audioQuality;
             this.audioOutputFormat = audioOutputFormat;
+            this.youtubeDLP = youtubeDLP;
         }
         public async Task updateSelf()
         {
@@ -48,6 +52,7 @@ namespace Youtube_DL_Frontend
             this.audioFormat = database.audioFormat;
             this.audioQuality = database.audioQuality;
             this.audioOutputFormat = database.audioOutputFormat;
+            this.youtubeDLP = database.youtubeDLP;
 
             // TODO: pull from database file, populate fields with values from sanitized object 
             // only if an error doesn't happen upon deserialization

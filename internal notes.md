@@ -9,3 +9,8 @@ supported and tested on again prior to stable releases.
 Add modular command parsing through a modified version of Command Music's parser. 
 It will originally only support menu commands with the eventual goal of supporting 
 external commands (args) and internal commands (similar to iwd).
+
+## Release Delayed
+youtube-dl/yt-dlp setting should be added prior to a release, since it breaks existing youtube-dl workflows.
+Potential workaround, rename youtube-dl.exe to yt-dlp.exe, I'd rather not have users renaming stuff on a 
+stable release.
