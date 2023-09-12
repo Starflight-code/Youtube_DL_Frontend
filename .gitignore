@@ -3,3 +3,4 @@ obj/Release/*
 obj/Debug/*
 bin/Debug/*
 data.db
+obj/*
