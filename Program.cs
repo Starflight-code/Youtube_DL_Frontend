@@ -34,7 +34,7 @@ namespace Youtube_DL_Frontend
             {
                 exists = new List<bool>
                 {
-                File.Exists(Constants._YOUTUBE_DL_EXECUTABLE),
+                File.Exists(runtimeData.yotutube_dl_executable),
                 File.Exists($"{ff}\\ffmpeg.exe"),
                 File.Exists(DATABASE_FILE)
                 };
@@ -141,13 +141,13 @@ namespace Youtube_DL_Frontend
             List<int> Errors = new List<int>();
             if (File.Exists(Constants._DATABASE_FILE) == false)
             {
-                await data.updateSelf();
+                await data.updateSelf(true);
             }
             else
             {
                 await data.populateSelf();
             }
-
+            runtimeData.changeYTDLP(data.youtubeDLP);
             Console.Clear();
             //Ascii Text, "Welcome"
             Interface.writeAscii(4);
@@ -176,7 +176,6 @@ namespace Youtube_DL_Frontend
                 runtimeData.link = "NULL (Skipped)";
                 runtimeData.filename = "NULL (Skipped)";
             }
-            runtimeData.changeYTDLP(data.youtubeDLP);
             parser.generateMenu(data, runtimeData);
             while (true)
             {

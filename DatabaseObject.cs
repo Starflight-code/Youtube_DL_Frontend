@@ -35,10 +35,17 @@ namespace Youtube_DL_Frontend
             this.audioOutputFormat = audioOutputFormat;
             this.youtubeDLP = youtubeDLP;
         }
-        public async Task updateSelf()
+        public async Task updateSelf(bool newDatabase = false)
         {
             string databaseSerialized = JsonConvert.SerializeObject(this); // serializes itself into JSON
-            await File.WriteAllTextAsync(Constants._DATABASE_FILE, databaseSerialized); // writes JSON into file
+            if (newDatabase)
+            {
+                File.WriteAllText(Constants._DATABASE_FILE, databaseSerialized); // writes JSON into file
+            }
+            else
+            {
+                await File.WriteAllTextAsync(Constants._DATABASE_FILE, databaseSerialized); // writes JSON into file
+            }
         }
 
         public async Task populateSelf()
