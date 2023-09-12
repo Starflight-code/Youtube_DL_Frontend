@@ -47,7 +47,7 @@ namespace Youtube_DL_Frontend
             StringBuilder sb = new StringBuilder();
             int buffer = 0;
             sb.Append(title);
-            sb.Append("\n");
+            sb.Append('\n');
             for (int i = 0; i < list.Length; i++)
             {
                 for (int j = 0; j < list[i].Length; j++)
@@ -56,11 +56,11 @@ namespace Youtube_DL_Frontend
                     buffer = xMaxLengths[j] - list[i][j].Length;
                     for (int k = 0; k < buffer; k++)
                     {
-                        sb.Append(" ");
+                        sb.Append(' ');
                     }
-                    sb.Append(" ");
+                    sb.Append(' ');
                 }
-                sb.Append("\n");
+                sb.Append('\n');
             }
             return sb.ToString();
         }

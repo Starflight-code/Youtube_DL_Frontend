@@ -23,12 +23,25 @@ namespace Youtube_DL_Frontend
             //if (runtimeData.platform == OSPlatform.Linux) {
             //    return true;
             //}
-            List<bool> exists = new List<bool>
+            List<bool> exists;
+            if (runtimeData.platform == OSPlatform.Linux)
             {
-        File.Exists(Constants._YOUTUBE_DL_EXECUTABLE),
-        File.Exists($"{ff}\\ffmpeg.exe"),
-        File.Exists(DATABASE_FILE)
-    };
+                exists = new List<bool>
+                {
+                true,
+                File.Exists(ff),
+                File.Exists(DATABASE_FILE)
+                };
+            }
+            else
+            {
+                exists = new List<bool>
+                {
+                File.Exists(Constants._YOUTUBE_DL_EXECUTABLE),
+                File.Exists($"{ff}\\ffmpeg.exe"),
+                File.Exists(DATABASE_FILE)
+                };
+            }
 
             exists.Add(!exists.Contains(false));
             if (showGUI)
@@ -54,12 +67,17 @@ namespace Youtube_DL_Frontend
                 { // If true
                     exists_UI.Add("Good to go!");
                 }
+
                 string[][] list = {
                     new string[]{"Youtube-DL:", exists_UI[0]},
                     new string[]{"FFMPEG:", exists_UI[1]},
                     new string[]{"Database:", exists_UI[2]},
                     new string[]{"Result:", exists_UI[3]}
                 };
+                if (runtimeData.platform == OSPlatform.Linux)
+                {
+                    list[0][1] = "Skipped (check not supported on Linux)";
+                }
                 string printOut = Statics.generateList("Checking core files: ", list);
 
 
@@ -245,7 +263,7 @@ namespace Youtube_DL_Frontend
                         case Enums.commandToExecute.goOn:
                             if (runtimeData.filename != "NULL (Skipped)" && runtimeData.link != "NULL (Skipped)") {
                                 ExternalInterface.runYoutubeDL(data, runtimeData);
-                                
+
                             } else {
                                 Console.Write("\nOops, you need to specify the link and filename first.\nPRESS ENTER TO CONTINUE");
                                 Console.ReadLine();
