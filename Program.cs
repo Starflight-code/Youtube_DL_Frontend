@@ -5,9 +5,8 @@ namespace Youtube_DL_Frontend
 {
     internal class Program
     {
-        //ValidationLambdas lambdas = new ValidationLambdas();
         DatabaseObject data;
-        RuntimeData runtimeData = new RuntimeData(false);
+        RuntimeData runtimeData = new RuntimeData();
         InputHandler inputhandle = new InputHandler();
         public Program()
         {
@@ -127,17 +126,6 @@ namespace Youtube_DL_Frontend
             parser.registerMenuCommand("Batch", Lambdas.batch);
             parser.registerMenuCommand("Continue", Lambdas.goOn);
             parser.registerMenuCommand("Exit", Lambdas.exit);
-            /*parser.registerAlias("Audio Format", "1", CommandParser.commandScope.menu);
-            parser.registerAlias("Audio Quality", "2", CommandParser.commandScope.menu);
-            parser.registerAlias("Audio Output Format", "3", CommandParser.commandScope.menu);
-            parser.registerAlias("Directory", "4", CommandParser.commandScope.menu);
-            parser.registerAlias("FFMPEG Directory", "5", CommandParser.commandScope.menu);
-            parser.registerAlias("Link", "6", CommandParser.commandScope.menu);
-            parser.registerAlias("Filename", "7", CommandParser.commandScope.menu);
-            parser.registerAlias("Batch", "8", CommandParser.commandScope.menu);
-            parser.registerAlias("Continue", "9", CommandParser.commandScope.menu);
-            parser.registerAlias("Exit", "10", CommandParser.commandScope.menu);*/
-            //DataStructures.YoutubeDLParamInfo paramData = new DataStructures.YoutubeDLParamInfo();
             List<int> Errors = new List<int>();
             if (File.Exists(Constants._DATABASE_FILE) == false)
             {
@@ -157,6 +145,7 @@ namespace Youtube_DL_Frontend
                 checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, hold_up_execution: false);
             }
             if (Errors.Count() > 0) { logErrors(Errors); }
+
             Console.Write("We have a few initialization questions before you can begin.\n");
             runtimeData.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
             if (runtimeData.link.ToLower() is not ("s" or "skip"))
@@ -164,6 +153,7 @@ namespace Youtube_DL_Frontend
                 Console.Write("Input \"" + runtimeData.link + "\" Accepted!");
                 Thread.Sleep(400);
                 Console.Clear();
+
                 //Ascii Text, "Welcome"
                 Interface.writeAscii(4);
                 Console.Write("We have a few initialization questions before you can begin.\n");
@@ -177,106 +167,14 @@ namespace Youtube_DL_Frontend
                 runtimeData.filename = "NULL (Skipped)";
             }
             parser.generateMenu(data, runtimeData);
+
             while (true)
             {
-                //Enums.commandToExecute? input;
-
-                while (true)
-                {
-                    Console.Clear();
-                    //Interface.writeAscii(1);
-                    //Interface.writeGUI(data, runtimeData.link, runtimeData.filename, true);
-                    Console.Write(runtimeData.currentMenu + "\n\n#\\> ");
-                    //Console.Write("\n#\\> ");
-                    Thread.Sleep(500);
-                    parser.processMenuInput(Console.ReadLine(), data, runtimeData);
-                    /*input = inputhandle.handleCommand(Console.ReadLine());
-                    switch (input) {
-
-                        case Enums.commandToExecute.audioFormat:
-                            Console.Clear();
-                            Interface.writeGUI(data, runtimeData.link, runtimeData.filename, false);
-                            data.audioFormat = InputHandler.askQuestion("Input a new audio format", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio format: ");
-                            await data.updateSelf();
-                            break;
-
-                        case Enums.commandToExecute.audioQuality:
-                            Console.Clear();
-                            Interface.writeGUI(data, runtimeData.link, runtimeData.filename, false);
-                            data.audioQuality = InputHandler.askQuestion("Input a new audio quality", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio quality: ");
-                            await data.updateSelf();
-                            break;
-
-                        case Enums.commandToExecute.audioOutputFormat:
-                            Console.Clear();
-                            Interface.writeGUI(data, runtimeData.link, runtimeData.filename, false);
-                            data.audioOutputFormat = InputHandler.inputValidate("Input a new conversion format");
-                            await data.updateSelf();
-                            break;
-
-                        case Enums.commandToExecute.directory:
-                            Console.Clear();
-                            Interface.writeGUI(data, runtimeData.link, runtimeData.filename, false);
-                            data.workingDirectory = InputHandler.inputValidate("Input a new directory path (A to autofill current path)");
-                            if (data.workingDirectory == "A" || data.workingDirectory == "a") { data.workingDirectory = Directory.GetCurrentDirectory(); }
-                            if (!Directory.Exists(data.workingDirectory)) {
-                                Console.WriteLine("Warning: The directory you entered does not currently exist. This script may not function properly.\nPRESS ENTER TO CONTINUE");
-                                Console.ReadLine();
-                            }
-                            await data.updateSelf();
-                            break;
-
-                        case Enums.commandToExecute.ffDirectory:
-                            Console.Clear();
-                            Interface.writeGUI(data, runtimeData.link, runtimeData.filename, false);
-                            data.ffMpegDirectory = InputHandler.inputValidate("Input a new FF-Mpeg Path (A to autofill current path)");
-                            if (data.ffMpegDirectory == "A" || data.ffMpegDirectory == "a") { data.ffMpegDirectory = Directory.GetCurrentDirectory(); }
-                            if (!File.Exists(data.ffMpegDirectory + "\\ffmpeg.exe")) {
-                                Console.WriteLine("Warning: FFMPEG could not be located at this path. This script may not function properly.\nPRESS ENTER TO CONTINUE");
-                                Console.ReadLine();
-                            }
-                            await data.updateSelf();
-                            break;
-
-                        case Enums.commandToExecute.link:
-                            Console.Clear();
-                            Interface.writeGUI(data, runtimeData.link, runtimeData.filename, false);
-                            runtimeData.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
-                            break;
-
-                        case Enums.commandToExecute.filename:
-                            Console.Clear();
-                            Interface.writeGUI(data, runtimeData.link, runtimeData.filename, false);
-                            runtimeData.filename = InputHandler.inputValidate("Input a name for the output file (without the entension)");
-                            break;
-
-                        case Enums.commandToExecute.batch:
-                            Console.Clear();
-                            ExternalInterface.batchProcess(data, runtimeData);
-                            break;
-
-                        case Enums.commandToExecute.goOn:
-                            if (runtimeData.filename != "NULL (Skipped)" && runtimeData.link != "NULL (Skipped)") {
-                                ExternalInterface.runYoutubeDL(data, runtimeData);
-
-                            } else {
-                                Console.Write("\nOops, you need to specify the link and filename first.\nPRESS ENTER TO CONTINUE");
-                                Console.ReadLine();
-                            }
-                            break;
-
-                        case Enums.commandToExecute.exit:
-                            Console.Clear();
-                            //Ascii Text, "Thank You"
-                            Interface.writeAscii(3);
-                            Console.WriteLine("This application is now exiting...\nThank you for using Youtube-DL Frontend!");
-                            Thread.Sleep(1000);
-                            System.Environment.Exit(1);
-                            break;
-                    };*/
-
-                };
-            }
+                Console.Clear();
+                Console.Write(runtimeData.currentMenu + "\n\n#\\> ");
+                Thread.Sleep(500);
+                parser.processMenuInput(Console.ReadLine(), data, runtimeData);
+            };
         }
     }
 }

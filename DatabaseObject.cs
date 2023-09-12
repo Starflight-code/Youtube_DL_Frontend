@@ -50,17 +50,24 @@ namespace Youtube_DL_Frontend
 
         public async Task populateSelf()
         {
-            DatabaseObject? database = JsonConvert.DeserializeObject<DatabaseObject>(File.ReadAllText(Constants._DATABASE_FILE)); // deserializes file to a DatabaseObject
-            if (database == null) { await updateSelf(); return; }
+            try
+            {
+                DatabaseObject? database = JsonConvert.DeserializeObject<DatabaseObject>(File.ReadAllText(Constants._DATABASE_FILE)); // deserializes file to a DatabaseObject
+                if (database == null) { await updateSelf(); return; }
 
-            // setting values - sets the values to the DatabaseObject's values
-            this.workingDirectory = database.workingDirectory;
-            this.ffMpegDirectory = database.ffMpegDirectory;
-            this.audioFormat = database.audioFormat;
-            this.audioQuality = database.audioQuality;
-            this.audioOutputFormat = database.audioOutputFormat;
-            this.youtubeDLP = database.youtubeDLP;
-
+                // setting values - sets the values to the DatabaseObject's values
+                this.workingDirectory = database.workingDirectory;
+                this.ffMpegDirectory = database.ffMpegDirectory;
+                this.audioFormat = database.audioFormat;
+                this.audioQuality = database.audioQuality;
+                this.audioOutputFormat = database.audioOutputFormat;
+                this.youtubeDLP = database.youtubeDLP;
+            }
+            catch
+            {
+                File.Delete(Constants._DATABASE_FILE);
+                await updateSelf(true);
+            }
             // TODO: pull from database file, populate fields with values from sanitized object 
             // only if an error doesn't happen upon deserialization
 

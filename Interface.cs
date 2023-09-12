@@ -11,7 +11,6 @@ namespace Youtube_DL_Frontend
             {
                 Console.Write("\n#\\> ");
             }
-            //writeDB(parameters);
         }
         public static bool checkURL(string url)
         { // Checks for whether or not the url is formatted properly 

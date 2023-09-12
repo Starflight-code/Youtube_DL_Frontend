@@ -54,7 +54,7 @@ namespace Youtube_DL_Frontend
                         fileNames.Add(x);
                         break;
                     default:
-                        throw (new Exception("Logic error detected in batch processing. This should not be possible. Your machine may be failing, C# is malfunctioning, or something else is seriously wrong."));
+                        throw new Exception("Logic error detected in batch processing. This should not be possible. Your machine may be failing, C# is malfunctioning, or something else is seriously wrong.");
                 }
                 i++;
             }

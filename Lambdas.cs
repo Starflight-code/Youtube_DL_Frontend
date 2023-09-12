@@ -5,7 +5,6 @@ namespace Youtube_DL_Frontend
         public static Action<DatabaseObject, RuntimeData> audioFormat = async (data, runtime) =>
         {
             Console.Clear();
-            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
             Console.Write(runtime.currentMenu);
             data.audioFormat = InputHandler.askQuestion("Input a new audio format", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio format: ");
             await data.updateSelf();
@@ -13,7 +12,6 @@ namespace Youtube_DL_Frontend
         public static Action<DatabaseObject, RuntimeData> audioQuality = async (data, runtime) =>
         {
             Console.Clear();
-            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
             Console.Write(runtime.currentMenu);
             data.audioQuality = InputHandler.askQuestion("Input a new audio quality", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio quality: ");
             await data.updateSelf();
@@ -21,7 +19,6 @@ namespace Youtube_DL_Frontend
         public static Action<DatabaseObject, RuntimeData> audioOutputFormat = async (data, runtime) =>
         {
             Console.Clear();
-            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
             Console.Write(runtime.currentMenu);
             data.audioOutputFormat = InputHandler.inputValidate("Input a new conversion format");
             await data.updateSelf();
@@ -29,7 +26,6 @@ namespace Youtube_DL_Frontend
         public static Action<DatabaseObject, RuntimeData> directory = async (data, runtime) =>
         {
             Console.Clear();
-            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
             Console.Write(runtime.currentMenu);
             data.workingDirectory = InputHandler.inputValidate("Input a new directory path (A to autofill current path)");
             if (data.workingDirectory == "A" || data.workingDirectory == "a") { data.workingDirectory = Directory.GetCurrentDirectory(); }
@@ -43,7 +39,6 @@ namespace Youtube_DL_Frontend
         public static Action<DatabaseObject, RuntimeData> ffDirectory = async (data, runtime) =>
         {
             Console.Clear();
-            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
             Console.Write(runtime.currentMenu);
             data.ffMpegDirectory = InputHandler.inputValidate("Input a new FF-Mpeg Path (A to autofill current path)");
             if (data.ffMpegDirectory == "A" || data.ffMpegDirectory == "a") { data.ffMpegDirectory = Directory.GetCurrentDirectory(); }
@@ -57,7 +52,6 @@ namespace Youtube_DL_Frontend
         public static Action<DatabaseObject, RuntimeData> youtubeDLP = async (data, runtime) =>
         {
             Console.Clear();
-            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
             Console.Write(runtime.currentMenu);
             switch (InputHandler.askQuestion("Input if you're using YT-DLP (y/n)", ValidationLambdas.yesOrNo))
             {
@@ -75,7 +69,6 @@ namespace Youtube_DL_Frontend
         public static Action<DatabaseObject, RuntimeData> link = async (data, runtime) =>
         {
             Console.Clear();
-            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
             Console.Write(runtime.currentMenu);
             runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
             await Task.Delay(0);
@@ -83,7 +76,6 @@ namespace Youtube_DL_Frontend
         public static Action<DatabaseObject, RuntimeData> filename = async (data, runtime) =>
         {
             Console.Clear();
-            //Interface.writeGUI(data, runtime.link, runtime.filename, false);
             Console.Write(runtime.currentMenu);
             runtime.filename = InputHandler.inputValidate("Input a name for the output file (without the entension)");
             await Task.Delay(0);

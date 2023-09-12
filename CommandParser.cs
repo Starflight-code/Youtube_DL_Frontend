@@ -273,7 +273,7 @@ namespace Youtube_DL_Frontend
                     menuList[i].getCommandName(),
                     menuList[i].getDynamicData(data, runtime)};
             }
-            runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("Youtube-DL FE Menu", preList);
+            runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
 
         }
         public async void generateMenuAsync(DatabaseObject data, RuntimeData runtime)
@@ -288,7 +288,7 @@ namespace Youtube_DL_Frontend
                     menuList[i].getCommandName(),
                     menuList[i].getDynamicData(data, runtime)};
                 }
-                runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("Youtube-DL FE Menu", preList);
+                runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
             });
         }
     }
