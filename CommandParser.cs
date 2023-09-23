@@ -19,7 +19,7 @@ namespace Youtube_DL_Frontend
             external,
             menu
         }
-        struct command
+        public struct command
         {
 
             string commandName;

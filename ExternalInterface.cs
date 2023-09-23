@@ -10,7 +10,17 @@ namespace Youtube_DL_Frontend
             //Ascii Text, "Executing..."
             Interface.writeAscii(2);
             Console.Write($"Command parsed and sent, passing youtube-dl output...\n\n");
-            var process = Process.Start(runtimeData.yotutube_dl_executable, ConstantBuilder.buildArguments(data, runtimeData.link, runtimeData.filename));
+            Process process;
+            try
+            {
+                process = Process.Start(runtimeData.yotutube_dl_executable, ConstantBuilder.buildArguments(data, runtimeData.link, runtimeData.filename));
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("\n\nYoutube-DL Path Misconfigured");
+                Console.ReadLine();
+                return;
+            }
             Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
             process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
             string result = process.ExitCode != 0 ? "Failed" : "Succeeded";
