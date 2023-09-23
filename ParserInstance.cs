@@ -1,13 +1,27 @@
+using System.Runtime.CompilerServices;
+
 namespace Youtube_DL_Frontend
 {
     internal class ParserInstance
     {
         private Dictionary<string, CommandParser.command> parser;
         private List<CommandParser.command> menuList;
-        ParserInstance()
+        public ParserInstance()
         {
             parser = new Dictionary<string, CommandParser.command>();
             menuList = new List<CommandParser.command>();
+        }
+        public ParserInstance(List<CommandParser.command> commands)
+        {
+            parser = new Dictionary<string, CommandParser.command>();
+            menuList = new List<CommandParser.command>();
+            for (int i = 0; i < commands.Count(); i++)
+            {
+                string commandName = Statics.preProcessInput(commands[i].getCommandName());
+                parser.Add(commandName, commands[i]);
+                menuList.Add(commands[i]);
+                parser.Add((i + 1).ToString(), commands[i]);
+            }
         }
         public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData> action)
         {
@@ -15,6 +29,7 @@ namespace Youtube_DL_Frontend
             commandName = Statics.preProcessInput(commandName);
             parser.Add(commandName, new CommandParser.command(commandName, action));
             menuList.Add(new CommandParser.command(commandName, action));
+            parser.Add(menuList.Count.ToString(), new CommandParser.command(commandName, action));
         }
         public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
         {
@@ -22,6 +37,7 @@ namespace Youtube_DL_Frontend
             commandName = Statics.preProcessInput(commandName);
             parser.Add(commandName, new CommandParser.command(commandName, action, true, dynamicDataLambda));
             menuList.Add(new CommandParser.command(commandName, action, true, dynamicDataLambda));
+            parser.Add(menuList.Count.ToString(), new CommandParser.command(commandName, action, true, dynamicDataLambda));
         }
         public bool registerAlias(string commandName, string alias)
         {

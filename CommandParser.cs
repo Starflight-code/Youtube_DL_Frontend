@@ -12,6 +12,7 @@ namespace Youtube_DL_Frontend
         private Dictionary<string, CommandParser.command> parserExternal;
         private Dictionary<string, CommandParser.command> parserMenu;
         private List<CommandParser.command> menuList;
+        private ParserInstance menu;
 
         public enum commandScope
         {
@@ -78,6 +79,7 @@ namespace Youtube_DL_Frontend
             parserExternal = new Dictionary<string, CommandParser.command>();
             parserMenu = new Dictionary<string, CommandParser.command>();
             menuList = new List<CommandParser.command>();
+            menu = new ParserInstance();
         }
 
         public string[] getArgs(string[] fullCommand)
@@ -105,10 +107,11 @@ namespace Youtube_DL_Frontend
         public void registerMenuCommand(string commandName, Action<DatabaseObject, RuntimeData> action)
         {
 
-            commandName = Statics.preProcessInput(commandName);
-            parserMenu.Add(commandName, new command(commandName, action));
-            menuList.Add(new command(commandName, action));
-            registerAlias(commandName, menuList.Count.ToString(), CommandParser.commandScope.menu);
+            //commandName = Statics.preProcessInput(commandName);
+            //parserMenu.Add(commandName, new command(commandName, action));
+            //menuList.Add(new command(commandName, action));
+            //registerAlias(commandName, menuList.Count.ToString(), CommandParser.commandScope.menu);
+            menu.registerCommand(commandName, action);
         }
         public void registerInternalCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
         {
@@ -125,10 +128,11 @@ namespace Youtube_DL_Frontend
         public void registerMenuCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
         {
 
-            commandName = Statics.preProcessInput(commandName);
-            parserMenu.Add(commandName, new command(commandName, action, true, dynamicDataLambda));
-            menuList.Add(new command(commandName, action, true, dynamicDataLambda));
-            registerAlias(commandName, menuList.Count.ToString(), CommandParser.commandScope.menu);
+            //commandName = Statics.preProcessInput(commandName);
+            //parserMenu.Add(commandName, new command(commandName, action, true, dynamicDataLambda));
+            //menuList.Add(new command(commandName, action, true, dynamicDataLambda));
+            //registerAlias(commandName, menuList.Count.ToString(), CommandParser.commandScope.menu);
+            menu.registerCommand(commandName, action, dynamicDataLambda);
         }
 
         public bool registerAlias(string commandName, string alias, commandScope scope)
@@ -207,7 +211,7 @@ namespace Youtube_DL_Frontend
         public bool unregisterMenuCommand(string commandName)
         {
 
-            commandName = Statics.preProcessInput(commandName);
+            /*commandName = Statics.preProcessInput(commandName);
             command value;
             bool foundValue = parserMenu.TryGetValue(commandName, out value);
             if (!foundValue) { return false; }
@@ -219,7 +223,8 @@ namespace Youtube_DL_Frontend
             {
                 parserMenu.Remove(aliases[i]);
             }
-            return true;
+            return true;*/
+            return menu.unregisterCommand(commandName);
         }
 
         public bool processInternalInput(string? input, DatabaseObject data, RuntimeData runtime)
@@ -249,7 +254,7 @@ namespace Youtube_DL_Frontend
         public bool processMenuInput(string? input, DatabaseObject data, RuntimeData runtime)
         {
 
-            if (input == null) { return false; }
+            /*if (input == null) { return false; }
 
             input = Statics.preProcessInput(input);
             string[] inputArray = input.Split(" ");
@@ -260,12 +265,13 @@ namespace Youtube_DL_Frontend
             {
                 generateMenu(data, runtime);
             }
-            return true;
+            return true;*/
+            return menu.processInput(input, data, runtime);
         }
 
         public void generateMenu(DatabaseObject data, RuntimeData runtime)
         {
-            string[][] preList = new string[menuList.Count][];
+            /*string[][] preList = new string[menuList.Count][];
             for (int i = 0; i < menuList.Count; i++)
             {
                 preList[i] = new string[] {
@@ -274,11 +280,12 @@ namespace Youtube_DL_Frontend
                     menuList[i].getDynamicData(data, runtime)};
             }
             runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
-
+            */
+            menu.generateMenu(data, runtime);
         }
         public async void generateMenuAsync(DatabaseObject data, RuntimeData runtime)
         {
-            await Task.Run(() =>
+            /*await Task.Run(() =>
             {
                 string[][] preList = new string[menuList.Count][];
                 for (int i = 0; i < menuList.Count; i++)
@@ -289,7 +296,9 @@ namespace Youtube_DL_Frontend
                     menuList[i].getDynamicData(data, runtime)};
                 }
                 runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
-            });
+            });*/
+            await Task.Delay(0);
+            menu.generateMenuAsync(data, runtime);
         }
     }
 }

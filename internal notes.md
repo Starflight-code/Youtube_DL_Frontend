@@ -13,6 +13,6 @@ Adding YT-DL presets, for instance a preset for video and another for audio. Thi
 allow users to switch between fetching videos and audio easily.
 
 Add additional menus for settings, presets and other additions
-- Impliment modular command parsing system -> Added, needs testing
+- Impliment modular command parsing system -> Tested and working
 - Add command parsing for submenus
 - Integrate all parsing systems together within a menu tree
