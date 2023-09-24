@@ -1,5 +1,8 @@
-﻿using System.Diagnostics;
+﻿using Youtube_DL_Frontend.Lambdas;
+using Youtube_DL_Frontend.Parsing;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Youtube_DL_Frontend.Data;
 
 namespace Youtube_DL_Frontend
 {
@@ -115,17 +118,17 @@ namespace Youtube_DL_Frontend
         public async void MainAsync(string[] args)
         {
             CommandParser parser = new CommandParser();
-            parser.registerMenuCommand("Audio Format", Lambdas.audioFormat, Lambdas.audioFormatDynamic);
-            parser.registerMenuCommand("Audio Quality", Lambdas.audioQuality, Lambdas.audioQualityDynamic);
-            parser.registerMenuCommand("Audio Output Format", Lambdas.audioOutputFormat, Lambdas.audioOutputFormatDynamic);
-            parser.registerMenuCommand("Directory", Lambdas.directory, Lambdas.directoryDynamic);
-            parser.registerMenuCommand("FFMPEG Directory", Lambdas.ffDirectory, Lambdas.ffDirectoryDynamic);
-            parser.registerMenuCommand("Using", Lambdas.youtubeDLP, Lambdas.youtubeDLPDynamic);
-            parser.registerMenuCommand("Link", Lambdas.link, Lambdas.linkDynamic);
-            parser.registerMenuCommand("Filename", Lambdas.filename, Lambdas.filenameDynamic);
-            parser.registerMenuCommand("Batch", Lambdas.batch);
-            parser.registerMenuCommand("Continue", Lambdas.goOn);
-            parser.registerMenuCommand("Exit", Lambdas.exit);
+            parser.registerMenuCommand("Audio Format", Main_Lambdas.audioFormat, Main_Lambdas.audioFormatDynamic);
+            parser.registerMenuCommand("Audio Quality", Main_Lambdas.audioQuality, Main_Lambdas.audioQualityDynamic);
+            parser.registerMenuCommand("Audio Output Format", Main_Lambdas.audioOutputFormat, Main_Lambdas.audioOutputFormatDynamic);
+            parser.registerMenuCommand("Directory", Main_Lambdas.directory, Main_Lambdas.directoryDynamic);
+            parser.registerMenuCommand("FFMPEG Directory", Main_Lambdas.ffDirectory, Main_Lambdas.ffDirectoryDynamic);
+            parser.registerMenuCommand("Using", Main_Lambdas.youtubeDLP, Main_Lambdas.youtubeDLPDynamic);
+            parser.registerMenuCommand("Link", Main_Lambdas.link, Main_Lambdas.linkDynamic);
+            parser.registerMenuCommand("Filename", Main_Lambdas.filename, Main_Lambdas.filenameDynamic);
+            parser.registerMenuCommand("Batch", Main_Lambdas.batch);
+            parser.registerMenuCommand("Continue", Main_Lambdas.goOn);
+            parser.registerMenuCommand("Exit", Main_Lambdas.exit);
             List<int> Errors = new List<int>();
             if (File.Exists(Constants._DATABASE_FILE) == false)
             {

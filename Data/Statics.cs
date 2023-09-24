@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Youtube_DL_Frontend
+namespace Youtube_DL_Frontend.Data
 {
     internal class Statics
     {

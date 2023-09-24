@@ -1,10 +1,11 @@
 using System.Diagnostics;
+using Youtube_DL_Frontend.Parsing;
 
 namespace Youtube_DL_Frontend
 {
     internal class ExternalInterface
     {
-        public static void runYoutubeDL(DatabaseObject data, RuntimeData runtimeData)
+        public static void runYoutubeDL(Data.DatabaseObject data, Data.RuntimeData runtimeData)
         {
             Console.Clear();
             //Ascii Text, "Executing..."
@@ -39,9 +40,9 @@ namespace Youtube_DL_Frontend
             Console.Write($"\nExecution completed with result: {result}\nPRESS ENTER TO CONTINUE");
             Console.ReadLine();
         }
-        public static void batchProcess(DatabaseObject data, RuntimeData runtimeData)
+        public static void batchProcess(Data.DatabaseObject data, Data.RuntimeData runtimeData)
         {
-            Console.Write(Constants._BATCH_WELCOME);
+            Console.Write(Data.Constants._BATCH_WELCOME);
             string batchfile = InputHandler.inputValidate("Enter File Path");
             while (!File.Exists(batchfile))
             {

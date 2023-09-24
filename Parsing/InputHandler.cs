@@ -1,4 +1,6 @@
-﻿namespace Youtube_DL_Frontend
+﻿using Youtube_DL_Frontend.Data;
+
+namespace Youtube_DL_Frontend.Parsing
 {
     internal class InputHandler
     {

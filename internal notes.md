@@ -16,3 +16,6 @@ Add additional menus for settings, presets and other additions
 - Impliment modular command parsing system -> Tested and working
 - Add command parsing for submenus
 - Integrate all parsing systems together within a menu tree
+
+Fixed
+- An issue where menu data would not update until program restarts

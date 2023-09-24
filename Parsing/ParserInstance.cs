@@ -1,6 +1,8 @@
 using System.Runtime.CompilerServices;
+using Youtube_DL_Frontend.Data;
 
-namespace Youtube_DL_Frontend
+
+namespace Youtube_DL_Frontend.Parsing
 {
     internal class ParserInstance
     {
@@ -83,6 +85,10 @@ namespace Youtube_DL_Frontend
             bool foundValue = parser.TryGetValue(inputArray[0], out CommandParser.command value);
             if (!foundValue) { return false; }
             value.invokeLambda(data, runtime);
+            if (value.hasDynamicData())
+            {
+                generateMenu(data, runtime);
+            }
             return true;
         }
         public void generateMenu(DatabaseObject data, RuntimeData runtime)

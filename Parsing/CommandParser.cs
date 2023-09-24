@@ -3,8 +3,9 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
+using Youtube_DL_Frontend.Data;
 
-namespace Youtube_DL_Frontend
+namespace Youtube_DL_Frontend.Parsing
 {
     internal class CommandParser
     {

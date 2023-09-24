@@ -1,24 +1,9 @@
+using Youtube_DL_Frontend.Data;
+
 namespace Youtube_DL_Frontend
 {
     internal class Interface
     {
-        public static void writeGUI(DatabaseObject data, string link, string filename, bool appendWritingIndicator = true)
-        {
-            //Ascii Text, "Configuration"
-            writeAscii(1);
-            Console.Write($"1: Audio Format: {data.audioFormat}\n2: Audio Quality: {data.audioQuality}\n3: Audio Conversion Format: {data.audioOutputFormat}\n4: Directory: {data.workingDirectory}\n5: FF-Mpeg Dir: {data.ffMpegDirectory}\n6: Link: {link}\n7: File Name: {filename}\n8: Batch Processing\n9: Continue\n0: Exit\n");
-            if (appendWritingIndicator)
-            {
-                Console.Write("\n#\\> ");
-            }
-        }
-        public static bool checkURL(string url)
-        { // Checks for whether or not the url is formatted properly 
-            Uri? uriResult;
-            bool result = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
-                && (uriResult.Scheme == Uri.UriSchemeHttps);
-            return result;
-        }
         public static void writeAscii(int input, bool prependNewLine = false, bool appendNewLine = true)
         {
             string prepend = prependNewLine ? "\n" : "";

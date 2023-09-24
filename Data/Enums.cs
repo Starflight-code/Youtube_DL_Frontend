@@ -1,4 +1,4 @@
-﻿namespace Youtube_DL_Frontend
+﻿namespace Youtube_DL_Frontend.Data
 {
     internal class Enums
     {

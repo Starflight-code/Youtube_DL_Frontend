@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Security.Authentication.ExtendedProtection;
 
-namespace Youtube_DL_Frontend
+namespace Youtube_DL_Frontend.Data
 {
     internal class RuntimeData
     {

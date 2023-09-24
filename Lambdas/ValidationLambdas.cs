@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Youtube_DL_Frontend
+namespace Youtube_DL_Frontend.Lambdas
 {
     internal class ValidationLambdas
     {

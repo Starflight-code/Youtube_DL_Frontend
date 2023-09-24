@@ -1,29 +1,32 @@
-namespace Youtube_DL_Frontend
+using Youtube_DL_Frontend.Data;
+using Youtube_DL_Frontend.Parsing;
+
+namespace Youtube_DL_Frontend.Lambdas
 {
-    internal class Lambdas
+    internal class Main_Lambdas
     {
-        public static Action<DatabaseObject, RuntimeData> audioFormat = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> audioFormat = async (data, runtime) =>
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
             data.audioFormat = InputHandler.askQuestion("Input a new audio format", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio format: ");
             await data.updateSelf();
         };
-        public static Action<DatabaseObject, RuntimeData> audioQuality = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> audioQuality = async (data, runtime) =>
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
             data.audioQuality = InputHandler.askQuestion("Input a new audio quality", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio quality: ");
             await data.updateSelf();
         };
-        public static Action<DatabaseObject, RuntimeData> audioOutputFormat = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> audioOutputFormat = async (data, runtime) =>
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
             data.audioOutputFormat = InputHandler.inputValidate("Input a new conversion format");
             await data.updateSelf();
         };
-        public static Action<DatabaseObject, RuntimeData> directory = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> directory = async (data, runtime) =>
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
@@ -36,7 +39,7 @@ namespace Youtube_DL_Frontend
             }
             await data.updateSelf();
         };
-        public static Action<DatabaseObject, RuntimeData> ffDirectory = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> ffDirectory = async (data, runtime) =>
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
@@ -49,7 +52,7 @@ namespace Youtube_DL_Frontend
             }
             await data.updateSelf();
         };
-        public static Action<DatabaseObject, RuntimeData> youtubeDLP = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> youtubeDLP = async (data, runtime) =>
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
@@ -68,27 +71,27 @@ namespace Youtube_DL_Frontend
             }
             await data.updateSelf();
         };
-        public static Action<DatabaseObject, RuntimeData> link = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> link = async (data, runtime) =>
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
             runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
             await Task.Delay(0);
         };
-        public static Action<DatabaseObject, RuntimeData> filename = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> filename = async (data, runtime) =>
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
             runtime.filename = InputHandler.inputValidate("Input a name for the output file (without the entension)");
             await Task.Delay(0);
         };
-        public static Action<DatabaseObject, RuntimeData> batch = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> batch = async (data, runtime) =>
         {
             Console.Clear();
             ExternalInterface.batchProcess(data, runtime);
             await Task.Delay(0);
         };
-        public static Action<DatabaseObject, RuntimeData> goOn = async (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> goOn = async (data, runtime) =>
         {
             if (runtime.filename != "NULL (Skipped)" && runtime.link != "NULL (Skipped)")
             {
@@ -102,7 +105,7 @@ namespace Youtube_DL_Frontend
             }
             await Task.Delay(0);
         };
-        public static Action<DatabaseObject, RuntimeData> exit = (data, runtime) =>
+        public static Action<Data.DatabaseObject, Data.RuntimeData> exit = (data, runtime) =>
         {
             Console.Clear();
             //Ascii Text, "Thank You"
@@ -112,42 +115,42 @@ namespace Youtube_DL_Frontend
             System.Environment.Exit(0);
         };
 
-        public static Func<DatabaseObject, RuntimeData, string> audioFormatDynamic = (data, runtime) =>
+        public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioFormatDynamic = (data, runtime) =>
         {
             return data.audioFormat;
         };
 
-        public static Func<DatabaseObject, RuntimeData, string> audioQualityDynamic = (data, runtime) =>
+        public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioQualityDynamic = (data, runtime) =>
         {
             return data.audioQuality;
         };
 
-        public static Func<DatabaseObject, RuntimeData, string> audioOutputFormatDynamic = (data, runtime) =>
+        public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioOutputFormatDynamic = (data, runtime) =>
         {
             return data.audioOutputFormat;
         };
 
-        public static Func<DatabaseObject, RuntimeData, string> directoryDynamic = (data, runtime) =>
+        public static Func<Data.DatabaseObject, Data.RuntimeData, string> directoryDynamic = (data, runtime) =>
         {
             return data.workingDirectory;
         };
 
-        public static Func<DatabaseObject, RuntimeData, string> ffDirectoryDynamic = (data, runtime) =>
+        public static Func<Data.DatabaseObject, Data.RuntimeData, string> ffDirectoryDynamic = (data, runtime) =>
         {
             return data.ffMpegDirectory;
         };
 
-        public static Func<DatabaseObject, RuntimeData, string> linkDynamic = (data, runtime) =>
+        public static Func<Data.DatabaseObject, Data.RuntimeData, string> linkDynamic = (data, runtime) =>
         {
             return runtime.link;
         };
 
-        public static Func<DatabaseObject, RuntimeData, string> filenameDynamic = (data, runtime) =>
+        public static Func<Data.DatabaseObject, Data.RuntimeData, string> filenameDynamic = (data, runtime) =>
         {
             return runtime.filename;
         };
 
-        public static Func<DatabaseObject, RuntimeData, string> youtubeDLPDynamic = (data, runtime) =>
+        public static Func<Data.DatabaseObject, Data.RuntimeData, string> youtubeDLPDynamic = (data, runtime) =>
         {
             if (!data.youtubeDLP)
             {
