@@ -13,7 +13,8 @@ namespace Youtube_DL_Frontend.Parsing
         private Dictionary<string, CommandParser.command> parserExternal;
         private Dictionary<string, CommandParser.command> parserMenu;
         private List<CommandParser.command> menuList;
-        private ParserInstance menu;
+        public ParserInstance menu;
+        public ParserInstance settings;
 
         public enum commandScope
         {
@@ -80,7 +81,8 @@ namespace Youtube_DL_Frontend.Parsing
             parserExternal = new Dictionary<string, CommandParser.command>();
             parserMenu = new Dictionary<string, CommandParser.command>();
             menuList = new List<CommandParser.command>();
-            menu = new ParserInstance();
+            menu = new ParserInstance(Enums.parsers.main);
+            settings = new ParserInstance(Enums.parsers.settings);
         }
 
         public string[] getArgs(string[] fullCommand)
@@ -282,7 +284,7 @@ namespace Youtube_DL_Frontend.Parsing
             }
             runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
             */
-            menu.generateMenu(data, runtime);
+            runtime.currentMenu = menu.generateMenu(data, runtime);
         }
         public async void generateMenuAsync(DatabaseObject data, RuntimeData runtime)
         {
@@ -298,8 +300,7 @@ namespace Youtube_DL_Frontend.Parsing
                 }
                 runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
             });*/
-            await Task.Delay(0);
-            menu.generateMenuAsync(data, runtime);
+            runtime.currentMenu = await menu.generateMenuAsync(data, runtime);
         }
     }
 }

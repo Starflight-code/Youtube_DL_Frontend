@@ -14,8 +14,11 @@ allow users to switch between fetching videos and audio easily.
 
 Add additional menus for settings, presets and other additions
 - Impliment modular command parsing system -> Tested and working
-- Add command parsing for submenus
-- Integrate all parsing systems together within a menu tree
+- Add command parsing for submenus -> Added, working
+- Integrate all parsing systems together within a menu tree -> Added, working (cleanup needed before release)
+- Test system to ensure functionality
+
+- Add preset system into settings submenu (requires database rework)
 
 Fixed
-- An issue where menu data would not update until program restarts
+- Fixed an issue where Youtube-DL-FE would crash if the Youtube-DL path was incorrect

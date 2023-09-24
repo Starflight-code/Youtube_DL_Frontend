@@ -16,24 +16,24 @@ namespace Youtube_DL_Frontend
             {
                 process = Process.Start(runtimeData.yotutube_dl_executable, ConstantBuilder.buildArguments(data, runtimeData.link, runtimeData.filename));
             }
-            catch (FileNotFoundException)
+            catch (System.ComponentModel.Win32Exception)
             {
-                Console.WriteLine("\n\nYoutube-DL Path Misconfigured");
+                Console.WriteLine("\n\nYoutube-DL Path Misconfigured\n" +
+                                  "Press ENTER to continue");
                 Console.ReadLine();
                 return;
             }
             Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
             process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
-            string result = process.ExitCode != 0 ? "Failed" : "Succeeded";
-            int i = 1;
-            while (i < 3 && process.ExitCode != 0)
+            string result = process.ExitCode != 0 ? "Failed" : "Success";
+            for (int i = 1; i < 3 && process.ExitCode != 0; i++)
             {
                 process.Dispose();
                 Console.WriteLine("\nError: failure detected, retrying " + (i + 1) + "/3");
                 process = Process.Start(runtimeData.yotutube_dl_executable, ConstantBuilder.buildArguments(data, runtimeData.link, runtimeData.filename));
                 Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
                 process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
-                result = process.ExitCode != 0 ? "Failed" : "Succeeded";
+                result = process.ExitCode != 0 ? "Failed" : "Success";
                 i++;
             }
             process.Dispose();

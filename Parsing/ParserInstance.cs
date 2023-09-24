@@ -6,15 +6,18 @@ namespace Youtube_DL_Frontend.Parsing
 {
     internal class ParserInstance
     {
+        public Enums.parsers parserName;
         private Dictionary<string, CommandParser.command> parser;
         private List<CommandParser.command> menuList;
-        public ParserInstance()
+        public ParserInstance(Enums.parsers parserName)
         {
+            this.parserName = parserName;
             parser = new Dictionary<string, CommandParser.command>();
             menuList = new List<CommandParser.command>();
         }
-        public ParserInstance(List<CommandParser.command> commands)
+        public ParserInstance(Enums.parsers parserName, List<CommandParser.command> commands)
         {
+            this.parserName = parserName;
             parser = new Dictionary<string, CommandParser.command>();
             menuList = new List<CommandParser.command>();
             for (int i = 0; i < commands.Count(); i++)
@@ -91,7 +94,7 @@ namespace Youtube_DL_Frontend.Parsing
             }
             return true;
         }
-        public void generateMenu(DatabaseObject data, RuntimeData runtime)
+        public string generateMenu(DatabaseObject data, RuntimeData runtime)
         {
             string[][] preList = new string[menuList.Count][];
             for (int i = 0; i < menuList.Count; i++)
@@ -101,10 +104,10 @@ namespace Youtube_DL_Frontend.Parsing
                     menuList[i].getCommandName(),
                     menuList[i].getDynamicData(data, runtime)};
             }
-            runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
+            return Interface.getAscii(1) + Statics.generateList("", preList);
 
         }
-        public async void generateMenuAsync(DatabaseObject data, RuntimeData runtime)
+        public async Task<string> generateMenuAsync(DatabaseObject data, RuntimeData runtime)
         {
             await Task.Run(() =>
             {
@@ -116,8 +119,9 @@ namespace Youtube_DL_Frontend.Parsing
                     menuList[i].getCommandName(),
                     menuList[i].getDynamicData(data, runtime)};
                 }
-                runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
+                return Interface.getAscii(1) + Statics.generateList("", preList);
             });
+            return "";
         }
     }
 }

@@ -118,17 +118,30 @@ namespace Youtube_DL_Frontend
         public async void MainAsync(string[] args)
         {
             CommandParser parser = new CommandParser();
-            parser.registerMenuCommand("Audio Format", Main_Lambdas.audioFormat, Main_Lambdas.audioFormatDynamic);
-            parser.registerMenuCommand("Audio Quality", Main_Lambdas.audioQuality, Main_Lambdas.audioQualityDynamic);
-            parser.registerMenuCommand("Audio Output Format", Main_Lambdas.audioOutputFormat, Main_Lambdas.audioOutputFormatDynamic);
-            parser.registerMenuCommand("Directory", Main_Lambdas.directory, Main_Lambdas.directoryDynamic);
-            parser.registerMenuCommand("FFMPEG Directory", Main_Lambdas.ffDirectory, Main_Lambdas.ffDirectoryDynamic);
-            parser.registerMenuCommand("Using", Main_Lambdas.youtubeDLP, Main_Lambdas.youtubeDLPDynamic);
+            //parser.registerMenuCommand("Audio Format", Main_Lambdas.audioFormat, Main_Lambdas.audioFormatDynamic);
+            //parser.registerMenuCommand("Audio Quality", Main_Lambdas.audioQuality, Main_Lambdas.audioQualityDynamic);
+            //parser.registerMenuCommand("Audio Output Format", Main_Lambdas.audioOutputFormat, Main_Lambdas.audioOutputFormatDynamic);
+            //parser.registerMenuCommand("Directory", Main_Lambdas.directory, Main_Lambdas.directoryDynamic);
+            //parser.registerMenuCommand("FFMPEG Directory", Main_Lambdas.ffDirectory, Main_Lambdas.ffDirectoryDynamic);
+            //parser.registerMenuCommand("Using", Main_Lambdas.youtubeDLP, Main_Lambdas.youtubeDLPDynamic);
+            parser.registerMenuCommand("Settings", Main_Lambdas.settingsMenu);
             parser.registerMenuCommand("Link", Main_Lambdas.link, Main_Lambdas.linkDynamic);
             parser.registerMenuCommand("Filename", Main_Lambdas.filename, Main_Lambdas.filenameDynamic);
             parser.registerMenuCommand("Batch", Main_Lambdas.batch);
             parser.registerMenuCommand("Continue", Main_Lambdas.goOn);
             parser.registerMenuCommand("Exit", Main_Lambdas.exit);
+
+            parser.settings.registerCommand("Audio Format", Settings_Lambdas.audioFormat, Settings_Lambdas.audioFormatDynamic);
+            parser.settings.registerCommand("Audio Quality", Settings_Lambdas.audioQuality, Settings_Lambdas.audioQualityDynamic);
+            parser.settings.registerCommand("Audio Output Format", Settings_Lambdas.audioOutputFormat, Settings_Lambdas.audioOutputFormatDynamic);
+            parser.settings.registerCommand("Directory", Settings_Lambdas.directory, Settings_Lambdas.directoryDynamic);
+            parser.settings.registerCommand("FFMPEG Directory", Settings_Lambdas.ffDirectory, Settings_Lambdas.ffDirectoryDynamic);
+            parser.settings.registerCommand("Using", Settings_Lambdas.youtubeDLP, Settings_Lambdas.youtubeDLPDynamic);
+            parser.settings.registerCommand("Back", Settings_Lambdas.back);
+
+            runtimeData.parsers.Add(parser.settings);
+            runtimeData.parsers.Add(parser.menu);
+
             List<int> Errors = new List<int>();
             if (File.Exists(Constants._DATABASE_FILE) == false)
             {

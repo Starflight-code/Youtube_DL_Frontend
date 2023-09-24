@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using System.Security.Authentication.ExtendedProtection;
+using Youtube_DL_Frontend.Parsing;
 
 namespace Youtube_DL_Frontend.Data
 {
@@ -10,12 +11,16 @@ namespace Youtube_DL_Frontend.Data
         public string link;
         public string filename;
         public string currentMenu;
+        public List<ParserInstance> parsers;
+        public bool goBack;
         public RuntimeData()
         {
             yotutube_dl_executable = "";
             link = "";
             filename = "";
             currentMenu = "";
+            parsers = new List<ParserInstance>();
+            goBack = false;
         }
 
         public void changeYTDLP(bool usingYTDLP)

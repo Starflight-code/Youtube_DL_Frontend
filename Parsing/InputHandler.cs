@@ -57,7 +57,7 @@ namespace Youtube_DL_Frontend.Parsing
                 Console.Write("\n" + invalidPrompt);
                 input = inputValidate("", invalidPrompt, noPrompt: true);
             }
-            return input.Trim();
+            return input;
         }
 
         public Enums.commandToExecute handleCommand(string? input)
