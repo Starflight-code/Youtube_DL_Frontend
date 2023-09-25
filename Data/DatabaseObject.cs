@@ -5,11 +5,11 @@ namespace Youtube_DL_Frontend.Data
 {
     internal class DatabaseObject
     {
-        public string workingDirectory; // dir in code
-        public string ffMpegDirectory; // ff in code
-        public string audioFormat; // af in code
-        public string audioQuality; // aq in code
-        public string audioOutputFormat; // auf in code
+        public string workingDirectory;
+        public string ffMpegDirectory;
+        public string audioFormat;
+        public string audioQuality;
+        public string audioOutputFormat;
 
         public bool youtubeDLP;
         public DatabaseObject()

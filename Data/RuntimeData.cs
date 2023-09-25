@@ -23,7 +23,7 @@ namespace Youtube_DL_Frontend.Data
             goBack = false;
         }
 
-        public void changeYTDLP(bool usingYTDLP)
+        public void updateYTDL(bool usingYTDLP)
         {
             string youtubeDL;
             if (usingYTDLP)

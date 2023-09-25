@@ -53,7 +53,7 @@ namespace Youtube_DL_Frontend
                     return prepend + Constants._WELCOME_ASCII + append;
                 default:
                     //Error! If this is executed, something is wrong with the way this function was called.
-                    throw (new Exception("Error detected by getAscii(), this function has been declared with an invalid 'input' variable value."));
+                    throw new Exception("Error detected by getAscii(), this function has been declared with an invalid 'input' variable value.");
             }
         }
     }

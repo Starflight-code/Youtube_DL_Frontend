@@ -109,11 +109,6 @@ namespace Youtube_DL_Frontend.Parsing
         }
         public void registerMenuCommand(string commandName, Action<DatabaseObject, RuntimeData> action)
         {
-
-            //commandName = Statics.preProcessInput(commandName);
-            //parserMenu.Add(commandName, new command(commandName, action));
-            //menuList.Add(new command(commandName, action));
-            //registerAlias(commandName, menuList.Count.ToString(), CommandParser.commandScope.menu);
             menu.registerCommand(commandName, action);
         }
         public void registerInternalCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
@@ -130,11 +125,6 @@ namespace Youtube_DL_Frontend.Parsing
         }
         public void registerMenuCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
         {
-
-            //commandName = Statics.preProcessInput(commandName);
-            //parserMenu.Add(commandName, new command(commandName, action, true, dynamicDataLambda));
-            //menuList.Add(new command(commandName, action, true, dynamicDataLambda));
-            //registerAlias(commandName, menuList.Count.ToString(), CommandParser.commandScope.menu);
             menu.registerCommand(commandName, action, dynamicDataLambda);
         }
 
@@ -213,20 +203,6 @@ namespace Youtube_DL_Frontend.Parsing
         }
         public bool unregisterMenuCommand(string commandName)
         {
-
-            /*commandName = Statics.preProcessInput(commandName);
-            command value;
-            bool foundValue = parserMenu.TryGetValue(commandName, out value);
-            if (!foundValue) { return false; }
-
-            List<string> aliases = value.getAliases();
-            parserMenu.Remove(commandName);
-
-            for (int i = 0; i < aliases.Count(); i++)
-            {
-                parserMenu.Remove(aliases[i]);
-            }
-            return true;*/
             return menu.unregisterCommand(commandName);
         }
 
@@ -256,50 +232,15 @@ namespace Youtube_DL_Frontend.Parsing
         }
         public bool processMenuInput(string? input, DatabaseObject data, RuntimeData runtime)
         {
-
-            /*if (input == null) { return false; }
-
-            input = Statics.preProcessInput(input);
-            string[] inputArray = input.Split(" ");
-            bool foundValue = parserMenu.TryGetValue(inputArray[0], out command value);
-            if (!foundValue) { return false; }
-            value.invokeLambda(data, runtime);
-            if (value.hasDynamicData())
-            {
-                generateMenu(data, runtime);
-            }
-            return true;*/
             return menu.processInput(input, data, runtime);
         }
 
         public void generateMenu(DatabaseObject data, RuntimeData runtime)
         {
-            /*string[][] preList = new string[menuList.Count][];
-            for (int i = 0; i < menuList.Count; i++)
-            {
-                preList[i] = new string[] {
-                    (i + 1).ToString(),
-                    menuList[i].getCommandName(),
-                    menuList[i].getDynamicData(data, runtime)};
-            }
-            runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
-            */
             runtime.currentMenu = menu.generateMenu(data, runtime);
         }
         public async void generateMenuAsync(DatabaseObject data, RuntimeData runtime)
         {
-            /*await Task.Run(() =>
-            {
-                string[][] preList = new string[menuList.Count][];
-                for (int i = 0; i < menuList.Count; i++)
-                {
-                    preList[i] = new string[] {
-                    (i + 1).ToString(),
-                    menuList[i].getCommandName(),
-                    menuList[i].getDynamicData(data, runtime)};
-                }
-                runtime.currentMenu = Interface.getAscii(1) + Statics.generateList("", preList);
-            });*/
             runtime.currentMenu = await menu.generateMenuAsync(data, runtime);
         }
     }

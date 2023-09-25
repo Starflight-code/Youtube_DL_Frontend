@@ -10,7 +10,6 @@ namespace Youtube_DL_Frontend
     {
         DatabaseObject data;
         RuntimeData runtimeData = new RuntimeData();
-        InputHandler inputhandle = new InputHandler();
         public Program()
         {
             data = new DatabaseObject();
@@ -151,7 +150,8 @@ namespace Youtube_DL_Frontend
             {
                 await data.populateSelf();
             }
-            runtimeData.changeYTDLP(data.youtubeDLP);
+
+            runtimeData.updateYTDL(data.youtubeDLP);
             Console.Clear();
             //Ascii Text, "Welcome"
             Interface.writeAscii(4);
@@ -161,7 +161,7 @@ namespace Youtube_DL_Frontend
                 checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, hold_up_execution: false);
             }
             if (Errors.Count() > 0) { logErrors(Errors); }
-
+            // -- THIS MESS NEEDS A REWORK -- TODO
             Console.Write("We have a few initialization questions before you can begin.\n");
             runtimeData.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
             if (runtimeData.link.ToLower() is not ("s" or "skip"))

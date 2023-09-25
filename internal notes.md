@@ -21,4 +21,4 @@ Add additional menus for settings, presets and other additions
 - Add preset system into settings submenu (requires database rework)
 
 Fixed
-- Fixed an issue where Youtube-DL-FE would crash if the Youtube-DL path was incorrect
+- 

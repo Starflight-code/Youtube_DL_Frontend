@@ -4,20 +4,9 @@ namespace Youtube_DL_Frontend.Parsing
 {
     internal class InputHandler
     {
-        public static Dictionary<string, Enums.commandToExecute> commandParser = new Dictionary<string, Enums.commandToExecute>();
 
         public InputHandler()
         {
-            commandParser.Add("1", Enums.commandToExecute.audioFormat);
-            commandParser.Add("2", Enums.commandToExecute.audioQuality);
-            commandParser.Add("3", Enums.commandToExecute.audioOutputFormat);
-            commandParser.Add("4", Enums.commandToExecute.directory);
-            commandParser.Add("5", Enums.commandToExecute.ffDirectory);
-            commandParser.Add("6", Enums.commandToExecute.link);
-            commandParser.Add("7", Enums.commandToExecute.filename);
-            commandParser.Add("8", Enums.commandToExecute.batch);
-            commandParser.Add("9", Enums.commandToExecute.goOn);
-            commandParser.Add("0", Enums.commandToExecute.exit);
         }
         public static string promptBuilder(string mainPrompt, char endsWith = ':', bool prependWithNewLine = true)
         {
@@ -58,19 +47,6 @@ namespace Youtube_DL_Frontend.Parsing
                 input = inputValidate("", invalidPrompt, noPrompt: true);
             }
             return input;
-        }
-
-        public Enums.commandToExecute handleCommand(string? input)
-        {
-            if (input == null) { input = ""; }
-            input = input.Trim();
-            Enums.commandToExecute output;
-            while (input.Length == 0 || !commandParser.TryGetValue(input, out output))
-            {
-                Console.Write("Your input was not a valid command, try again: ");
-                input = inputValidate("", "Your input was not a valid command, try again", noPrompt: true);
-            }
-            return output;
         }
     }
 }

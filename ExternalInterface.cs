@@ -5,12 +5,19 @@ namespace Youtube_DL_Frontend
 {
     internal class ExternalInterface
     {
+        struct batchProcessTask
+        {
+            public string url;
+            public string filename;
+        }
         public static void runYoutubeDL(Data.DatabaseObject data, Data.RuntimeData runtimeData)
         {
             Console.Clear();
+
             //Ascii Text, "Executing..."
             Interface.writeAscii(2);
             Console.Write($"Command parsed and sent, passing youtube-dl output...\n\n");
+
             Process process;
             try
             {
@@ -30,9 +37,11 @@ namespace Youtube_DL_Frontend
             {
                 process.Dispose();
                 Console.WriteLine("\nError: failure detected, retrying " + (i + 1) + "/3");
+
                 process = Process.Start(runtimeData.yotutube_dl_executable, ConstantBuilder.buildArguments(data, runtimeData.link, runtimeData.filename));
                 Thread.Sleep(250); //Frees up CPU for youtube-dl to start. Fixes an issue where youtube-dl wouldn't start until enter was pressed.
                 process.WaitForExit(); // Waits for exit, so it should now automatically enter the menu again.
+
                 result = process.ExitCode != 0 ? "Failed" : "Success";
                 i++;
             }
@@ -50,37 +59,46 @@ namespace Youtube_DL_Frontend
             }
             string[] file = File.ReadAllLines(batchfile);
             int i = 0;
-            List<string> URLs = new List<string>();
-            List<string> fileNames = new List<string>();
+            List<batchProcessTask> taskList = new List<batchProcessTask>();
+            //List<string> URLs = new List<string>();
+            //List<string> fileNames = new List<string>();
             List<Process> processes = new List<Process>();
             List<int> processFailCount = new List<int>();
+            batchProcessTask buildTask = new batchProcessTask();
             foreach (string x in file)
             {
                 switch (i % 2)
                 {
                     case 0:
-                        URLs.Add(x);
+                        if (i != 0)
+                        {
+                            taskList.Add(buildTask);
+                        }
+                        buildTask.url = x;
+                        //URLs.Add(x);
                         break;
                     case 1:
-                        fileNames.Add(x);
+                        buildTask.filename = x;
+                        //fileNames.Add(x);
                         break;
                     default:
                         throw new Exception("Logic error detected in batch processing. This should not be possible. Your machine may be failing, C# is malfunctioning, or something else is seriously wrong.");
                 }
                 i++;
             }
+            taskList.Add(buildTask);
             Console.WriteLine("\nExecution Started on File, please wait... \n");
-            i = 0;
             string name;
-            foreach (string URL in URLs)
+            //foreach (string URL in URLs)
+            foreach (batchProcessTask task in taskList)
             {
-                name = ConstantBuilder.buildFileName(data.workingDirectory, fileNames[i]);
+                name = ConstantBuilder.buildFileName(data.workingDirectory, task.filename);
                 processes.Add(new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = runtimeData.yotutube_dl_executable,
-                        Arguments = ConstantBuilder.buildArguments(data, URL, fileNames[i]),
+                        Arguments = ConstantBuilder.buildArguments(data, task.url, task.filename),
                         UseShellExecute = false,
                         RedirectStandardOutput = false,
                         CreateNoWindow = true
@@ -89,7 +107,6 @@ namespace Youtube_DL_Frontend
                 processFailCount.Add(0);
 
                 processes[i].Start();
-                i++;
             }
             int processesWaiting = processes.Count();
             int failed = 0;

@@ -60,11 +60,11 @@ namespace Youtube_DL_Frontend.Lambdas
             {
                 case "y":
                     data.youtubeDLP = true;
-                    runtime.changeYTDLP(true);
+                    runtime.updateYTDL(true);
                     break;
                 case "n":
                     data.youtubeDLP = false;
-                    runtime.changeYTDLP(false);
+                    runtime.updateYTDL(false);
                     break;
                 default:
                     throw new Exception("Validation for YT-DLP failed. ValidationLambda \"yesOrNo\" has failed!");
