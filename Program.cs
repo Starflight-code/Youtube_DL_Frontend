@@ -9,7 +9,7 @@ namespace Youtube_DL_Frontend
     internal class Program
     {
         DatabaseObject data;
-        RuntimeData runtimeData = new RuntimeData();
+        RuntimeData runtime = new RuntimeData();
         public Program()
         {
             data = new DatabaseObject();
@@ -22,7 +22,7 @@ namespace Youtube_DL_Frontend
         bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true)
         {
             List<bool> exists;
-            if (runtimeData.platform == OSPlatform.Linux)
+            if (runtime.platform == OSPlatform.Linux)
             {
                 exists = new List<bool>
                 {
@@ -35,7 +35,7 @@ namespace Youtube_DL_Frontend
             {
                 exists = new List<bool>
                 {
-                File.Exists(runtimeData.yotutube_dl_executable),
+                File.Exists(runtime.yotutube_dl_executable),
                 File.Exists($"{ff}\\ffmpeg.exe"),
                 File.Exists(DATABASE_FILE)
                 };
@@ -72,7 +72,7 @@ namespace Youtube_DL_Frontend
                     new string[]{"Database:", exists_UI[2]},
                     new string[]{"Result:", exists_UI[3]}
                 };
-                if (runtimeData.platform == OSPlatform.Linux)
+                if (runtime.platform == OSPlatform.Linux)
                 {
                     list[0][1] = "Skipped (check not supported on Linux)";
                 }
@@ -94,22 +94,55 @@ namespace Youtube_DL_Frontend
             }
             return exists[3];
         }
-        static void logErrors(List<int> Errors)
+        static void logErrors(List<Enums.errorMessages> Errors)
         {
             Console.WriteLine();
             for (int i = 0; i < Errors.Count(); i++)
             {
                 switch (Errors[i])
                 {
-                    case 1:
+                    case Enums.errorMessages.databaseReset:
                         Console.WriteLine("Database was reset due to corruption. You may need to re-insert the correct values.");
                         break;
-                    case 2:
+                    case Enums.errorMessages.filesNotFound:
                         Console.WriteLine("File errors were detected. Make sure your core files are present and configuration is correct.");
                         break;
                 }
             }
             Console.WriteLine();
+        }
+
+        static void initializationQuestions(DatabaseObject data, RuntimeData runtime)
+        {
+            Console.Write("We have a few initialization questions before you can begin."
+             + "\nUse \"s\" to skip to the menu, or \"b\" to active the batch processor.");
+            runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
+
+            if (runtime.link.ToLower() is not ("s" or "skip"))
+            {
+                runtime.link = "NULL (Skipped)";
+                runtime.filename = "NULL (Skipped)";
+                return;
+            }
+
+            if (runtime.link.ToLower() is not ("b" or "batch"))
+            {
+                runtime.link = "NULL (Skipped)";
+                runtime.filename = "NULL (Skipped)";
+                Main_Lambdas.batch.Invoke(data, runtime);
+                return;
+            }
+
+            Console.Write("Input \"" + runtime.link + "\" Accepted!");
+            Thread.Sleep(400);
+            Console.Clear();
+
+            //Ascii Text, "Welcome"
+            Interface.writeAscii(4);
+            Console.Write("We have a few initialization questions before you can begin.\n");
+            runtime.filename = InputHandler.inputValidate("Input a name for the file output without the entension");
+            Console.Write("Input \"" + runtime.filename + "\" Accepted!");
+            Thread.Sleep(400); //Gives visual feedback to user
         }
 
         static void Main(string[] args) => new Program().MainAsync(args);
@@ -138,10 +171,10 @@ namespace Youtube_DL_Frontend
             parser.settings.registerCommand("Using", Settings_Lambdas.youtubeDLP, Settings_Lambdas.youtubeDLPDynamic);
             parser.settings.registerCommand("Back", Settings_Lambdas.back);
 
-            runtimeData.parsers.Add(parser.settings);
-            runtimeData.parsers.Add(parser.menu);
+            runtime.parsers.Add(parser.settings);
+            runtime.parsers.Add(parser.menu);
 
-            List<int> Errors = new List<int>();
+            List<Enums.errorMessages> Errors = new List<Enums.errorMessages>();
             if (File.Exists(Constants._DATABASE_FILE) == false)
             {
                 await data.updateSelf(true);
@@ -151,45 +184,47 @@ namespace Youtube_DL_Frontend
                 await data.populateSelf();
             }
 
-            runtimeData.updateYTDL(data.youtubeDLP);
+            runtime.updateYTDL(data.youtubeDLP);
             Console.Clear();
             //Ascii Text, "Welcome"
             Interface.writeAscii(4);
             if (!checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, showGUI: false))
             {
-                Errors.Add(2);
+                Errors.Add(Enums.errorMessages.filesNotFound);
                 checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, hold_up_execution: false);
             }
             if (Errors.Count() > 0) { logErrors(Errors); }
-            // -- THIS MESS NEEDS A REWORK -- TODO
-            Console.Write("We have a few initialization questions before you can begin.\n");
-            runtimeData.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
-            if (runtimeData.link.ToLower() is not ("s" or "skip"))
+
+            initializationQuestions(data, runtime);
+            // -- THIS MESS NEEDS A REWORK -- DONE
+            /*Console.Write("We have a few initialization questions before you can begin.\n");
+            runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
+            if (runtime.link.ToLower() is not ("s" or "skip"))
             { // for quick bypass in the case of batch processing
-                Console.Write("Input \"" + runtimeData.link + "\" Accepted!");
+                Console.Write("Input \"" + runtime.link + "\" Accepted!");
                 Thread.Sleep(400);
                 Console.Clear();
 
                 //Ascii Text, "Welcome"
                 Interface.writeAscii(4);
                 Console.Write("We have a few initialization questions before you can begin.\n");
-                runtimeData.filename = InputHandler.inputValidate("Input a name for the file output without the entension");
-                Console.Write("Input \"" + runtimeData.filename + "\" Accepted!");
+                runtime.filename = InputHandler.inputValidate("Input a name for the file output without the entension");
+                Console.Write("Input \"" + runtime.filename + "\" Accepted!");
                 Thread.Sleep(400); //Gives visual feedback to user
             }
             else
             {
-                runtimeData.link = "NULL (Skipped)";
-                runtimeData.filename = "NULL (Skipped)";
-            }
-            parser.generateMenu(data, runtimeData);
+                runtime.link = "NULL (Skipped)";
+                runtime.filename = "NULL (Skipped)";
+            }*/
+            parser.generateMenu(data, runtime);
 
             while (true)
             {
                 Console.Clear();
-                Console.Write(runtimeData.currentMenu + "\n\n#\\> ");
+                Console.Write(runtime.currentMenu + "\n\n#\\> ");
                 Thread.Sleep(500);
-                parser.processMenuInput(Console.ReadLine(), data, runtimeData);
+                parser.processMenuInput(Console.ReadLine(), data, runtime);
             };
         }
     }
