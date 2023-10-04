@@ -81,14 +81,15 @@ namespace Youtube_DL_Frontend.Lambdas
             int index = 0;
             for (int i = 0; i < runtime.parsers.Count(); i++)
             {
-                if (runtime.parsers[i].parserName == Enums.parsers.settings)
+                if (runtime.parsers[i].parserName == Enums.parsers.presets)
                 {
                     index = i;
                 }
             }
             Console.WriteLine(runtime.parsers[index].generateMenu(data, runtime));
-            runtime.updatedPresetIndex = int.Parse(InputHandler.askQuestion("Input the preset you'd like to swap to: ", ValidationLambdas.isNumber));
+            runtime.updatedPresetIndex = int.Parse(InputHandler.askQuestion("Input the preset you'd like to swap to", ValidationLambdas.isNumber));
             runtime.updatedPreset = true;
+            runtime.goBack = true;
             await Task.Delay(0);
         };
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioFormatDynamic = (data, runtime) =>

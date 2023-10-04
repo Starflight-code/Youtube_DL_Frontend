@@ -21,4 +21,9 @@ Add additional menus for settings, presets and other additions
 - Add preset system into settings submenu (requires database rework)
 
 Fixed
-- 
+- Fixed an issue where the database file would be removed by the preset system
+- Fixed an issue where initial question skipping would be parsed incorrectly
+- Added presets to settings menu
+- Fixed an issue where preset data could not be imported properly
+- Fixed an issue where preset data would not update on the menu
+- Fixed an issue where user selection of a preset change would not be parsed correctly

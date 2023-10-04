@@ -62,7 +62,7 @@ namespace Youtube_DL_Frontend.Data
 
         public void switchActive(int activeIndex)
         {
-            if (activeIndex < presets.Count - 1)
+            if (activeIndex < presets.Count)
             {
                 activePresetIndex = activeIndex;
             }

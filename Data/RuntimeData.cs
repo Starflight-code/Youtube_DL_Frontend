@@ -16,7 +16,7 @@ namespace Youtube_DL_Frontend.Data
         public bool updateGeneralDatabase;
         public GeneralDatabase database;
         public bool updatedPreset;
-        public int updatedPresetToIndex;
+        public int updatedPresetIndex;
         public RuntimeData()
         {
             yotutube_dl_executable = "";

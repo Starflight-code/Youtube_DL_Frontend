@@ -18,7 +18,6 @@ namespace Youtube_DL_Frontend
         void generateDatabase()
         {
             Data.Initializer.initalizeStartPresets();
-            //data = new DatabaseObject("data");
         }
         bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true)
         {
@@ -119,14 +118,14 @@ namespace Youtube_DL_Frontend
              + "\nUse \"s\" to skip to the menu, or \"b\" to active the batch processor.");
             runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
 
-            if (runtime.link.ToLower() is not ("s" or "skip"))
+            if (runtime.link.ToLower() is "s" or "skip")
             {
                 runtime.link = "NULL (Skipped)";
                 runtime.filename = "NULL (Skipped)";
                 return;
             }
 
-            if (runtime.link.ToLower() is not ("b" or "batch"))
+            if (runtime.link.ToLower() is "b" or "batch")
             {
                 runtime.link = "NULL (Skipped)";
                 runtime.filename = "NULL (Skipped)";
@@ -170,27 +169,31 @@ namespace Youtube_DL_Frontend
             parser.settings.registerCommand("Directory", Settings_Lambdas.directory, Settings_Lambdas.directoryDynamic);
             parser.settings.registerCommand("FFMPEG Directory", Settings_Lambdas.ffDirectory, Settings_Lambdas.ffDirectoryDynamic);
             parser.settings.registerCommand("Using", Settings_Lambdas.youtubeDLP, Settings_Lambdas.youtubeDLPDynamic);
+            parser.settings.registerCommand("Manage Presets", Settings_Lambdas.presetSwap);
             parser.settings.registerCommand("Back", Settings_Lambdas.back);
+
+            runtime.parsers.Add(parser.settings);
+            runtime.parsers.Add(parser.menu);
+
+
+            List<Enums.errorMessages> Errors = new List<Enums.errorMessages>();
+            if (File.Exists(Constants._DATABASE_FILE) == false)
+            {
+                await runtime.database.updateSelf(true);
+                generateDatabase();
+            }
+            else
+            {
+                await runtime.database.populateSelf();
+            }
+            presets.importAll();
 
             List<PresetManager.preset> presetList = presets.getPresets();
             for (int i = 0; i < presetList.Count(); i++)
             {
                 parser.presets.registerCommand(presetList[i].name, null);
             }
-
-            runtime.parsers.Add(parser.settings);
-            runtime.parsers.Add(parser.menu);
             runtime.parsers.Add(parser.presets);
-
-            List<Enums.errorMessages> Errors = new List<Enums.errorMessages>();
-            if (File.Exists(Constants._DATABASE_FILE) == false)
-            {
-                await runtime.database.updateSelf(true);
-            }
-            else
-            {
-                await runtime.database.populateSelf();
-            }
 
             runtime.updateYTDL(runtime.database.youtubeDLP);
             Console.Clear();
@@ -241,9 +244,10 @@ namespace Youtube_DL_Frontend
                 else if (runtime.updatedPreset)
                 {
                     runtime.updatedPreset = false;
-                    if (!(presets.getPresets().Count - 1 <= runtime.updatedPresetIndex || runtime.updatedPresetIndex < 0))
+                    if (!(presets.getPresets().Count < runtime.updatedPresetIndex || runtime.updatedPresetIndex < 0))
                     {
-                        presets.switchActive(runtime.updatedPresetIndex);
+                        presets.switchActive(runtime.updatedPresetIndex - 1);
+                        parser.generateMenu(presets.getActive().database, runtime);
                     }
                 }
             };
