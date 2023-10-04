@@ -15,6 +15,7 @@ namespace Youtube_DL_Frontend.Parsing
         private List<CommandParser.command> menuList;
         public ParserInstance menu;
         public ParserInstance settings;
+        public ParserInstance presets;
 
         public enum commandScope
         {
@@ -27,10 +28,10 @@ namespace Youtube_DL_Frontend.Parsing
 
             string commandName;
             List<string> aliases;
-            Action<DatabaseObject, RuntimeData> lambda;
+            Action<DatabaseObject, RuntimeData>? lambda;
             bool dynamicData;
             Func<DatabaseObject, RuntimeData, string>? dynamicDataLambda;
-            public command(string commandName, Action<DatabaseObject, RuntimeData> lambda, bool dynamicData = false, Func<DatabaseObject, RuntimeData, string>? dynamicDataLambda = null)
+            public command(string commandName, Action<DatabaseObject, RuntimeData>? lambda, bool dynamicData = false, Func<DatabaseObject, RuntimeData, string>? dynamicDataLambda = null)
             {
                 this.commandName = commandName;
                 aliases = new List<string>();
@@ -71,6 +72,7 @@ namespace Youtube_DL_Frontend.Parsing
 
             public void invokeLambda(DatabaseObject data, RuntimeData runtime)
             {
+                if (lambda == null) { return; }
                 lambda.Invoke(data, runtime);
             }
         }
@@ -83,6 +85,7 @@ namespace Youtube_DL_Frontend.Parsing
             menuList = new List<CommandParser.command>();
             menu = new ParserInstance(Enums.parsers.main);
             settings = new ParserInstance(Enums.parsers.settings);
+            presets = new ParserInstance(Enums.parsers.presets);
         }
 
         public string[] getArgs(string[] fullCommand)
@@ -94,141 +97,13 @@ namespace Youtube_DL_Frontend.Parsing
             }
             return returnArray;
         }
-
-        public void registerInternalCommand(string commandName, Action<DatabaseObject, RuntimeData> action)
-        {
-
-            commandName = Statics.preProcessInput(commandName);
-            parserInternal.Add(commandName, new command(commandName, action));
-        }
-        public void registerExternalCommand(string commandName, Action<DatabaseObject, RuntimeData> action)
-        {
-
-            commandName = Statics.preProcessInput(commandName);
-            parserInternal.Add(commandName, new command(commandName, action));
-        }
         public void registerMenuCommand(string commandName, Action<DatabaseObject, RuntimeData> action)
         {
             menu.registerCommand(commandName, action);
         }
-        public void registerInternalCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
-        {
-
-            commandName = Statics.preProcessInput(commandName);
-            parserInternal.Add(commandName, new command(commandName, action, true, dynamicDataLambda));
-        }
-        public void registerExternalCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
-        {
-
-            commandName = Statics.preProcessInput(commandName);
-            parserInternal.Add(commandName, new command(commandName, action, true, dynamicDataLambda));
-        }
         public void registerMenuCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
         {
             menu.registerCommand(commandName, action, dynamicDataLambda);
-        }
-
-        public bool registerAlias(string commandName, string alias, commandScope scope)
-        {
-
-            commandName = Statics.preProcessInput(commandName);
-            bool foundValue = false;
-            command value;
-            switch (scope)
-            {
-                case commandScope.intern:
-                    foundValue = parserInternal.TryGetValue(commandName, out value);
-                    break;
-                case commandScope.external:
-                    foundValue = parserExternal.TryGetValue(commandName, out value);
-                    break;
-                case commandScope.menu:
-                    foundValue = parserMenu.TryGetValue(commandName, out value);
-                    break;
-                default:
-                    return false;
-            }
-            if (!foundValue) { return false; }
-
-            alias = Statics.preProcessInput(alias);
-            value.addAlias(alias);
-            switch (scope)
-            {
-                case commandScope.intern:
-                    parserInternal.Add(alias, value);
-                    break;
-                case commandScope.external:
-                    parserExternal.Add(alias, value);
-                    break;
-                case commandScope.menu:
-                    parserMenu.Add(alias, value);
-                    break;
-            }
-            return true;
-        }
-
-        public bool unregisterInternalCommand(string commandName)
-        {
-
-            commandName = Statics.preProcessInput(commandName);
-            command value;
-            bool foundValue = parserInternal.TryGetValue(commandName, out value);
-            if (!foundValue) { return false; }
-
-            List<string> aliases = value.getAliases();
-            parserInternal.Remove(commandName);
-
-            for (int i = 0; i < aliases.Count(); i++)
-            {
-                parserInternal.Remove(aliases[i]);
-            }
-            return true;
-        }
-        public bool unregisterExternalCommand(string commandName)
-        {
-
-            commandName = Statics.preProcessInput(commandName);
-            command value;
-            bool foundValue = parserExternal.TryGetValue(commandName, out value);
-            if (!foundValue) { return false; }
-
-            List<string> aliases = value.getAliases();
-            parserExternal.Remove(commandName);
-
-            for (int i = 0; i < aliases.Count(); i++)
-            {
-                parserExternal.Remove(aliases[i]);
-            }
-            return true;
-        }
-        public bool unregisterMenuCommand(string commandName)
-        {
-            return menu.unregisterCommand(commandName);
-        }
-
-        public bool processInternalInput(string? input, DatabaseObject data, RuntimeData runtime)
-        {
-
-            if (input == null) { return false; }
-
-            input = Statics.preProcessInput(input);
-            string[] inputArray = input.Split(" ");
-            bool foundValue = parserInternal.TryGetValue(inputArray[0], out command value);
-            if (!foundValue) { return false; }
-            value.invokeLambda(data, runtime);
-            return true;
-        }
-        public bool processExternalInput(string? input, DatabaseObject data, RuntimeData runtime)
-        {
-
-            if (input == null) { return false; }
-
-            input = Statics.preProcessInput(input);
-            string[] inputArray = input.Split(" ");
-            bool foundValue = parserExternal.TryGetValue(inputArray[0], out command value);
-            if (!foundValue) { return false; }
-            value.invokeLambda(data, runtime);
-            return true;
         }
         public bool processMenuInput(string? input, DatabaseObject data, RuntimeData runtime)
         {

@@ -9,7 +9,7 @@ namespace Youtube_DL_Frontend.Lambdas
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
-            data.audioFormat = InputHandler.askQuestion("Input a new audio format", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio format: ");
+            data.format = InputHandler.askQuestion("Input a new audio format", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio format: ");
             await data.updateSelf();
         };
         public static Action<Data.DatabaseObject, Data.RuntimeData> audioQuality = async (data, runtime) =>
@@ -23,7 +23,7 @@ namespace Youtube_DL_Frontend.Lambdas
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
-            data.audioOutputFormat = InputHandler.inputValidate("Input a new conversion format");
+            data.outputFormat = InputHandler.inputValidate("Input a new conversion format");
             await data.updateSelf();
         };
         public static Action<Data.DatabaseObject, Data.RuntimeData> directory = async (data, runtime) =>
@@ -50,6 +50,8 @@ namespace Youtube_DL_Frontend.Lambdas
                 Console.WriteLine("Warning: FFMPEG could not be located at this path. This script may not function properly.\nPRESS ENTER TO CONTINUE");
                 Console.ReadLine();
             }
+            runtime.database.ffMpegDirectory = data.ffMpegDirectory;
+            runtime.logDBUpdate();
             await data.updateSelf();
         };
         public static Action<Data.DatabaseObject, Data.RuntimeData> youtubeDLP = async (data, runtime) =>
@@ -69,11 +71,29 @@ namespace Youtube_DL_Frontend.Lambdas
                 default:
                     throw new Exception("Validation for YT-DLP failed. ValidationLambda \"yesOrNo\" has failed!");
             }
+            runtime.database.youtubeDLP = data.youtubeDLP;
+            runtime.logDBUpdate();
             await data.updateSelf();
+        };
+        public static Action<Data.DatabaseObject, Data.RuntimeData> presetSwap = async (data, runtime) =>
+        {
+            Console.Clear();
+            int index = 0;
+            for (int i = 0; i < runtime.parsers.Count(); i++)
+            {
+                if (runtime.parsers[i].parserName == Enums.parsers.settings)
+                {
+                    index = i;
+                }
+            }
+            Console.WriteLine(runtime.parsers[index].generateMenu(data, runtime));
+            runtime.updatedPresetIndex = int.Parse(InputHandler.askQuestion("Input the preset you'd like to swap to: ", ValidationLambdas.isNumber));
+            runtime.updatedPreset = true;
+            await Task.Delay(0);
         };
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioFormatDynamic = (data, runtime) =>
         {
-            return data.audioFormat;
+            return data.format;
         };
 
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioQualityDynamic = (data, runtime) =>
@@ -83,7 +103,7 @@ namespace Youtube_DL_Frontend.Lambdas
 
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioOutputFormatDynamic = (data, runtime) =>
         {
-            return data.audioOutputFormat;
+            return data.outputFormat;
         };
 
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> directoryDynamic = (data, runtime) =>

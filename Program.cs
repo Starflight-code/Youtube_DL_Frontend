@@ -8,16 +8,17 @@ namespace Youtube_DL_Frontend
 {
     internal class Program
     {
-        DatabaseObject data;
+        PresetManager presets;
         RuntimeData runtime = new RuntimeData();
         public Program()
         {
-            data = new DatabaseObject();
+            presets = new PresetManager();
         }
 
         void generateDatabase()
         {
-            data = new DatabaseObject();
+            Data.Initializer.initalizeStartPresets();
+            //data = new DatabaseObject("data");
         }
         bool checkFiles(string ff, string DATABASE_FILE, bool hold_up_execution = true, bool showGUI = true)
         {
@@ -171,31 +172,38 @@ namespace Youtube_DL_Frontend
             parser.settings.registerCommand("Using", Settings_Lambdas.youtubeDLP, Settings_Lambdas.youtubeDLPDynamic);
             parser.settings.registerCommand("Back", Settings_Lambdas.back);
 
+            List<PresetManager.preset> presetList = presets.getPresets();
+            for (int i = 0; i < presetList.Count(); i++)
+            {
+                parser.presets.registerCommand(presetList[i].name, null);
+            }
+
             runtime.parsers.Add(parser.settings);
             runtime.parsers.Add(parser.menu);
+            runtime.parsers.Add(parser.presets);
 
             List<Enums.errorMessages> Errors = new List<Enums.errorMessages>();
             if (File.Exists(Constants._DATABASE_FILE) == false)
             {
-                await data.updateSelf(true);
+                await runtime.database.updateSelf(true);
             }
             else
             {
-                await data.populateSelf();
+                await runtime.database.populateSelf();
             }
 
-            runtime.updateYTDL(data.youtubeDLP);
+            runtime.updateYTDL(runtime.database.youtubeDLP);
             Console.Clear();
             //Ascii Text, "Welcome"
             Interface.writeAscii(4);
-            if (!checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, showGUI: false))
+            if (!checkFiles(runtime.database.ffMpegDirectory, Constants._DATABASE_FILE, showGUI: false))
             {
                 Errors.Add(Enums.errorMessages.filesNotFound);
-                checkFiles(data.ffMpegDirectory, Constants._DATABASE_FILE, hold_up_execution: false);
+                checkFiles(runtime.database.ffMpegDirectory, Constants._DATABASE_FILE, hold_up_execution: false);
             }
             if (Errors.Count() > 0) { logErrors(Errors); }
 
-            initializationQuestions(data, runtime);
+            initializationQuestions(presets.getActive().database, runtime);
             // -- THIS MESS NEEDS A REWORK -- DONE
             /*Console.Write("We have a few initialization questions before you can begin.\n");
             runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
@@ -217,14 +225,27 @@ namespace Youtube_DL_Frontend
                 runtime.link = "NULL (Skipped)";
                 runtime.filename = "NULL (Skipped)";
             }*/
-            parser.generateMenu(data, runtime);
+            parser.generateMenu(presets.getActive().database, runtime);
 
             while (true)
             {
                 Console.Clear();
                 Console.Write(runtime.currentMenu + "\n\n#\\> ");
                 Thread.Sleep(500);
-                parser.processMenuInput(Console.ReadLine(), data, runtime);
+                parser.processMenuInput(Console.ReadLine(), presets.getActive().database, runtime);
+                if (runtime.updateGeneralDatabase)
+                {
+                    presets.generalDatabaseUpdate(runtime.database);
+                    runtime.updateGeneralDatabase = false;
+                }
+                else if (runtime.updatedPreset)
+                {
+                    runtime.updatedPreset = false;
+                    if (!(presets.getPresets().Count - 1 <= runtime.updatedPresetIndex || runtime.updatedPresetIndex < 0))
+                    {
+                        presets.switchActive(runtime.updatedPresetIndex);
+                    }
+                }
             };
         }
     }

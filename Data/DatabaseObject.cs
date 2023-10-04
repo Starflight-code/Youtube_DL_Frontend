@@ -7,44 +7,57 @@ namespace Youtube_DL_Frontend.Data
     {
         public string workingDirectory;
         public string ffMpegDirectory;
-        public string audioFormat;
+        public string format;
         public string audioQuality;
-        public string audioOutputFormat;
-
+        public string outputFormat;
         public bool youtubeDLP;
-        public DatabaseObject()
+        public string presetName;
+        public string fullPath;
+        public PresetManager.presetType type;
+        public DatabaseObject(string fullPath)
         {
             workingDirectory = Directory.GetCurrentDirectory();
             ffMpegDirectory = Directory.GetCurrentDirectory();
-            audioFormat = "251";
+            format = "251";
             audioQuality = "0";
-            audioOutputFormat = "mp3";
+            outputFormat = "mp3";
             youtubeDLP = false;
+            type = PresetManager.presetType.audio;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 ffMpegDirectory = "/usr/bin/ffmpeg";
             }
+            presetName = "";
+            this.fullPath = fullPath;
         }
 
-        public DatabaseObject(string workingDirectory, string ffMpegDirectory, string audioFormat, string audioQuality, string audioOutputFormat, bool youtubeDLP)
+        public DatabaseObject(string workingDirectory, string ffMpegDirectory, string audioFormat, string audioQuality, string audioOutputFormat, bool youtubeDLP, PresetManager.presetType type, string fullPath)
         {
             this.workingDirectory = workingDirectory;
             this.ffMpegDirectory = ffMpegDirectory;
-            this.audioFormat = audioFormat;
+            this.format = audioFormat;
             this.audioQuality = audioQuality;
-            this.audioOutputFormat = audioOutputFormat;
+            this.outputFormat = audioOutputFormat;
             this.youtubeDLP = youtubeDLP;
+            presetName = "";
+            this.type = type;
+            this.fullPath = fullPath;
+        }
+        public void generalDatabaseUpdate(GeneralDatabase data)
+        {
+            ffMpegDirectory = data.ffMpegDirectory;
+            youtubeDLP = data.youtubeDLP;
         }
         public async Task updateSelf(bool newDatabase = false)
         {
             string databaseSerialized = JsonConvert.SerializeObject(this); // serializes itself into JSON
             if (newDatabase)
             {
-                File.WriteAllText(Constants._DATABASE_FILE, databaseSerialized); // writes JSON into file
+                File.WriteAllText(fullPath, databaseSerialized); // writes JSON into file
             }
             else
             {
-                await File.WriteAllTextAsync(Constants._DATABASE_FILE, databaseSerialized); // writes JSON into file
+                await File.WriteAllTextAsync(fullPath, databaseSerialized); // writes JSON into file
             }
         }
 
@@ -58,9 +71,9 @@ namespace Youtube_DL_Frontend.Data
                 // setting values - sets the values to the DatabaseObject's values
                 this.workingDirectory = database.workingDirectory;
                 this.ffMpegDirectory = database.ffMpegDirectory;
-                this.audioFormat = database.audioFormat;
+                this.format = database.format;
                 this.audioQuality = database.audioQuality;
-                this.audioOutputFormat = database.audioOutputFormat;
+                this.outputFormat = database.outputFormat;
                 this.youtubeDLP = database.youtubeDLP;
             }
             catch

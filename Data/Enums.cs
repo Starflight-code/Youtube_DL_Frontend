@@ -19,7 +19,8 @@
         public enum parsers
         {
             main,
-            settings
+            settings,
+            presets
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Youtube_DL_Frontend.Parsing
                 parser.Add((i + 1).ToString(), commands[i]);
             }
         }
-        public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData> action)
+        public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData>? action)
         {
 
             commandName = Statics.preProcessInput(commandName);

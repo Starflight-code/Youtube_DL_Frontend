@@ -9,7 +9,7 @@ namespace Youtube_DL_Frontend.Lambdas
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
-            data.audioFormat = InputHandler.askQuestion("Input a new audio format", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio format: ");
+            data.format = InputHandler.askQuestion("Input a new audio format", ValidationLambdas.isNumber, invalidPrompt: "Your input is not a number, input a new audio format: ");
             await data.updateSelf();
         };
         public static Action<Data.DatabaseObject, Data.RuntimeData> audioQuality = async (data, runtime) =>
@@ -23,7 +23,7 @@ namespace Youtube_DL_Frontend.Lambdas
         {
             Console.Clear();
             Console.Write(runtime.currentMenu);
-            data.audioOutputFormat = InputHandler.inputValidate("Input a new conversion format");
+            data.outputFormat = InputHandler.inputValidate("Input a new conversion format");
             await data.updateSelf();
         };
         public static Action<Data.DatabaseObject, Data.RuntimeData> directory = async (data, runtime) =>
@@ -136,7 +136,7 @@ namespace Youtube_DL_Frontend.Lambdas
 
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioFormatDynamic = (data, runtime) =>
         {
-            return data.audioFormat;
+            return data.format;
         };
 
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioQualityDynamic = (data, runtime) =>
@@ -146,7 +146,7 @@ namespace Youtube_DL_Frontend.Lambdas
 
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> audioOutputFormatDynamic = (data, runtime) =>
         {
-            return data.audioOutputFormat;
+            return data.outputFormat;
         };
 
         public static Func<Data.DatabaseObject, Data.RuntimeData, string> directoryDynamic = (data, runtime) =>
