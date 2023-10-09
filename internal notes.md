@@ -6,19 +6,17 @@ Add modular command parsing through a modified version of Command Music's parser
 It will originally only support menu commands with the eventual goal of supporting 
 external commands (args) and internal commands (similar to iwd).
 
-When switching from youtube-dl -> yt-dlp, it doesn't switch until the application reloads. -> Should be resolved
-This causes a crash if the system calls the incorrect yt-dl executable. -> Should be resolved
-
 Adding YT-DL presets, for instance a preset for video and another for audio. This should
-allow users to switch between fetching videos and audio easily.
+allow users to switch between fetching videos and audio easily. - Implimented, needs testing
 
 Add additional menus for settings, presets and other additions
 - Impliment modular command parsing system -> Tested and working
 - Add command parsing for submenus -> Added, working
 - Integrate all parsing systems together within a menu tree -> Added, working (cleanup needed before release)
 - Test system to ensure functionality -> Testing started, core functionality confirmed. Test with a subtitle, video and audio file fetch.
+- Add preset system into settings submenu (requires database rework) - DONE
 
-- Add preset system into settings submenu (requires database rework)
+TODO - Run a test on program functionality, checking for a few edge cases before release
 
 Fixed
 - 

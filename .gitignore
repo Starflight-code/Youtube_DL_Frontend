@@ -1,6 +1,10 @@
-﻿bin/Release/*
+﻿# Debug Files
+bin/Release/*
 obj/Release/*
 obj/Debug/*
 bin/Debug/*
 data.db
+presets/*
+
+# C# Internal Files
 obj/*
