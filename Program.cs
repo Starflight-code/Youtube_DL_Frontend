@@ -157,12 +157,12 @@ namespace Youtube_DL_Frontend {
             List<Enums.errorMessages> Errors = new List<Enums.errorMessages>();
             if (File.Exists(Constants._DATABASE_FILE) == false) {
                 await runtime.database.updateSelf(true);
-                generateDatabase();
             }
             else {
                 await runtime.database.populateSelf();
             }
             presets.importAll();
+            presets.switchActive(runtime.database.currentPresetIndex); // restores previous session's preset setting
 
             List<PresetManager.preset> presetList = presets.getPresets();
             for (int i = 0; i < presetList.Count(); i++) {
@@ -209,10 +209,13 @@ namespace Youtube_DL_Frontend {
                 Console.Write(runtime.currentMenu + "\n\n#\\> ");
                 Thread.Sleep(500);
                 parser.processMenuInput(Console.ReadLine(), presets, runtime);
+
                 if (runtime.updateGeneralDatabase) {
                     presets.generalDatabaseUpdate(runtime.database);
                     runtime.updateGeneralDatabase = false;
-                }/*
+                }
+                parser.generateMenu(presets, runtime);
+                /*
                 else if (runtime.updatedPreset) {
                     runtime.updatedPreset = false;
                     if (!(presets.getPresets().Count < runtime.updatedPresetIndex || runtime.updatedPresetIndex < 0)) {

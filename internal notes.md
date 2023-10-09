@@ -17,6 +17,15 @@ Add additional menus for settings, presets and other additions
 - Add preset system into settings submenu (requires database rework) - DONE
 
 TODO - Run a test on program functionality, checking for a few edge cases before release
+Video preset does not work citing "yt-dlp: error: invalid audio format "mp4" given", likely an issue with the command builder in ExternalInterface
+GUI is not updated upon link and filename changes after initial system initialization - RESOLVED
+Preset index is not being saved after system termination, save to general config recommended - Added
+
+Audio Fetching - Working
+Subtitle Fetching - Working
+Video Fetching - Working
 
 Fixed
-- 
+- An issue where YT-DL-FE would delete the merge-output file after generating it
+- An issue where the GUI would not update
+- An issue where presets would not contain the correct type data

@@ -83,7 +83,8 @@ namespace Youtube_DL_Frontend.Lambdas {
                 presetIndex = int.Parse(InputHandler.askQuestion("Input the preset you'd like to swap to", ValidationLambdas.isNumber));
             }
             preset.switchActive(presetIndex - 1);
-            await Task.Delay(0);
+            runtime.database.currentPresetIndex = presetIndex - 1;
+            await runtime.database.updateSelf();
         };
         public static Func<Data.PresetManager, Data.RuntimeData, string> audioFormatDynamic = (preset, runtime) => {
             return preset.getActive().database.format;

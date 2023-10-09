@@ -29,6 +29,9 @@ namespace Youtube_DL_Frontend.Data {
         }
 
         public void importAll() {
+            if (!Directory.Exists(Data.Constants._PRESET_DIRECTORY)) {
+                Initializer.initalizeStartPresets();
+            }
             IEnumerable<string> presets = Directory.EnumerateFiles(Data.Constants._PRESET_DIRECTORY);
             foreach (string preset in presets) {
                 import(preset);
@@ -64,6 +67,8 @@ namespace Youtube_DL_Frontend.Data {
         }
 
         public async void generalDatabaseUpdate(GeneralDatabase data) {
+            data.currentPresetIndex = activePresetIndex;
+            await data.updateSelf();
             for (int i = 0; i < presets.Count(); i++) {
                 presets[i].database.generalDatabaseUpdate(data);
                 await presets[i].database.updateSelf();

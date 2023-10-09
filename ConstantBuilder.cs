@@ -9,7 +9,7 @@
                 case Data.DatabaseObject.presetType.audio:
                     return Data.Statics.buildPath($"-f {data.format} --audio-format {data.outputFormat} -x --ffmpeg-location \"{data.ffMpegDirectory}\" {URL} --audio-quality {data.audioQuality} -o \"{fileName}\"");
                 case Data.DatabaseObject.presetType.video:
-                    return Data.Statics.buildPath($"-f {data.format} --merge-output-format {data.outputFormat} -x --ffmpeg-location \"{data.ffMpegDirectory}\" {URL} -o \"{fileName}\"");
+                    return Data.Statics.buildPath($"-f {data.format} --merge-output-format {data.outputFormat} --ffmpeg-location \"{data.ffMpegDirectory}\" {URL} -o \"{fileName}\"");
                 case Data.DatabaseObject.presetType.subtitle:
                     return Data.Statics.buildPath($"--write-sub --sub-format {data.format} {URL} -o \"{fileName}\"");
             }

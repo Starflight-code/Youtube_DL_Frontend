@@ -5,6 +5,7 @@ namespace Youtube_DL_Frontend.Data {
     internal class GeneralDatabase {
         public bool youtubeDLP;
         public string ffMpegDirectory;
+        public int currentPresetIndex;
         public GeneralDatabase() {
             youtubeDLP = false;
             ffMpegDirectory = Directory.GetCurrentDirectory();
@@ -31,6 +32,7 @@ namespace Youtube_DL_Frontend.Data {
                 // setting values - sets the values to the DatabaseObject's values
                 this.youtubeDLP = database.youtubeDLP;
                 this.ffMpegDirectory = database.ffMpegDirectory;
+                this.currentPresetIndex = database.currentPresetIndex;
             }
             catch {
                 File.Delete(Constants._DATABASE_FILE);

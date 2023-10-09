@@ -86,6 +86,7 @@ namespace Youtube_DL_Frontend.Data {
                 this.outputFormat = database.outputFormat;
                 this.youtubeDLP = database.youtubeDLP;
                 this.presetName = database.presetName;
+                this.type = database.type;
             }
             catch {
                 File.Delete(fullPath);
