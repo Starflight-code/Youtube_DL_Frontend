@@ -91,8 +91,6 @@ namespace Youtube_DL_Frontend.Data {
                 File.Delete(fullPath);
                 await updateSelf(true);
             }
-            // TODO: pull from database file, populate fields with values from sanitized object 
-            // only if an error doesn't happen upon deserialization
 
         }
     }

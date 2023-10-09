@@ -94,7 +94,7 @@ namespace Youtube_DL_Frontend {
             Console.WriteLine();
         }
 
-        static void initializationQuestions(DatabaseObject data, RuntimeData runtime) {
+        static void initializationQuestions(PresetManager preset, RuntimeData runtime) {
             Console.Write("We have a few initialization questions before you can begin."
              + "\nUse \"s\" to skip to the menu, or \"b\" to active the batch processor.");
             runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
@@ -108,7 +108,7 @@ namespace Youtube_DL_Frontend {
             if (runtime.link.ToLower() is "b" or "batch") {
                 runtime.link = "NULL (Skipped)";
                 runtime.filename = "NULL (Skipped)";
-                Main_Lambdas.batch.Invoke(data, runtime);
+                Main_Lambdas.batch.Invoke(preset, runtime);
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace Youtube_DL_Frontend {
             }
             if (Errors.Count() > 0) { logErrors(Errors); }
 
-            initializationQuestions(presets.getActive().database, runtime);
+            initializationQuestions(presets, runtime);
             // -- THIS MESS NEEDS A REWORK -- DONE
             /*Console.Write("We have a few initialization questions before you can begin.\n");
             runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
@@ -202,24 +202,24 @@ namespace Youtube_DL_Frontend {
                 runtime.link = "NULL (Skipped)";
                 runtime.filename = "NULL (Skipped)";
             }*/
-            parser.generateMenu(presets.getActive().database, runtime);
+            parser.generateMenu(presets, runtime);
 
             while (true) {
                 Console.Clear();
                 Console.Write(runtime.currentMenu + "\n\n#\\> ");
                 Thread.Sleep(500);
-                parser.processMenuInput(Console.ReadLine(), presets.getActive().database, runtime);
+                parser.processMenuInput(Console.ReadLine(), presets, runtime);
                 if (runtime.updateGeneralDatabase) {
                     presets.generalDatabaseUpdate(runtime.database);
                     runtime.updateGeneralDatabase = false;
-                }
+                }/*
                 else if (runtime.updatedPreset) {
                     runtime.updatedPreset = false;
                     if (!(presets.getPresets().Count < runtime.updatedPresetIndex || runtime.updatedPresetIndex < 0)) {
                         presets.switchActive(runtime.updatedPresetIndex - 1);
-                        parser.generateMenu(presets.getActive().database, runtime);
+                        parser.generateMenu(presets, runtime);
                     }
-                }
+                }*/
             };
         }
     }

@@ -23,14 +23,14 @@ namespace Youtube_DL_Frontend.Parsing {
                 parser.Add((i + 1).ToString(), commands[i]);
             }
         }
-        public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData>? action) {
+        public void registerCommand(string commandName, Action<PresetManager, RuntimeData>? action) {
 
             commandName = Statics.preProcessInput(commandName);
             parser.Add(commandName, new CommandParser.command(commandName, action));
             menuList.Add(new CommandParser.command(commandName, action));
             parser.Add(menuList.Count.ToString(), new CommandParser.command(commandName, action));
         }
-        public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda) {
+        public void registerCommand(string commandName, Action<PresetManager, RuntimeData> action, Func<PresetManager, RuntimeData, string> dynamicDataLambda) {
 
             commandName = Statics.preProcessInput(commandName);
             parser.Add(commandName, new CommandParser.command(commandName, action, true, dynamicDataLambda));
@@ -68,7 +68,7 @@ namespace Youtube_DL_Frontend.Parsing {
             }
             return true;
         }
-        public bool processInput(string? input, DatabaseObject data, RuntimeData runtime) {
+        public bool processInput(string? input, PresetManager preset, RuntimeData runtime) {
 
             if (input == null) { return false; }
 
@@ -76,31 +76,31 @@ namespace Youtube_DL_Frontend.Parsing {
             string[] inputArray = input.Split(" ");
             bool foundValue = parser.TryGetValue(inputArray[0], out CommandParser.command value);
             if (!foundValue) { return false; }
-            value.invokeLambda(data, runtime);
+            value.invokeLambda(preset, runtime);
             if (value.hasDynamicData()) {
-                generateMenu(data, runtime);
+                generateMenu(preset, runtime);
             }
             return true;
         }
-        public string generateMenu(DatabaseObject data, RuntimeData runtime) {
+        public string generateMenu(PresetManager preset, RuntimeData runtime) {
             string[][] preList = new string[menuList.Count][];
             for (int i = 0; i < menuList.Count; i++) {
                 preList[i] = new string[] {
                     (i + 1).ToString(),
                     menuList[i].getCommandName(),
-                    menuList[i].getDynamicData(data, runtime)};
+                    menuList[i].getDynamicData(preset, runtime)};
             }
             return Interface.getAscii(1) + Statics.generateList("", preList);
 
         }
-        public async Task<string> generateMenuAsync(DatabaseObject data, RuntimeData runtime) {
+        public async Task<string> generateMenuAsync(PresetManager preset, RuntimeData runtime) {
             await Task.Run(() => {
                 string[][] preList = new string[menuList.Count][];
                 for (int i = 0; i < menuList.Count; i++) {
                     preList[i] = new string[] {
                     (i + 1).ToString(),
                     menuList[i].getCommandName(),
-                    menuList[i].getDynamicData(data, runtime)};
+                    menuList[i].getDynamicData(preset, runtime)};
                 }
                 return Interface.getAscii(1) + Statics.generateList("", preList);
             });

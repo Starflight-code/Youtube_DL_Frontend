@@ -24,10 +24,10 @@ namespace Youtube_DL_Frontend.Parsing {
 
             string commandName;
             List<string> aliases;
-            Action<DatabaseObject, RuntimeData>? lambda;
+            Action<PresetManager, RuntimeData>? lambda;
             bool dynamicData;
-            Func<DatabaseObject, RuntimeData, string>? dynamicDataLambda;
-            public command(string commandName, Action<DatabaseObject, RuntimeData>? lambda, bool dynamicData = false, Func<DatabaseObject, RuntimeData, string>? dynamicDataLambda = null) {
+            Func<PresetManager, RuntimeData, string>? dynamicDataLambda;
+            public command(string commandName, Action<PresetManager, RuntimeData>? lambda, bool dynamicData = false, Func<PresetManager, RuntimeData, string>? dynamicDataLambda = null) {
                 this.commandName = commandName;
                 aliases = new List<string>();
                 this.lambda = lambda;
@@ -41,11 +41,11 @@ namespace Youtube_DL_Frontend.Parsing {
                 return dynamicData;
             }
 
-            public string getDynamicData(DatabaseObject data, RuntimeData runtime) {
+            public string getDynamicData(PresetManager preset, RuntimeData runtime) {
                 if (dynamicDataLambda == null) {
                     return "";
                 }
-                string dynamicData = dynamicDataLambda.Invoke(data, runtime);
+                string dynamicData = dynamicDataLambda.Invoke(preset, runtime);
                 if (dynamicData == null) {
                     dynamicData = "";
                 }
@@ -58,9 +58,9 @@ namespace Youtube_DL_Frontend.Parsing {
                 return aliases;
             }
 
-            public void invokeLambda(DatabaseObject data, RuntimeData runtime) {
+            public void invokeLambda(PresetManager preset, RuntimeData runtime) {
                 if (lambda == null) { return; }
-                lambda.Invoke(data, runtime);
+                lambda.Invoke(preset, runtime);
             }
         }
 
@@ -81,21 +81,21 @@ namespace Youtube_DL_Frontend.Parsing {
             }
             return returnArray;
         }
-        public void registerMenuCommand(string commandName, Action<DatabaseObject, RuntimeData> action) {
+        public void registerMenuCommand(string commandName, Action<PresetManager, RuntimeData> action) {
             menu.registerCommand(commandName, action);
         }
-        public void registerMenuCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda) {
+        public void registerMenuCommand(string commandName, Action<PresetManager, RuntimeData> action, Func<PresetManager, RuntimeData, string> dynamicDataLambda) {
             menu.registerCommand(commandName, action, dynamicDataLambda);
         }
-        public bool processMenuInput(string? input, DatabaseObject data, RuntimeData runtime) {
-            return menu.processInput(input, data, runtime);
+        public bool processMenuInput(string? input, PresetManager preset, RuntimeData runtime) {
+            return menu.processInput(input, preset, runtime);
         }
 
-        public void generateMenu(DatabaseObject data, RuntimeData runtime) {
-            runtime.currentMenu = menu.generateMenu(data, runtime);
+        public void generateMenu(PresetManager preset, RuntimeData runtime) {
+            runtime.currentMenu = menu.generateMenu(preset, runtime);
         }
-        public async void generateMenuAsync(DatabaseObject data, RuntimeData runtime) {
-            runtime.currentMenu = await menu.generateMenuAsync(data, runtime);
+        public async void generateMenuAsync(PresetManager preset, RuntimeData runtime) {
+            runtime.currentMenu = await menu.generateMenuAsync(preset, runtime);
         }
     }
 }
