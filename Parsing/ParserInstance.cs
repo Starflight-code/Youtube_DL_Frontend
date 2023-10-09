@@ -2,50 +2,42 @@ using System.Runtime.CompilerServices;
 using Youtube_DL_Frontend.Data;
 
 
-namespace Youtube_DL_Frontend.Parsing
-{
-    internal class ParserInstance
-    {
+namespace Youtube_DL_Frontend.Parsing {
+    internal class ParserInstance {
         public Enums.parsers parserName;
         private Dictionary<string, CommandParser.command> parser;
         private List<CommandParser.command> menuList;
-        public ParserInstance(Enums.parsers parserName)
-        {
+        public ParserInstance(Enums.parsers parserName) {
             this.parserName = parserName;
             parser = new Dictionary<string, CommandParser.command>();
             menuList = new List<CommandParser.command>();
         }
-        public ParserInstance(Enums.parsers parserName, List<CommandParser.command> commands)
-        {
+        public ParserInstance(Enums.parsers parserName, List<CommandParser.command> commands) {
             this.parserName = parserName;
             parser = new Dictionary<string, CommandParser.command>();
             menuList = new List<CommandParser.command>();
-            for (int i = 0; i < commands.Count(); i++)
-            {
+            for (int i = 0; i < commands.Count(); i++) {
                 string commandName = Statics.preProcessInput(commands[i].getCommandName());
                 parser.Add(commandName, commands[i]);
                 menuList.Add(commands[i]);
                 parser.Add((i + 1).ToString(), commands[i]);
             }
         }
-        public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData>? action)
-        {
+        public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData>? action) {
 
             commandName = Statics.preProcessInput(commandName);
             parser.Add(commandName, new CommandParser.command(commandName, action));
             menuList.Add(new CommandParser.command(commandName, action));
             parser.Add(menuList.Count.ToString(), new CommandParser.command(commandName, action));
         }
-        public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda)
-        {
+        public void registerCommand(string commandName, Action<DatabaseObject, RuntimeData> action, Func<DatabaseObject, RuntimeData, string> dynamicDataLambda) {
 
             commandName = Statics.preProcessInput(commandName);
             parser.Add(commandName, new CommandParser.command(commandName, action, true, dynamicDataLambda));
             menuList.Add(new CommandParser.command(commandName, action, true, dynamicDataLambda));
             parser.Add(menuList.Count.ToString(), new CommandParser.command(commandName, action, true, dynamicDataLambda));
         }
-        public bool registerAlias(string commandName, string alias)
-        {
+        public bool registerAlias(string commandName, string alias) {
 
             commandName = Statics.preProcessInput(commandName);
             bool foundValue = false;
@@ -60,8 +52,7 @@ namespace Youtube_DL_Frontend.Parsing
             parser.Add(alias, value);
             return true;
         }
-        public bool unregisterCommand(string commandName)
-        {
+        public bool unregisterCommand(string commandName) {
 
             commandName = Statics.preProcessInput(commandName);
             CommandParser.command value;
@@ -72,14 +63,12 @@ namespace Youtube_DL_Frontend.Parsing
             parser.Remove(commandName);
             menuList.Remove(value);
 
-            for (int i = 0; i < aliases.Count(); i++)
-            {
+            for (int i = 0; i < aliases.Count(); i++) {
                 parser.Remove(aliases[i]);
             }
             return true;
         }
-        public bool processInput(string? input, DatabaseObject data, RuntimeData runtime)
-        {
+        public bool processInput(string? input, DatabaseObject data, RuntimeData runtime) {
 
             if (input == null) { return false; }
 
@@ -88,17 +77,14 @@ namespace Youtube_DL_Frontend.Parsing
             bool foundValue = parser.TryGetValue(inputArray[0], out CommandParser.command value);
             if (!foundValue) { return false; }
             value.invokeLambda(data, runtime);
-            if (value.hasDynamicData())
-            {
+            if (value.hasDynamicData()) {
                 generateMenu(data, runtime);
             }
             return true;
         }
-        public string generateMenu(DatabaseObject data, RuntimeData runtime)
-        {
+        public string generateMenu(DatabaseObject data, RuntimeData runtime) {
             string[][] preList = new string[menuList.Count][];
-            for (int i = 0; i < menuList.Count; i++)
-            {
+            for (int i = 0; i < menuList.Count; i++) {
                 preList[i] = new string[] {
                     (i + 1).ToString(),
                     menuList[i].getCommandName(),
@@ -107,13 +93,10 @@ namespace Youtube_DL_Frontend.Parsing
             return Interface.getAscii(1) + Statics.generateList("", preList);
 
         }
-        public async Task<string> generateMenuAsync(DatabaseObject data, RuntimeData runtime)
-        {
-            await Task.Run(() =>
-            {
+        public async Task<string> generateMenuAsync(DatabaseObject data, RuntimeData runtime) {
+            await Task.Run(() => {
                 string[][] preList = new string[menuList.Count][];
-                for (int i = 0; i < menuList.Count; i++)
-                {
+                for (int i = 0; i < menuList.Count; i++) {
                     preList[i] = new string[] {
                     (i + 1).ToString(),
                     menuList[i].getCommandName(),

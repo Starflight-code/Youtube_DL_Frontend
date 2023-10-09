@@ -1,15 +1,11 @@
 using Youtube_DL_Frontend.Data;
 
-namespace Youtube_DL_Frontend
-{
-    internal class Interface
-    {
-        public static void writeAscii(int input, bool prependNewLine = false, bool appendNewLine = true)
-        {
+namespace Youtube_DL_Frontend {
+    internal class Interface {
+        public static void writeAscii(int input, bool prependNewLine = false, bool appendNewLine = true) {
             string prepend = prependNewLine ? "\n" : "";
             string append = appendNewLine ? "\n" : "";
-            switch (input)
-            {
+            switch (input) {
                 //Ascii Text is below, this is called for GUI related reasons within the program.
                 case 1:
                     //Configuration
@@ -32,12 +28,10 @@ namespace Youtube_DL_Frontend
                     throw (new Exception("nError detected by WriteAscii(), this function has been declared with an invalid 'input' variable value."));
             }
         }
-        public static string getAscii(int input, bool prependNewLine = false, bool appendNewLine = true)
-        {
+        public static string getAscii(int input, bool prependNewLine = false, bool appendNewLine = true) {
             string prepend = prependNewLine ? "\n" : "";
             string append = appendNewLine ? "\n" : "";
-            switch (input)
-            {
+            switch (input) {
                 //Ascii Text is below, this is called for GUI related reasons within the program.
                 case 1:
                     //Configuration
