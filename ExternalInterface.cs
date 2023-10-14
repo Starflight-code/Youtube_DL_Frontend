@@ -51,8 +51,6 @@ namespace Youtube_DL_Frontend {
             string[] file = File.ReadAllLines(batchfile);
             int i = 0;
             List<batchProcessTask> taskList = new List<batchProcessTask>();
-            //List<string> URLs = new List<string>();
-            //List<string> fileNames = new List<string>();
             List<Process> processes = new List<Process>();
             List<int> processFailCount = new List<int>();
             batchProcessTask buildTask = new batchProcessTask();
@@ -77,7 +75,6 @@ namespace Youtube_DL_Frontend {
             taskList.Add(buildTask);
             Console.WriteLine("\nExecution Started on File, please wait... \n");
             string name;
-            //foreach (string URL in URLs)
             foreach (batchProcessTask task in taskList) {
                 name = ConstantBuilder.buildFileName(data.workingDirectory, task.filename);
                 processes.Add(new Process {

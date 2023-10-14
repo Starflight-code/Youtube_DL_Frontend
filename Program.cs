@@ -128,12 +128,6 @@ namespace Youtube_DL_Frontend {
 
         public async void MainAsync(string[] args) {
             CommandParser parser = new CommandParser();
-            //parser.registerMenuCommand("Audio Format", Main_Lambdas.audioFormat, Main_Lambdas.audioFormatDynamic);
-            //parser.registerMenuCommand("Audio Quality", Main_Lambdas.audioQuality, Main_Lambdas.audioQualityDynamic);
-            //parser.registerMenuCommand("Audio Output Format", Main_Lambdas.audioOutputFormat, Main_Lambdas.audioOutputFormatDynamic);
-            //parser.registerMenuCommand("Directory", Main_Lambdas.directory, Main_Lambdas.directoryDynamic);
-            //parser.registerMenuCommand("FFMPEG Directory", Main_Lambdas.ffDirectory, Main_Lambdas.ffDirectoryDynamic);
-            //parser.registerMenuCommand("Using", Main_Lambdas.youtubeDLP, Main_Lambdas.youtubeDLPDynamic);
             parser.registerMenuCommand("Settings", Main_Lambdas.settingsMenu);
             parser.registerMenuCommand("Link", Main_Lambdas.link, Main_Lambdas.linkDynamic);
             parser.registerMenuCommand("Filename", Main_Lambdas.filename, Main_Lambdas.filenameDynamic);
@@ -141,9 +135,9 @@ namespace Youtube_DL_Frontend {
             parser.registerMenuCommand("Continue", Main_Lambdas.goOn);
             parser.registerMenuCommand("Exit", Main_Lambdas.exit);
 
-            parser.settings.registerCommand("Audio Format", Settings_Lambdas.audioFormat, Settings_Lambdas.audioFormatDynamic);
-            parser.settings.registerCommand("Audio Quality", Settings_Lambdas.audioQuality, Settings_Lambdas.audioQualityDynamic);
-            parser.settings.registerCommand("Audio Output Format", Settings_Lambdas.audioOutputFormat, Settings_Lambdas.audioOutputFormatDynamic);
+            parser.settings.registerCommand("Format", Settings_Lambdas.audioFormat, Settings_Lambdas.audioFormatDynamic);
+            parser.settings.registerCommand("Quality", Settings_Lambdas.audioQuality, Settings_Lambdas.audioQualityDynamic);
+            parser.settings.registerCommand("Output Format", Settings_Lambdas.audioOutputFormat, Settings_Lambdas.audioOutputFormatDynamic);
             parser.settings.registerCommand("Directory", Settings_Lambdas.directory, Settings_Lambdas.directoryDynamic);
             parser.settings.registerCommand("FFMPEG Directory", Settings_Lambdas.ffDirectory, Settings_Lambdas.ffDirectoryDynamic);
             parser.settings.registerCommand("Using", Settings_Lambdas.youtubeDLP, Settings_Lambdas.youtubeDLPDynamic);
@@ -181,27 +175,6 @@ namespace Youtube_DL_Frontend {
             if (Errors.Count() > 0) { logErrors(Errors); }
 
             initializationQuestions(presets, runtime);
-            // -- THIS MESS NEEDS A REWORK -- DONE
-            /*Console.Write("We have a few initialization questions before you can begin.\n");
-            runtime.link = InputHandler.inputValidate("Input a link to the file you wish to fetch");
-            if (runtime.link.ToLower() is not ("s" or "skip"))
-            { // for quick bypass in the case of batch processing
-                Console.Write("Input \"" + runtime.link + "\" Accepted!");
-                Thread.Sleep(400);
-                Console.Clear();
-
-                //Ascii Text, "Welcome"
-                Interface.writeAscii(4);
-                Console.Write("We have a few initialization questions before you can begin.\n");
-                runtime.filename = InputHandler.inputValidate("Input a name for the file output without the entension");
-                Console.Write("Input \"" + runtime.filename + "\" Accepted!");
-                Thread.Sleep(400); //Gives visual feedback to user
-            }
-            else
-            {
-                runtime.link = "NULL (Skipped)";
-                runtime.filename = "NULL (Skipped)";
-            }*/
             parser.generateMenu(presets, runtime);
 
             while (true) {
@@ -215,14 +188,6 @@ namespace Youtube_DL_Frontend {
                     runtime.updateGeneralDatabase = false;
                 }
                 parser.generateMenu(presets, runtime);
-                /*
-                else if (runtime.updatedPreset) {
-                    runtime.updatedPreset = false;
-                    if (!(presets.getPresets().Count < runtime.updatedPresetIndex || runtime.updatedPresetIndex < 0)) {
-                        presets.switchActive(runtime.updatedPresetIndex - 1);
-                        parser.generateMenu(presets, runtime);
-                    }
-                }*/
             };
         }
     }

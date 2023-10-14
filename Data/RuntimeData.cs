@@ -12,8 +12,6 @@ namespace Youtube_DL_Frontend.Data {
         public List<ParserInstance> parsers;
         public bool goBack;
         public GeneralDatabase database;
-        //public bool updatedPreset;
-        //public int updatedPresetIndex;
         public bool updateGeneralDatabase;
         public RuntimeData() {
             yotutube_dl_executable = "";

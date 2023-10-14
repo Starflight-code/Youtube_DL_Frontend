@@ -7,11 +7,6 @@
 
         }
 
-        public enum platform {
-            windows,
-            linux
-        }
-
         public enum parsers {
             main,
             settings,
