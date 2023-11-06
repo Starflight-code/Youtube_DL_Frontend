@@ -1,6 +1,11 @@
-﻿bin/Release/*
-obj/Release/*
-obj/Debug/*
-bin/Debug/*
-data.db
+﻿# Debug Files
+bin/*
 obj/*
+data.db
+presets/*
+.vscode/*
+.vs/*
+
+# C# Internal Files
+obj/*
+presets/*
