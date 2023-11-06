@@ -29,4 +29,4 @@ jobs:
 #    - name: Publish - Windows
 #      run: dotnet publish 
     - name: Publish - Linux
-    - run: dotnet publish --sc -r linux-x64
+      run: dotnet publish --sc -r linux-x64
