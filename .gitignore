@@ -1,10 +1,10 @@
 ﻿# Debug Files
-bin/Release/*
-obj/Release/*
-obj/Debug/*
-bin/Debug/*
+bin/*
+obj/*
 data.db
 presets/*
+.vscode/*
+.vs/*
 
 # C# Internal Files
 obj/*
