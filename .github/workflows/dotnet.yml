@@ -26,12 +26,17 @@ jobs:
       run: dotnet build --no-restore
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
-#    - name: Publish - Windows
-#      run: dotnet publish 
+    - name: Publish - Windows
+      run: dotnet publish --sc -r win-x86 -c Release
     - name: Publish - Linux
       run: dotnet publish --sc -r linux-x64 -c Release
-    - name: capture build artifacts
+    - name: capture build artifacts - Linux
       uses: actions/upload-artifact@v3
       with:
-        name: Artifacts
-        path: bin/Release/net6.0/linux-x64/publish/
+        name: Artifacts - Linux
+        path: bin/Release/net6.0/linux-x64/publish/*![.db]
+    - name: capture build artifacts - Windows
+      uses: actions/upload-artifact@v3
+      with:
+        name: Artifacts - Windows
+        path: bin/Release/net6.0/win-x86/publish/*.exe
