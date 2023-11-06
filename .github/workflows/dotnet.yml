@@ -34,7 +34,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Artifacts - Linux
-        path: bin/Release/net6.0/linux-x64/publish/Youtube_DL_Frontend
+        path: bin/Release/net6.0/linux-x64/publish/Youtube-DL-Frontend
     - name: capture build artifacts - Windows
       uses: actions/upload-artifact@v3
       with:
