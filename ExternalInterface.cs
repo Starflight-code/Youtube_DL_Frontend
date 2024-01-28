@@ -122,7 +122,7 @@ namespace Youtube_DL_Frontend {
                 Thread.Sleep(100);
             }
             for (i = 0; i < processFailCount.Count(); i++) {
-                Console.WriteLine($"Task {(i + 1)}: {(processFailCount[i] > 0 ? processFailCount[i] == 3 ? "Failed" : "Retried and Succeeded" : "Succeeded")}");
+                Console.WriteLine($"Task {(i + 1)}: {(processFailCount[i] > 0 ? processFailCount[i] == 3 ? "Failed" : "Retried and Succeeded" : "Succeeded")} ({taskList[i].filename})");
             }
             Console.WriteLine($"\nSuccessful Tasks: {succeeded}\nFailed Tasks: {failed}\n\nPRESS ENTER TO CONTINUE");
             Console.ReadLine();

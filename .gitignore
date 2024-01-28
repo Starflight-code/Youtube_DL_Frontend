@@ -1,11 +1,9 @@
 ﻿# Debug Files
-bin/*
-obj/*
+bin
 data.db
-presets/*
-.vscode/*
-.vs/*
+.vscode
+.vs
 
 # C# Internal Files
-obj/*
-presets/*
+obj
+presets
