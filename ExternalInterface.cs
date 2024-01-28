@@ -75,6 +75,7 @@ namespace Youtube_DL_Frontend {
             taskList.Add(buildTask);
             Console.WriteLine("\nExecution Started on File, please wait... \n");
             string name;
+            i = 0;
             foreach (batchProcessTask task in taskList) {
                 name = ConstantBuilder.buildFileName(data.workingDirectory, task.filename);
                 processes.Add(new Process {
@@ -88,7 +89,7 @@ namespace Youtube_DL_Frontend {
                 });
                 processFailCount.Add(0);
 
-                processes[i].Start();
+                processes[i++].Start();
             }
             int processesWaiting = processes.Count();
             int failed = 0;
