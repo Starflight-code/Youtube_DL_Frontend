@@ -43,6 +43,8 @@ namespace Youtube_DL_Frontend {
             Console.ReadLine();
         }
         public static void batchProcess(Data.DatabaseObject data, Data.RuntimeData runtimeData) {
+            const int MAX_RUNNING_TASKS = 10;
+
             Console.Write(Data.Constants._BATCH_WELCOME);
             string batchfile = InputHandler.inputValidate("Enter File Path");
             while (!File.Exists(batchfile)) {
@@ -75,7 +77,8 @@ namespace Youtube_DL_Frontend {
             taskList.Add(buildTask);
             Console.WriteLine("\nExecution Started on File, please wait... \n");
             string name;
-            i = 0;
+            int taskIndex = 0;
+            int runningTasks = 0;
             foreach (batchProcessTask task in taskList) {
                 name = ConstantBuilder.buildFileName(data.workingDirectory, task.filename);
                 processes.Add(new Process {
@@ -89,20 +92,26 @@ namespace Youtube_DL_Frontend {
                 });
                 processFailCount.Add(0);
 
-                processes[i++].Start();
+                if (taskIndex < MAX_RUNNING_TASKS) {
+                    processes[taskIndex++].Start();
+                    runningTasks++;
+                }
             }
-            int processesWaiting = processes.Count();
             int failed = 0;
             int succeeded = 0;
             i = 0;
-            while (processesWaiting > 0) {
+            while (0 < processes.Count()) {
                 if (processes[i].HasExited) {
-                    processesWaiting--;
 
                     if (processes[i].ExitCode == 0) {
                         succeeded++;
                         processes[i].Dispose();
                         processes.RemoveAt(i);
+                        runningTasks--;
+                        if (runningTasks < MAX_RUNNING_TASKS && --taskIndex < processes.Count()) {
+                            runningTasks++;
+                            processes[taskIndex++].Start();
+                        }
                     }
                     else {
 
@@ -110,15 +119,18 @@ namespace Youtube_DL_Frontend {
                             failed++;
                             processes[i].Dispose();
                             processes.RemoveAt(i);
+                            taskIndex--;
+                            runningTasks--;
                         }
                         else {
+                            runningTasks++;
                             processes[i].Start();
                         }
                     }
                 }
 
 
-                i = i < (processesWaiting - 1) ? i + 1 : 0;
+                i = i < (MAX_RUNNING_TASKS - 1) && i < processes.Count() - 1 ? i + 1 : 0;
                 Thread.Sleep(100);
             }
             for (i = 0; i < processFailCount.Count(); i++) {
